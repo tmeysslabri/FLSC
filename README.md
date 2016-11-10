@@ -1,7 +1,7 @@
 # FLSC
 SuperCollider: Functional Language for Sound Composition
 
-Auteur: Thomas Meyssonnier <tmeyssonnier@u-bordeaux.fr> (CNRS)
+Auteur: Thomas Meyssonnier (<tmeyssonnier@u-bordeaux.fr>, CNRS)
 
 Sous licence GPL v2 (en tant qu'extension de SuperCollider)
 
