@@ -1,4 +1,6 @@
 %{
+#include <string.h>
+#include "flsc_types.h"
 #include "flsc2sc.h"
 %}
 
@@ -26,6 +28,6 @@ number	\-?[0-9]+(\.[0-9]+)?(e\-?[0-9]+)?(pi)?
 {patch}		{ return(PATCH); }
 {module}	{ return(MODULE); }
 
-{symbol}	{ yylval = yytext; return(SYMB); }
-{number}	{ yylval = yytext; return(NUM); }
+{symbol}	{ yylval.str = strdup(yytext); return(SYMB); }
+{number}	{ yylval.str = strdup(yytext); return(NUM); }
 

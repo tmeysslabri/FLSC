@@ -1,6 +1,13 @@
 %{
+#include <stdlib.h>
 #include <stdio.h>
-#define YYSTYPE char*
+#include <string.h>
+#include "flsc_types.h"
+
+wptr *cons(char *new, wptr *rest);
+wptr *concat(wptr *first, wptr *second);
+void printwords(words *text);
+
 int yyparse();
 int yylex();
 int yyerror(char *s);
@@ -8,46 +15,122 @@ int yyerror(char *s);
 
 // symboles terminaux
 
-%token PARL
-%token PARR
+%union {
+	char *str;
+	wptr *ptr;
+}
 
-%token LAMBDA
-%token LET
-%token PATCH
-%token MODULE
+%token <str> PARL
+%token <str> PARR
 
-%token SYMB
-%token NUM
+%token <str> LAMBDA
+%token <str> LET
+%token <str> PATCH
+%token <str> MODULE
+
+%token <str> SYMB
+%token <str> NUM
+
+%type <ptr> Expr
+%type <ptr> Lambda
+%type <ptr> Let
+%type <ptr> Patch
+%type <ptr> Module
+%type <ptr> Call
+%type <ptr> Var
+%type <ptr> Num
+%type <ptr> ExprList1
+%type <ptr> ExprList
+%type <ptr> IdList1
+%type <ptr> IdList
+%type <ptr> LetList1
+%type <ptr> LetList
+%type <ptr> LetTerm
+%type <ptr> Ident
 
 %%
+
+Top:	Expr	{ printwords(concat($1, cons("\n", NULL))->start); }
 
 Expr:	Lambda | Let | Patch | Module | Call | Var | Num
 
-Lambda:	PARL LAMBDA PARL IdList PARR Expr PARR
+Lambda:		PARL LAMBDA PARL IdList1 PARR Expr PARR
+		{ $$ = concat(concat(cons("FLSC_Lambda([", $4), cons("],", $6)), cons(")", NULL)); }
 
-Let:		PARL LET PARL LetList PARR Expr PARR
+Let:		PARL LET PARL LetList1 PARR Expr PARR
+		{ $$ = concat(concat(cons("FLSC_Let([", $4), cons("],", $6)), cons(")", NULL)); }
 
-Patch:		PARL PATCH PARL IdList PARR Expr Expr PARR
+Patch:		PARL PATCH PARL IdList1 PARR Expr Expr PARR
+		{ $$ = concat(concat(concat(cons("FLSC_Patch([", $4), cons("],", $6)), cons(",", $7)), cons(")", NULL)); }
 
-Module:		PARL MODULE PARL IdList PARR Expr PARR
+Module:		PARL MODULE PARL IdList1 PARR Expr PARR
+		{ $$ = concat(concat(cons("FLSC_Module([", $4), cons("],", $6)), cons(")", NULL)); }
 
-Call:		PARL Expr ExprList PARR
+Call:		PARL Expr ExprList1 PARR
+		{ $$ = concat(concat(cons("FLSC_Call(", $2), cons(",[", $3)) , cons("])", NULL)); }
 
-Var:		SYMB
+Var:		SYMB	{ $$ = cons("FLSC_Var('", cons($1, cons("')", NULL))); }
 
-Num:		NUM
+Num:		NUM	{ $$ = cons("FLSC_Num(", cons($1, cons(")", NULL))); }
 
-ExprList:	| Expr ExprList
+ExprList1:	%empty		{ $$ = cons("", NULL); }
+		| Expr ExprList	{ $$ = concat($1, $2); }
 
-IdList:		| Ident IdList
+ExprList:	%empty		{ $$ = cons("", NULL); }
+		| Expr ExprList	{ $$ = concat(cons(",", $1), $2); }
 
-LetList:	| LetTerm LetList
+IdList1:	%empty		{ $$ = cons("", NULL); }
+		| Ident IdList	{ $$ = concat($1, $2); }
 
-Ident:		SYMB
+IdList:		%empty		{ $$ = cons("", NULL); }
+		| Ident IdList	{ $$ = concat(cons(",", $1), $2); }
 
-LetTerm:	PARL Ident Expr PARR
+LetList1:	%empty			{ $$ = cons("", NULL); }
+		| LetTerm LetList	{ $$ = concat($1, $2); }
+
+LetList:	%empty			{ $$ = cons("", NULL); }
+		| LetTerm LetList	{ $$ = concat(cons(",", $1), $2); }
+
+LetTerm:	PARL Ident Expr PARR	{ $$ = concat(concat(cons("[", $2), cons(",", $3)), cons("]", NULL)); }
+
+Ident:		SYMB	{ $$ = cons("FLSC_Name('", cons($1, cons("')", NULL))); }
 
 %%
+
+wptr *cons(char *new, wptr *rest) {
+	words *newelt;
+	wptr *newptr;
+
+	newelt = malloc(sizeof(words));
+	newelt->word = new;
+	if(rest) {
+		newelt->next = rest->start;
+		rest->start = newelt;
+		return rest;
+	} else {
+		newelt->next = NULL;
+		newptr = malloc(sizeof(wptr));
+		newptr->start = newelt;
+		newptr->end = &(newelt->next);
+		return newptr;
+	}
+}
+
+wptr *concat(wptr *first, wptr *second) {
+	*(first->end) = second->start;
+	first->end = second->end;
+	free(second);
+	return first;
+}
+
+void printwords(words *text) {
+	words *cur = text;
+
+	while(cur) {
+		printf("%s", cur->word);
+		cur = cur->next;
+	};
+}
 
 int yyerror(char *s) {
 	printf("yyerror : %s\n",s);

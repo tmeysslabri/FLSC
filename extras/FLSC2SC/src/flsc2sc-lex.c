@@ -491,8 +491,10 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "FLSC2SC.l"
 #line 2 "FLSC2SC.l"
+#include <string.h>
+#include "flsc_types.h"
 #include "flsc2sc.h"
-#line 496 "flsc2sc-lex.c"
+#line 498 "flsc2sc-lex.c"
 
 #define INITIAL 0
 
@@ -679,10 +681,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 17 "FLSC2SC.l"
+#line 19 "FLSC2SC.l"
 
 
-#line 686 "flsc2sc-lex.c"
+#line 688 "flsc2sc-lex.c"
 
 	if ( !(yy_init) )
 		{
@@ -768,55 +770,55 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 19 "FLSC2SC.l"
+#line 21 "FLSC2SC.l"
 { /* ignore */ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 21 "FLSC2SC.l"
+#line 23 "FLSC2SC.l"
 { return(PARL); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 22 "FLSC2SC.l"
+#line 24 "FLSC2SC.l"
 { return(PARR); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 24 "FLSC2SC.l"
+#line 26 "FLSC2SC.l"
 { return(LAMBDA); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 25 "FLSC2SC.l"
+#line 27 "FLSC2SC.l"
 { return(LET); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 26 "FLSC2SC.l"
+#line 28 "FLSC2SC.l"
 { return(PATCH); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 27 "FLSC2SC.l"
+#line 29 "FLSC2SC.l"
 { return(MODULE); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 29 "FLSC2SC.l"
-{ yylval = yytext; return(SYMB); }
+#line 31 "FLSC2SC.l"
+{ yylval.str = strdup(yytext); return(SYMB); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 30 "FLSC2SC.l"
-{ yylval = yytext; return(NUM); }
+#line 32 "FLSC2SC.l"
+{ yylval.str = strdup(yytext); return(NUM); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 32 "FLSC2SC.l"
+#line 34 "FLSC2SC.l"
 ECHO;
 	YY_BREAK
-#line 820 "flsc2sc-lex.c"
+#line 822 "flsc2sc-lex.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1814,4 +1816,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 32 "FLSC2SC.l"
+#line 34 "FLSC2SC.l"
