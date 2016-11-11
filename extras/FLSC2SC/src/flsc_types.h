@@ -1,5 +1,6 @@
 typedef struct words {
 	char *word;
+	int lnbrk;
 	struct words *next;
 } words;
 
