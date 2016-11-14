@@ -102,7 +102,8 @@ LetList:	%empty			{ $$ = cons("", NULL); }
 
 LetTerm:	PARL Ident Expr PARR	{ $$ = concat(concat(cons("[", $2), cons(",", $3)), cons("]", NULL)); }
 
-Ident:		SYMB	{ $$ = cons("FLSC_Name('", cons($1, cons("')", NULL))); }
+Ident:		SYMB	{ /*$$ = cons("FLSC_Name('", cons($1, cons("')", NULL)));*/
+			$$ = cons("'", cons($1, cons("'", NULL))); }
 
 %%
 

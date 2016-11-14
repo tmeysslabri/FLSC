@@ -1400,12 +1400,13 @@ yyreduce:
 
   case 32:
 #line 105 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_Name('", cons((yyvsp[0].str), cons("')", NULL))); }
-#line 1405 "flsc2sc.c" /* yacc.c:1646  */
+    { /*$$ = cons("FLSC_Name('", cons($1, cons("')", NULL)));*/
+			(yyval.ptr) = cons("'", cons((yyvsp[0].str), cons("'", NULL))); }
+#line 1406 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
 
-#line 1409 "flsc2sc.c" /* yacc.c:1646  */
+#line 1410 "flsc2sc.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1633,7 +1634,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 107 "FLSC2SC.y" /* yacc.c:1906  */
+#line 108 "FLSC2SC.y" /* yacc.c:1906  */
 
 
 wptr *cons(char *new, wptr *rest) {
