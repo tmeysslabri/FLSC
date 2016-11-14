@@ -23,6 +23,7 @@ int yyerror(char *s);
 
 %token <str> PARL
 %token <str> PARR
+%token <str> AMP
 
 %token <str> LAMBDA
 %token <str> LET
@@ -57,6 +58,9 @@ Expr:	Lambda | Let | Patch | Module | Call | Var | Num
 
 Lambda:		PARL LAMBDA PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Lambda([", $4), cons("],", lnbrk(1, $6))), lnbrk(-1, cons(")", NULL))); }
+		| PARL LAMBDA PARL IdList1 AMP Ident PARR Expr PARR
+		{ $$ = concat(concat(concat(cons("FLSC_Lambda([", $4), cons(", ", $6)),
+			cons("],", lnbrk(1, $8))), cons(",", lnbrk(-1, cons("true)", NULL)))); }
 
 Let:		PARL LET PARL LetList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Let([", lnbrk(2, $4)), lnbrk(-1, cons("],", lnbrk(0, $6)))), lnbrk(-1, cons(")", NULL))); }
@@ -64,6 +68,9 @@ Let:		PARL LET PARL LetList1 PARR Expr PARR
 Patch:		PARL PATCH PARL IdList1 PARR Expr Expr PARR
 		{ $$ = concat(concat(concat(cons("FLSC_Patch([", $4), cons("],",
 			lnbrk(1, $6))), cons(",", lnbrk(0, $7))), lnbrk(-1, cons(")", NULL))); }
+		| PARL PATCH PARL IdList1 AMP Ident PARR Expr Expr PARR
+		{ $$ = concat(concat(concat(concat(cons("FLSC_Patch([", $4), cons(", ", $6)),
+			cons("],", lnbrk(1, $8))), cons(",", lnbrk(0, $9))), cons(",", lnbrk(-1, cons("true)", NULL)))); }
 
 Module:		PARL MODULE PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Module([", $4), cons("],", lnbrk(1, $6))), lnbrk(-1, cons(")", NULL))); }

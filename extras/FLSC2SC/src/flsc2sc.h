@@ -47,12 +47,13 @@ extern int yydebug;
   {
     PARL = 258,
     PARR = 259,
-    LAMBDA = 260,
-    LET = 261,
-    PATCH = 262,
-    MODULE = 263,
-    SYMB = 264,
-    NUM = 265
+    AMP = 260,
+    LAMBDA = 261,
+    LET = 262,
+    PATCH = 263,
+    MODULE = 264,
+    SYMB = 265,
+    NUM = 266
   };
 #endif
 
@@ -66,7 +67,7 @@ union YYSTYPE
 	char *str;
 	wptr *ptr;
 
-#line 70 "flsc2sc.h" /* yacc.c:1909  */
+#line 71 "flsc2sc.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

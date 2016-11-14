@@ -9,6 +9,7 @@
 blanks	[ \t\n]+
 parl	\(
 parr	\)
+amp	\&
 lambda	lambda
 let	let
 patch	patch
@@ -22,6 +23,7 @@ number	\-?[0-9]+(\.[0-9]+)?(e\-?[0-9]+)?(pi)?
 
 {parl}		{ return(PARL); }
 {parr}		{ return(PARR); }
+{amp}		{ return(AMP); }
 
 {lambda}	{ return(LAMBDA); }
 {let}		{ return(LET); }
