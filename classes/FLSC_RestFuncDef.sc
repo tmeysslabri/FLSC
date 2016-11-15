@@ -14,7 +14,7 @@ FLSC_RestFuncDef : FLSC_FuncDef {
 	value {|context, func|
 		if(hasRest,
 			{ ^FLSC_RestFunc(context, parmNames, func); },
-			{ ^FLSC_Function(context, parmNames, func); }
+			{ ^super.value(context, func); }
 		);
 	}
 
