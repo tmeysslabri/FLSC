@@ -11,10 +11,10 @@ FLSC_RestFuncDef : FLSC_FuncDef {
 		^this;
 	}
 
-	value {|context, func|
+	value {|context|
 		if(hasRest,
-			{ ^FLSC_RestFunc(context, parmNames, func); },
-			{ ^super.value(context, func); }
+			{ ^FLSC_RestFunc(context, parmNames, {|callContext| nodeVal.value(callContext)}); },
+			{ ^super.value(context); }
 		);
 	}
 

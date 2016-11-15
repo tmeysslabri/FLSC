@@ -4,7 +4,7 @@ FLSC_Lambda : FLSC_RestFuncDef {
 	}
 
 	value {|context|
-		^super.value(context, {|callContext| nodeVal.value(callContext)});
+		^super.value(context);
 	}
 
 	asFLSC {

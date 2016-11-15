@@ -11,8 +11,8 @@ FLSC_FuncDef : FLSC_SemanticNode {
 		^this;
 	}
 
-	value {|context, func|
-		^FLSC_Function(context, parmNames, func);
+	value {|context|
+		^FLSC_Function(context, parmNames, {|callContext| nodeVal.value(callContext)});
 	}
 
 	asFLSC {
