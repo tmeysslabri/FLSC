@@ -12,8 +12,10 @@ FLSC_RestFuncDef : FLSC_FuncDef {
 	}
 
 	value {|context, func|
-		var flscFunc = super.value(context, func);
-		^FLSC_RestFunc.new(flscFunc[0], flscFunc[1], flscFunc[2], hasRest);
+		if(hasRest,
+			{ ^FLSC_RestFunc(context, parmNames, func); },
+			{ ^FLSC_Function(context, parmNames, func); }
+		);
 	}
 
 	asFLSC {

@@ -12,8 +12,7 @@ FLSC_FuncDef : FLSC_SemanticNode {
 	}
 
 	value {|context, func|
-		// ^FLSC_Function(context, parmNames, func);
-		^[context, parmNames, func];
+		^FLSC_Function(context, parmNames, func);
 	}
 
 	asFLSC {
