@@ -13,6 +13,10 @@ FLSC_Let : FLSC_SemanticNode {
 		^this;
 	}
 
+	value {|context|
+		^FLSC_Call(FLSC_Lambda(nameList, nodeVal), valList).value(context);
+	}
+
 	asFLSC {
 		var flopped = [nameList, valList].flop;
 		var size = flopped.size;
