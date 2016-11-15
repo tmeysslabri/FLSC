@@ -63,7 +63,7 @@ Lambda:		PARL LAMBDA PARL IdList1 PARR Expr PARR
 			cons("],", lnbrk(1, $8))), cons(",", lnbrk(-1, cons("true)", NULL)))); }
 
 Let:		PARL LET PARL LetList1 PARR Expr PARR
-		{ $$ = concat(concat(cons("FLSC_Let([", lnbrk(2, $4)), lnbrk(-1, cons("],", lnbrk(0, $6)))), lnbrk(-1, cons(")", NULL))); }
+		{ $$ = concat(concat(cons("FLSC_Let([", lnbrk(1, $4)), lnbrk(0, cons("],", lnbrk(0, $6)))), lnbrk(-1, cons(")", NULL))); }
 
 Patch:		PARL PATCH PARL IdList1 PARR Expr Expr PARR
 		{ $$ = concat(concat(concat(cons("FLSC_Patch([", $4), cons("],",
@@ -163,7 +163,7 @@ void printwords(words *text) {
 		if(cur->lnbrk != 100) {
 			printf("\n");
 			indtlvl += cur->lnbrk;
-			for(i=0; i<indtlvl; i++) {printf("  ");};
+			for(i=0; i<indtlvl; i++) {printf("\t");};
 		} else {
 			printf("%s", cur->word);
 		};

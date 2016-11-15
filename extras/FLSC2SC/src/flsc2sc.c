@@ -1278,7 +1278,7 @@ yyreduce:
 
   case 12:
 #line 66 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(concat(cons("FLSC_Let([", lnbrk(2, (yyvsp[-3].ptr))), lnbrk(-1, cons("],", lnbrk(0, (yyvsp[-1].ptr))))), lnbrk(-1, cons(")", NULL))); }
+    { (yyval.ptr) = concat(concat(cons("FLSC_Let([", lnbrk(1, (yyvsp[-3].ptr))), lnbrk(0, cons("],", lnbrk(0, (yyvsp[-1].ptr))))), lnbrk(-1, cons(")", NULL))); }
 #line 1283 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
@@ -1693,7 +1693,7 @@ void printwords(words *text) {
 		if(cur->lnbrk != 100) {
 			printf("\n");
 			indtlvl += cur->lnbrk;
-			for(i=0; i<indtlvl; i++) {printf("  ");};
+			for(i=0; i<indtlvl; i++) {printf("\t");};
 		} else {
 			printf("%s", cur->word);
 		};
