@@ -19,7 +19,9 @@ FLSC_Function {
 
 	value {|args|
 		var execContext = FLSC_Context(baseContext,
-			[funcParms, args].lace(funcParms.size * 2));
+			[funcParms,
+				(args ++ (nil!(funcParms.size - args.size)))[..funcParms.size-1]
+		].flop);
 		^function.value(execContext);
 	}
 }

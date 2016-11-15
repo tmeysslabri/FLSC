@@ -8,7 +8,7 @@ FLSC_Context : Dictionary {
 
 	contextInit {|context, keysValues|
 		refContext = context;
-		this.putPairs(keysValues);
+		keysValues.do({|item| this.put(item[0], item[1])});
 		^this;
 	}
 
