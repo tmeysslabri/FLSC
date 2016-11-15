@@ -6,6 +6,16 @@ FLSC_Context : Dictionary {
 		^super.new.contextInit(context, keysValues);
 	}
 
+	*library {|version = "0.1", libName = "flscLib"|
+		var path = Platform.userExtensionDir +/+
+		"FLSC/extras/library" +/+ libName ++ "-" ++ version ++ ".scd";
+		var content = "[]";
+		if(File.exists(path), {
+			content = File.open(path, "r").readAllString;
+		});
+		^this.new(nil, content.interpret);
+	}
+
 	contextInit {|context, keysValues|
 		refContext = context;
 		keysValues.do({|item| this.put(item[0], item[1])});
