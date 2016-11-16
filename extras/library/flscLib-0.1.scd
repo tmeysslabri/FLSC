@@ -1,7 +1,9 @@
 [
 	// CONSTANTES
 	['nil', nil],
-	['t', true],
+	['false', false],
+	['true', true],
+	['inf', inf],
 	// FONCTIONS NUMERIQUES:
 	// opérateurs unaires:
 	['neg', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).neg})],
@@ -32,35 +34,69 @@
 		{|ctxt| FLSC_Var('terms').value(ctxt).reduce(\max)})],
 
 	// BOOLEENS:
-	// constantes:
-	// false - nil
-	// true - t
-	// comparaisons:
-	// ==
-	// !=
-	// >
-	// <
-	// >=
-	// <=
 	// opérateurs:
-	// not
-	// &&
-	// ||
+	['not', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).not})],
+	['and', FLSC_RestFunc(nil, ['terms'],
+		{|ctxt| FLSC_Var('terms').value(ctxt).inject(true, _&&_)})],
+	['or', FLSC_RestFunc(nil, ['terms'],
+		{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _||_)})],
+	['xor', FLSC_RestFunc(nil, ['terms'],
+		{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _.xor(_))})],
+	// tests:
+	['?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).notNil})],
+	['nil?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isNil})],
+	['boolean?', FLSC_Function(nil, ['a'],
+		{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(Boolean)})],
+	['number?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isNumber})],
+	['function?', FLSC_Function(nil, ['a'],
+		{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(FLSC_Function)})],
+	['list?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isArray})],
+	['empty?', FLSC_Function(nil, ['a'],
+		{|ctxt|
+			var val = FLSC_Var('a').value(ctxt);
+			val.isArray && (val.size == 0)})],
+	// comparaisons:
+	['eq?', FLSC_RestFunc(nil, ['first', 'rest'],
+		{|ctxt|
+			var first = FLSC_Var('first').value(ctxt);
+			var rest = FLSC_Var('rest').value(ctxt);
+			rest.inject(true, {|acc, val| acc && (first == val)})})],
+	['neq?', FLSC_Function(nil, ['a', 'b'],
+		{|ctxt| FLSC_Var('a').value(ctxt) != FLSC_Var('b').value(ctxt)})],
+	['gt?', FLSC_RestFunc(nil, ['first', 'rest'],
+		{|ctxt|
+			var cur = FLSC_Var('first').value(ctxt);
+			var rest = FLSC_Var('rest').value(ctxt);
+			rest.inject(true, {|acc, val| (acc && (cur > val)) <! (cur = val)})})],
+	['lt?', FLSC_RestFunc(nil, ['first', 'rest'],
+		{|ctxt|
+			var cur = FLSC_Var('first').value(ctxt);
+			var rest = FLSC_Var('rest').value(ctxt);
+			rest.inject(true, {|acc, val| (acc && (cur < val)) <! (cur = val)})})],
+	['gte?', FLSC_RestFunc(nil, ['first', 'rest'],
+		{|ctxt|
+			var cur = FLSC_Var('first').value(ctxt);
+			var rest = FLSC_Var('rest').value(ctxt);
+			rest.inject(true, {|acc, val| (acc && (cur >= val)) <! (cur = val)})})],
+	['lte?', FLSC_RestFunc(nil, ['first', 'rest'],
+		{|ctxt|
+			var cur = FLSC_Var('first').value(ctxt);
+			var rest = FLSC_Var('rest').value(ctxt);
+			rest.inject(true, {|acc, val| (acc && (cur <= val)) <! (cur = val)})})],
 
 	// LISTES:
 	// constructeurs:
 	['list', FLSC_RestFunc(nil, ['terms'], {|ctxt| FLSC_Var('terms').value(ctxt)})],
 	['cons', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt).addFirst(FLSC_Var('b').value(ctxt))})],
+		{|ctxt| [FLSC_Var('a').value(ctxt)] ++ FLSC_Var('b').value(ctxt)})],
 	['add', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt).add(FLSC_Var('b').value(ctxt))})],
+		{|ctxt| FLSC_Var('a').value(ctxt) ++ [FLSC_Var('b').value(ctxt)]})],
 	['insert', FLSC_Function(nil, ['a', 'b', 'c'],
-		{|ctxt| FLSC_Var('a').value(ctxt).insert(
-			FLSC_Var('b').value(ctxt), FLSC_Var('c').value(ctxt))})],
-	['rmvat', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| var  tmp = FLSC_Var('a').value(ctxt);
-			tmp.removeAt(FLSC_Var('b').value(ctxt));
-			tmp;})],
+		{|ctxt|
+			var index = FLSC_Var('c').value(ctxt);
+			FLSC_Var('a').value(ctxt)[..index-1] ++
+			[FLSC_Var('b').value(ctxt)] ++
+			FLSC_Var('a').value(ctxt)[index..]})],
 	['append', FLSC_RestFunc(nil, ['terms'],
 		{|ctxt| FLSC_Var('terms').value(ctxt).inject([], _++_)})],
 	['range', FLSC_Function(nil, ['a', 'b'],
@@ -80,12 +116,14 @@
 		{|ctxt|
 			var func = FLSC_Var('func').value(ctxt);
 			var lists = FLSC_Var('lists').value(ctxt);
-			/*
-			var maxSize = lists.collect({|a| a.size}).inject(0, {|a,b| max(a,b)});
-			lists = lists.collect({|l| l ++ (nil!(maxSize - l.size))});
-			*/
 			lists.flop.collect({|item|
 				func.value(item)})
+	})],
+	['select', FLSC_Function(nil, ['func', 'list'],
+		{|ctxt|
+			var func = FLSC_Var('func').value(ctxt);
+			var list = FLSC_Var('list').value(ctxt);
+			list.select({|item, i| func.value([item, i])});
 	})],
 	['reduce', FLSC_Function(nil, ['func', 'list', 'init'],
 		{|ctxt|

@@ -5,7 +5,7 @@ FLSC_RestFunc : FLSC_Function {
 
 	value {|args|
 		var parmSize = funcParms.size;
-		^super.value(if(parmSize > 1, {args[..parmSize-2]}, {[]}) ++
+		^super.value(args[..parmSize-2] ++ (nil!(parmSize-1-args.size)) ++
 			[args[parmSize-1..]]);
 	}
 }

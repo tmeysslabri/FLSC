@@ -14,7 +14,7 @@ lambda	lambda
 let	let
 patch	patch
 module	module
-symbol	[\+\-\*\/]+([a-z_][a-z0-9_\+\-\*\/]*)?|[a-z][a-z0-9_\+\-\*\/]*
+symbol	[\+\-\*\/\?]+([a-z_][a-z0-9_\+\-\*\/\?]*)?|[a-z][a-z0-9_\+\-\*\/\?]*
 number	\-?[0-9]+(\.[0-9]+)?(e\-?[0-9]+)?(pi)?
 
 %%
