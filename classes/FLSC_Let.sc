@@ -19,16 +19,13 @@ FLSC_Let : FLSC_SemanticNode {
 
 	asFLSC {
 		var flopped = [nameList, valList].flop;
-		var size = flopped.size;
-		var letList = "";
-		max(0, size-1).do({|i|
-			letList = letList ++ "(" ++ flopped[i][0].asString ++
-			" " ++ flopped[i][1].asFLSC ++ ") "
-		});
-		letList = letList ++ if(size > 0, {
-			"(" ++ flopped[size-1][0].asString ++
-			" " ++ flopped[size-1][1].asFLSC ++ ")"
-		}, {""});
+		var letList;
+		if (flopped.notEmpty) {
+			letList = flopped.collect {|item| "(" ++ item[0].asString +
+				item[1].asFLSC ++ ")"};
+			letList = letList[0] ++ letList[1..].inject("") {|acc, item| acc + item};
+		}
+		{ letList = "" };
 		^("(let (" ++ letList ++ ") " ++ nodeVal.asFLSC ++ ")");
 	}
 }
