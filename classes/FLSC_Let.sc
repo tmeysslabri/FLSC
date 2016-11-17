@@ -18,12 +18,12 @@ FLSC_Let : FLSC_SemanticNode {
 	}
 
 	asFLSC {
-		var flopped = [nameList, valList].flop;
 		var letList;
-		if (flopped.notEmpty) {
-			letList = flopped.collect {|item| "(" ++ item[0].asString +
+		if (nameList.notEmpty) {
+			letList = [nameList, valList].flop;
+			letList = letList.collect {|item| "(" ++ item[0].asString +
 				item[1].asFLSC ++ ")"};
-			letList = letList[0] ++ letList[1..].inject("") {|acc, item| acc + item};
+			letList = letList[1..].inject(letList[0]) {|acc, item| acc + item};
 		}
 		{ letList = "" };
 		^("(let (" ++ letList ++ ") " ++ nodeVal.asFLSC ++ ")");
