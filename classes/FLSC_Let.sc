@@ -14,9 +14,19 @@ FLSC_Let : FLSC_SemanticNode {
 	}
 
 	value {|context|
-		^FLSC_Call(FLSC_Lambda(nameList, nodeVal), valList).value(context);
+		^nodeVal.value(FLSC_Context(context, this.letBindings(context)));
 	}
 
+	letBindings {|context|
+		var args = valList.collect(_.value(context));
+		^[nameList, args].flop;
+	}
+
+/*
+	value {|context|
+		^FLSC_Call(FLSC_Lambda(nameList, nodeVal), valList).value(context);
+	}
+*/
 	asFLSC {
 		var letList;
 		if (nameList.notEmpty) {

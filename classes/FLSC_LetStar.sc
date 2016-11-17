@@ -1,10 +1,8 @@
-FLSC_LetRec : FLSC_Let {
+FLSC_LetStar : FLSC_Let {
 	letBindings {|context|
-		var res = super.letBindings(context);
-		res.do {|item|
-			var bind = item[1];
-			if(bind.isKindOf(FLSC_Function)) {bind.addContext(res)}};
-		^res;
+		var list = [nameList, valList].flop;
+		^list.inject([],
+			{|res, item| res ++ [[item[0], item[1].value(FLSC_Context(context, res))]]});
 	}
 
 	asFLSC {
@@ -16,6 +14,6 @@ FLSC_LetRec : FLSC_Let {
 			letList = letList[1..].inject(letList[0]) {|acc, item| acc + item};
 		}
 		{ letList = "" };
-		^("(letrec (" ++ letList ++ ") " ++ nodeVal.asFLSC ++ ")");
+		^("(let* (" ++ letList ++ ") " ++ nodeVal.asFLSC ++ ")");
 	}
 }
