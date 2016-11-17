@@ -149,9 +149,6 @@
 					list.reduce({|a,b| func.value([a, b])})
 			});
 	})],
-
-	// CONTROLE
-	// if
-	// switch
-	// case
+	['apply', FLSC_Function(nil, ['func', 'arglist'],
+		{|ctxt| FLSC_Var('func').value(ctxt).value(FLSC_Var('arglist').value(ctxt))})],
 ]
