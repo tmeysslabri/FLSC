@@ -17,9 +17,7 @@ FLSC_Call : FLSC_SemanticNode {
 	}
 
 	asFLSC {
-		^("(" ++ nodeVal.asFLSC ++ if(argList.size > 0,
-			{ argList.inject("", {|acc, item| acc ++ " " ++ item.asFLSC }) },
-			{""}
-		) ++ ")");
+		^("(" ++ nodeVal.asFLSC ++
+			argList.inject("", {|acc, item| acc ++ " " ++ item.asFLSC }) ++ ")");
 	}
 }
