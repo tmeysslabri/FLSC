@@ -67,22 +67,34 @@
 		{|ctxt|
 			var cur = FLSC_Var('first').value(ctxt);
 			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val| (acc && (cur > val)) <! (cur = val)})})],
+			rest.inject(true, {|acc, val|
+				var res = acc && (cur > val);
+				cur = val;
+				res})})],
 	['lt?', FLSC_RestFunc(nil, ['first', 'rest'],
 		{|ctxt|
 			var cur = FLSC_Var('first').value(ctxt);
 			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val| (acc && (cur < val)) <! (cur = val)})})],
+			rest.inject(true, {|acc, val|
+				var res = acc && (cur < val);
+				cur = val;
+				res})})],
 	['gte?', FLSC_RestFunc(nil, ['first', 'rest'],
 		{|ctxt|
 			var cur = FLSC_Var('first').value(ctxt);
 			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val| (acc && (cur >= val)) <! (cur = val)})})],
+			rest.inject(true, {|acc, val|
+				var res = acc && (cur >= val);
+				cur = val;
+				res})})],
 	['lte?', FLSC_RestFunc(nil, ['first', 'rest'],
 		{|ctxt|
 			var cur = FLSC_Var('first').value(ctxt);
 			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val| (acc && (cur <= val)) <! (cur = val)})})],
+			rest.inject(true, {|acc, val|
+				var res = acc && (cur <= val);
+				cur = val;
+				res})})],
 
 	// LISTES:
 	// constructeurs:
