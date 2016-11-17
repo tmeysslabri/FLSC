@@ -13,6 +13,7 @@ amp	\&
 
 lambda	lambda
 let	let
+letrec	letrec
 patch	patch
 module	module
 
@@ -33,6 +34,7 @@ number	\-?[0-9]+(\.[0-9]+)?(e\-?[0-9]+)?(pi)?
 
 {lambda}	{ return(LAMBDA); }
 {let}		{ return(LET); }
+{letrec}	{ return(LETREC); }
 {patch}		{ return(PATCH); }
 {module}	{ return(MODULE); }
 

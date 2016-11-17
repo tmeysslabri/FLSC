@@ -24,4 +24,8 @@ FLSC_Function {
 		].flop);
 		^function.value(execContext);
 	}
+
+	addContext {|keysValues|
+		baseContext = FLSC_Context(baseContext, keysValues);
+	}
 }

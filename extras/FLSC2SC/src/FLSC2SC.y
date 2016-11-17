@@ -27,6 +27,7 @@ int yyerror(char *s);
 
 %token <str> LAMBDA
 %token <str> LET
+%token <str> LETREC
 %token <str> PATCH
 %token <str> MODULE
 
@@ -44,6 +45,7 @@ int yyerror(char *s);
 %type <ptr> Func
 %type <ptr> Lambda
 %type <ptr> Let
+%type <ptr> LetRec
 %type <ptr> Patch
 %type <ptr> Module
 
@@ -75,7 +77,7 @@ Expr:	SpecForm | Call | Var | Num
 
 SpecForm:	Func | Conditional
 
-Func:		Lambda | Let | Patch | Module
+Func:		Lambda | Let | LetRec | Patch | Module
 
 Lambda:		PARL LAMBDA PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Lambda([", $4), cons("],",
@@ -88,6 +90,13 @@ Lambda:		PARL LAMBDA PARL IdList1 PARR Expr PARR
 
 Let:		PARL LET PARL LetList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Let([",
+			lnbrk(1, $4)),
+			lnbrk(0, cons("],",
+			lnbrk(0, $6)))),
+			lnbrk(-1, cons(")", NULL))); }
+
+LetRec:		PARL LETREC PARL LetList1 PARR Expr PARR
+		{ $$ = concat(concat(cons("FLSC_LetRec([",
 			lnbrk(1, $4)),
 			lnbrk(0, cons("],",
 			lnbrk(0, $6)))),
