@@ -22,13 +22,11 @@ FLSC_Context : Dictionary {
 		^this;
 	}
 
-	at {|key|
-		var value = super.at(key);
-
-		if(value.isNil,
-			{ if(refContext.notNil, { value = refContext.at(key) }) }
-		);
-
-		^value;
+	atFail {|key|
+		^super.atFail(key) {
+			if(refContext.notNil)
+			{ refContext.atFail(key) }
+			{ Error("Variable % not found.".format(key)).throw }
+		};
 	}
 }
