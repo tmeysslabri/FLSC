@@ -68,6 +68,7 @@ int yyerror(char *s);
 %type <ptr> CondClsList1
 %type <ptr> CondClsList
 %type <ptr> CondCls
+%type <ptr> ElseCls
 
 %%
 
@@ -140,7 +141,12 @@ Cond:		PARL COND CondClsList1 PARR
 		{ $$ = concat(cons("FLSC_Cond([",
 			lnbrk(1, $3)),
 			lnbrk(-1, cons("])", NULL))); }
-
+/*		| PARL COND CondClsList1 PARL ELSE Expr PARR PARR
+		{ $$ = concat(concat(cons("FLSC_Cond([",
+			lnbrk(1, $3)), cons("],",
+			lnbrk(0, $6))),
+			lnbrk(-1, cons(")", NULL))); }
+*/
 Call:		PARL Expr ExprList1 PARR
 		{ $$ = concat(concat(cons("FLSC_Call(", lnbrk(1, $2)), cons(",[", lnbrk(1, $3))) , lnbrk(-2, cons("])", NULL))); }
 
@@ -173,12 +179,17 @@ LetTerm:	PARL Ident Expr PARR	{ $$ = concat(concat(cons("[", $2), cons(",", $3))
 
 CondClsList1:	%empty			{ $$ = cons("", NULL); }
 		| CondCls CondClsList	{ $$ = concat($1, $2); }
+		| ElseCls		{ $$ = $1; }
 
 CondClsList:	%empty			{ $$ = cons("", NULL); }
 		| CondCls CondClsList	{ $$ = concat(cons(",", lnbrk(0, $1)), $2); }
+		| ElseCls		{ $$ = cons(",", lnbrk(0, $1)); }
 
 CondCls:	PARL Expr Expr PARR	{ $$ = concat(concat(cons("[", $2), cons(",", $3)), cons("]", NULL)); }
-		| PARL ELSE Expr PARR	{ $$ = concat(cons("[FLSC_Var('true'),", $3), cons("]", NULL)); }
+
+//ElseCls:	PARL ELSE Expr PARR	{ $$ = concat(cons("['_else',", $3), cons("]", NULL)); }
+ElseCls:	PARL ELSE Expr PARR	{ $$ = concat(cons("[FLSC_Else(),", $3), cons("]", NULL)); }
+
 %%
 
 wptr *cons(char *new, wptr *rest) {
