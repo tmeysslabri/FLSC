@@ -43,8 +43,8 @@
 	['xor', FLSC_RestFunc(nil, ['terms'],
 		{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _.xor(_))})],
 	// tests:
-	['?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt) != nil})],
-	['nil?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt) == nil})],
+	['?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).notFLSCNil})],
+	['nil?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isFLSCNil})],
 	['boolean?', FLSC_Function(nil, ['a'],
 		{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(Boolean)})],
 	['number?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isNumber})],
@@ -142,7 +142,7 @@
 			var func = FLSC_Var('func').value(ctxt);
 			var list = FLSC_Var('list').value(ctxt);
 			var init = FLSC_Var('init').value(ctxt);
-			if(init.notNil,
+			if(init.notFLSCNil,
 				{
 					list.inject(init, {|a,b| func.value([a, b])})
 				}, {

@@ -8,27 +8,23 @@ FLSC_Nil : FLSC_SemanticNode {
 		^this;
 	}
 
-	/*
-	Has no effect because SC isn't rational about this
-	isNil {
+	isFLSCNil {
 		^true;
 	}
 
-	notNil {
+	notFLSCNil {
 		^false;
 	}
-	*/
 
-	// try this:
 	== {|obj|
-		^(this.hash == obj.hash);
+		^obj.isFLSCNil;
 	}
 
 	!= {|obj|
-		^(this.hash != obj.hash);
+		^obj.notFLSCNil;
 	}
 
 	hash {
-		^nil.hash;
+		^this.instVarHash;
 	}
 }

@@ -275,7 +275,7 @@ x = FLSC_Call(
 	FLSC_Var('nil?'),[
 		FLSC_Call(
 			FLSC_Var('-'),[
-
+				FLSC_Num(3)
 		])
 ])
 )
@@ -288,24 +288,25 @@ x = FLSC_Call(
 ])
 )
 
+(
+x = FLSC_Call(
+	FLSC_Var('reduce'),[
+		FLSC_Lambda(['x','y'],
+			FLSC_Call(
+				FLSC_Var('*'),[
+					FLSC_Var('x'),
+					FLSC_Var('y')
+			])
+		),
+		FLSC_List([
+			FLSC_Num(1),
+			FLSC_Num(2),
+			FLSC_Num(3),
+			FLSC_Num(4)
+		]),
+		// FLSC_Num(0.5)
+])
+)
+
 x.asFLSC;
 x.value(FLSC_Context.library);
-
-// Car l'être est, mais le néant n'est pas [Parménide]... Scandaleux !
-Dictionary.newFrom(['one', 1]).add('mynil' -> nil).atFail('mynil', {'schlingelingeling'});
-y = FLSC_Nil();
-z = FLSC_Nil();
-
-z.value(FLSC_Context.library);
-z.asFLSC;
-z.isNil;
-z.value(FLSC_Context.library) ++ [1,2,3];
-z.class;
-
-z == nil;
-nil == z;
-y == z;
-y === z;
-y = z;
-
-[42] ++ nil;
