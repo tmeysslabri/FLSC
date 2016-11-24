@@ -25,11 +25,9 @@ FLSC_Context : Dictionary {
 	at {|key|
 		var value = super.at(key);
 
-		if(value.isNil) {
-			if(refContext.notNil)
-			{ value = refContext.at(key) }
-			{ Error("Variable % not found.".format(key)).throw }
-		};
+		if(value.isNil,
+			{ if(refContext.notNil, { value = refContext.at(key) }) }
+		);
 
 		^value;
 	}

@@ -1,6 +1,6 @@
 [
 	// CONSTANTES
-	// ['nil', nil], // remplacé par FLSC_Nil
+	['nil', nil],
 	['false', false],
 	['true', true],
 	['inf', inf],
@@ -43,8 +43,8 @@
 	['xor', FLSC_RestFunc(nil, ['terms'],
 		{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _.xor(_))})],
 	// tests:
-	['?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt) != nil})],
-	['nil?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt) == nil})],
+	['?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).notNil})],
+	['nil?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isNil})],
 	['boolean?', FLSC_Function(nil, ['a'],
 		{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(Boolean)})],
 	['number?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isNumber})],
