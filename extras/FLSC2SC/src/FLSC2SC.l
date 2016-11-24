@@ -10,6 +10,7 @@ blanks	[ \t\n]+
 parl	\(
 parr	\)
 amp	\&
+nil	nil
 
 lambda	lambda
 let	let
@@ -32,6 +33,7 @@ number	\-?[0-9]+(\.[0-9]+)?(e\-?[0-9]+)?(pi)?
 {parl}		{ return(PARL); }
 {parr}		{ return(PARR); }
 {amp}		{ return(AMP); }
+{nil}		{ return(NIL); }
 
 {lambda}	{ return(LAMBDA); }
 {let}		{ return(LET); }
