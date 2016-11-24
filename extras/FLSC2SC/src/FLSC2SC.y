@@ -25,6 +25,8 @@ int yyerror(char *s);
 %token <str> PARR
 %token <str> AMP
 
+%token <str> NIL
+
 %token <str> LAMBDA
 %token <str> LET
 %token <str> LETREC
@@ -75,6 +77,7 @@ int yyerror(char *s);
 Top:	Expr	{ printwords(concat($1, cons("\n", NULL))->start); }
 
 Expr:	SpecForm | Call | Var | Num
+	| NIL	{ $$ = cons("FLSC_Nil()", NULL); }
 
 SpecForm:	Func | Conditional
 
@@ -141,12 +144,7 @@ Cond:		PARL COND CondClsList1 PARR
 		{ $$ = concat(cons("FLSC_Cond([",
 			lnbrk(1, $3)),
 			lnbrk(-1, cons("])", NULL))); }
-/*		| PARL COND CondClsList1 PARL ELSE Expr PARR PARR
-		{ $$ = concat(concat(cons("FLSC_Cond([",
-			lnbrk(1, $3)), cons("],",
-			lnbrk(0, $6))),
-			lnbrk(-1, cons(")", NULL))); }
-*/
+
 Call:		PARL Expr ExprList1 PARR
 		{ $$ = concat(concat(cons("FLSC_Call(", lnbrk(1, $2)), cons(",[", lnbrk(1, $3))) , lnbrk(-2, cons("])", NULL))); }
 
@@ -154,8 +152,7 @@ Var:		SYMB	{ $$ = cons("FLSC_Var('", cons($1, cons("')", NULL))); }
 
 Num:		NUM	{ $$ = cons("FLSC_Num(", cons($1, cons(")", NULL))); }
 
-Ident:		SYMB	{ /*$$ = cons("FLSC_Name('", cons($1, cons("')", NULL)));*/
-			$$ = cons("'", cons($1, cons("'", NULL))); }
+Ident:		SYMB	{ $$ = cons("'", cons($1, cons("'", NULL))); }
 
 ExprList1:	%empty		{ $$ = cons("", NULL); }
 		| Expr ExprList	{ $$ = concat($1, $2); }
@@ -187,7 +184,6 @@ CondClsList:	%empty			{ $$ = cons("", NULL); }
 
 CondCls:	PARL Expr Expr PARR	{ $$ = concat(concat(cons("[", $2), cons(",", $3)), cons("]", NULL)); }
 
-//ElseCls:	PARL ELSE Expr PARR	{ $$ = concat(cons("['_else',", $3), cons("]", NULL)); }
 ElseCls:	PARL ELSE Expr PARR	{ $$ = concat(cons("[FLSC_Else(),", $3), cons("]", NULL)); }
 
 %%
