@@ -4,6 +4,6 @@ FLSC_Var : FLSC_SemanticNode {
 	}
 
 	value {|context|
-		^context.atFail(nodeVal);
+		^context.at(nodeVal);
 	}
 }
