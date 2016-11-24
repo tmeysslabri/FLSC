@@ -45,21 +45,24 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    PARL = 258,
-    PARR = 259,
-    AMP = 260,
-    NIL = 261,
-    LAMBDA = 262,
-    LET = 263,
-    LETREC = 264,
-    LETSTAR = 265,
-    PATCH = 266,
-    MODULE = 267,
-    IF = 268,
-    COND = 269,
-    ELSE = 270,
-    SYMB = 271,
-    NUM = 272
+    ERROR = 258,
+    PARL = 259,
+    PARR = 260,
+    AMP = 261,
+    BRL = 262,
+    BRR = 263,
+    NIL = 264,
+    LAMBDA = 265,
+    LET = 266,
+    LETREC = 267,
+    LETSTAR = 268,
+    PATCH = 269,
+    MODULE = 270,
+    IF = 271,
+    COND = 272,
+    ELSE = 273,
+    SYMB = 274,
+    NUM = 275
   };
 #endif
 
@@ -73,7 +76,7 @@ union YYSTYPE
 	char *str;
 	wptr *ptr;
 
-#line 77 "flsc2sc.h" /* yacc.c:1909  */
+#line 80 "flsc2sc.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

@@ -9,7 +9,10 @@
 blanks	[ \t\n]+
 parl	\(
 parr	\)
+brl	\[
+brr	\]
 amp	\&
+
 nil	nil
 
 lambda	lambda
@@ -26,13 +29,18 @@ else	else
 symbol	[\+\-\*\/\?]+([a-z_][a-z0-9_\+\-\*\/\?]*)?|[a-z][a-z0-9_\+\-\*\/\?]*
 number	\-?[0-9]+(\.[0-9]+)?(e\-?[0-9]+)?(pi)?
 
+other	.
+
 %%
 
 {blanks}	{ /* ignore */ }
 
 {parl}		{ return(PARL); }
 {parr}		{ return(PARR); }
+{brl}		{ return(BRL); }
+{brr}		{ return(BRR); }
 {amp}		{ return(AMP); }
+
 {nil}		{ return(NIL); }
 
 {lambda}	{ return(LAMBDA); }
@@ -49,3 +57,4 @@ number	\-?[0-9]+(\.[0-9]+)?(e\-?[0-9]+)?(pi)?
 {symbol}	{ yylval.str = strdup(yytext); return(SYMB); }
 {number}	{ yylval.str = strdup(yytext); return(NUM); }
 
+{other}		{ return(ERROR); }

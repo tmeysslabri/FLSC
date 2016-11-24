@@ -21,9 +21,13 @@ int yyerror(char *s);
 	wptr *ptr;
 }
 
+%token <str> ERROR
+
 %token <str> PARL
 %token <str> PARR
 %token <str> AMP
+%token <str> BRL
+%token <str> BRR
 
 %token <str> NIL
 
@@ -60,6 +64,8 @@ int yyerror(char *s);
 %type <ptr> Num
 %type <ptr> Ident
 
+%type <ptr> List
+
 %type <ptr> ExprList1
 %type <ptr> ExprList
 %type <ptr> IdList1
@@ -76,7 +82,7 @@ int yyerror(char *s);
 
 Top:	Expr	{ printwords(concat($1, cons("\n", NULL))->start); }
 
-Expr:	SpecForm | Call | Var | Num
+Expr:	SpecForm | Call | Var | Num | List
 	| NIL	{ $$ = cons("FLSC_Nil()", NULL); }
 
 SpecForm:	Func | Conditional
@@ -153,6 +159,11 @@ Var:		SYMB	{ $$ = cons("FLSC_Var('", cons($1, cons("')", NULL))); }
 Num:		NUM	{ $$ = cons("FLSC_Num(", cons($1, cons(")", NULL))); }
 
 Ident:		SYMB	{ $$ = cons("'", cons($1, cons("'", NULL))); }
+
+List:		BRL ExprList1 BRR
+		{ $$ = concat(cons("FLSC_List([",
+			lnbrk(1, $2)),
+			lnbrk(-1, cons("])", NULL))); } 
 
 ExprList1:	%empty		{ $$ = cons("", NULL); }
 		| Expr ExprList	{ $$ = concat($1, $2); }
