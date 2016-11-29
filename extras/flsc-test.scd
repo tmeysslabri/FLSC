@@ -310,3 +310,5 @@ x = FLSC_Call(
 
 x.asFLSC;
 x.value(FLSC_Context.library);
+
+FLSC_Interpreter("(let ((a 5)) (+ 3 a 4))").evaluate;
