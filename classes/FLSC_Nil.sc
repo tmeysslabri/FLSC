@@ -27,4 +27,8 @@ FLSC_Nil : FLSC_SemanticNode {
 	hash {
 		^this.instVarHash;
 	}
+
+	asArray {
+		^[];
+	}
 }

@@ -100,9 +100,9 @@
 	// constructeurs:
 	['list', FLSC_RestFunc(nil, ['terms'], {|ctxt| FLSC_Var('terms').value(ctxt)})],
 	['cons', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| [FLSC_Var('a').value(ctxt)] ++ FLSC_Var('b').value(ctxt)})],
+		{|ctxt| [FLSC_Var('a').value(ctxt)] ++ FLSC_Var('b').value(ctxt).asArray})],
 	['add', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt) ++ [FLSC_Var('b').value(ctxt)]})],
+		{|ctxt| FLSC_Var('a').value(ctxt).asArray ++ [FLSC_Var('b').value(ctxt)]})],
 	['insert', FLSC_Function(nil, ['a', 'b', 'c'],
 		{|ctxt|
 			var index = FLSC_Var('c').value(ctxt);
@@ -110,7 +110,7 @@
 			[FLSC_Var('b').value(ctxt)] ++
 			FLSC_Var('a').value(ctxt)[index..]})],
 	['append', FLSC_RestFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).inject([], _++_)})],
+		{|ctxt| FLSC_Var('terms').value(ctxt).collect(_.asArray).inject([], _++_)})],
 	['range', FLSC_Function(nil, ['a', 'b'],
 		{|ctxt| (FLSC_Var('a').value(ctxt)..FLSC_Var('b').value(ctxt))})],
 	['reverse', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).reverse})],
