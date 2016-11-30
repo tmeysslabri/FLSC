@@ -1867,7 +1867,7 @@ void printwords(words *text) {
 }
 
 int yyerror(char *s) {
-	printf("yyerror : %s\n",s);
+	printf("FLSC_Error(\"%s\")\n",s);
 	return 0;
 }
 
