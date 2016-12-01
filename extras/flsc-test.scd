@@ -313,8 +313,9 @@ x.value(FLSC_Context.library);
 
 (
 FLSC_Interpreter("
-	(let ((a 5))
-	  (+ 1 2 a)
-	)
+	((patch (x y)
+	   [x y]
+	   (+ x y))
+	2 3)
 ").evaluate;
 )
