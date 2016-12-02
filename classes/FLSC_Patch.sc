@@ -12,21 +12,23 @@ FLSC_Patch : FLSC_RestFuncDef {
 	}
 
 	value {|context|
+		var warpFunc = {|callContext|
+			var sig = nodeVal.value(callContext);
+			var sign = signature.value(callContext);
+			var warp = FLSC_WarpSpec({|t|
+				case
+				{t == 0}      {0}
+				{t == 'end'}  {sign.last}
+				{t.isInteger} {sign[t-1]}
+				{true}        {Error("Non-integer signature index").throw}
+			}, sig);
+			FLSC_SignSpec(sig.rate, List(), warp); };
+
 		if(hasRest)
 		{
-			^FLSC_RestFunc(context, parmNames, {|callContext|
-				var sig = nodeVal.value(callContext);
-				var sign = signature.value(callContext);
-				// !!! vérifier que t est un entier -- sinon il y a des Patch imbriqués
-				var warp = FLSC_WarpSpec({|t| sign[t]}, sig);
-				FLSC_SignSpec(sig.rate, List(), warp); })
+			^FLSC_RestFunc(context, parmNames, warpFunc)
 		} {
-			^FLSC_Function(context, parmNames, {|callContext|
-				var sig = nodeVal.value(callContext);
-				var sign = signature.value(callContext);
-				// !!! vérifier que t est un entier -- sinon il y a des Patch imbriqués
-				var warp = FLSC_WarpSpec({|t| sign[t]}, sig);
-				FLSC_SignSpec(sig.rate, List(), warp); })
+			^FLSC_Function(context, parmNames, warpFunc)
 		};
 	}
 
