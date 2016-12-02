@@ -1,5 +1,6 @@
 FLSC_ModSpec : FLSC_ScoreSpec {
 	// la SynthDef associée à cette instance de module
+	// DEBUG: rendu accessible pour les tests
 	var <def;
 	// les arguments à passer à la SynthDef
 	var args;
