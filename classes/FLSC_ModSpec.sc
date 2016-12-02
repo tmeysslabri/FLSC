@@ -1,6 +1,6 @@
 FLSC_ModSpec : FLSC_ScoreSpec {
 	// la SynthDef associée à cette instance de module
-	var def;
+	var <def;
 	// les arguments à passer à la SynthDef
 	var args;
 
