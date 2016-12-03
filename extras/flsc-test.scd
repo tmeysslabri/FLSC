@@ -40,3 +40,21 @@ y = x.value([]);
 y.def.add;
 z = Synth(y.def.name, ['out', 0]);
 z.free;
+
+// même chose avec des contrôles
+(
+var parmNames = ['frequency'];
+var uGenGraph = FLSC_UGen.newFromClass([FLSC_VarUGen(FLSC_Control('frequency')), 0],
+	SinOsc, ['freq', 'phase'], minRate: 'audio');
+x = FLSC_ModFunc(uGenGraph.varList, parmNames,
+			{|varDict| uGenGraph.value(varDict)}, uGenGraph.timeControls);
+)
+
+// les deux appels produisent la même SynthDef, avec des arguments différents
+y = x.value([330]);
+y = x.value([260]);
+y.def.add;
+z = Synth(y.def.name, ['out', 0] ++ y.args.asKeyValuePairs);
+z.free;
+
+

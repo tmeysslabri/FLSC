@@ -31,7 +31,7 @@ FLSC_ModFunc : FLSC_Function {
 		// on créée la varList de la ModSpec
 		args.collect {|item| if((item.rate == 'audio') || (item.rate == 'control'))
 			{ specVarList = specVarList ++ item.varList }
-		}
+		};
 
 		// on créée le dictionnaire des arguments
 		[
@@ -41,9 +41,6 @@ FLSC_ModFunc : FLSC_Function {
 
 		// on l'ajoute à varDict, pour que les FLSC_Control puissent trouver leur argument
 		varDict.putAll(argDict);
-
-		// on ajoute le résultat de l'évaluation de la varList des UGen (nommée baseContext ici)
-		baseContext.do {|item| varDict.put(item, item.value(varDict)) };
 
 		// on calcule le suffixe
 		suffix = args.inject("_") {|acc, it| acc ++
@@ -58,6 +55,9 @@ FLSC_ModFunc : FLSC_Function {
 
 		// on peut maintenant calculer le graphe de UGen et donc la SynthDef
 		synthDef = SynthDef((funcId ++ suffix).asSymbol, {|out|
+			// on ajoute le résultat de l'évaluation de la varList des UGen
+			// (nommée baseContext ici, en référence à FLSC_Function)
+			baseContext.do {|item| varDict.put(item, item.value(varDict)) };
 			uGenGraph = function.value(varDict);
 			switch(uGenGraph.rate)
 			{'audio'}   {Out.ar(out, uGenGraph)}

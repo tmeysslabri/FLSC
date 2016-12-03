@@ -1,4 +1,4 @@
-FLSC_UGen : FLSC_AbstractUGen {
+FLSC_UGen : FLSC_SubsUGen {
 	// conversion rate <-> entier
 	classvar rateToInt, intToRate;
 	// la Function qui produit le UGen associé à partir des UGen des sous-graphes
