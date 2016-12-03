@@ -44,7 +44,8 @@ z.free;
 // même chose avec des contrôles
 (
 var parmNames = ['frequency'];
-var uGenGraph = FLSC_UGen.newFromClass([FLSC_VarUGen(FLSC_Control('frequency')), 0],
+var baseContext = FLSC_Context(nil, [['frequency', FLSC_Control('frequency')]]);
+var uGenGraph = FLSC_UGen.newFromClass([FLSC_Var('frequency').value(baseContext), 0],
 	SinOsc, ['freq', 'phase'], minRate: 'audio');
 x = FLSC_ModFunc(uGenGraph.varList, parmNames,
 			{|varDict| uGenGraph.value(varDict)}, uGenGraph.timeControls);

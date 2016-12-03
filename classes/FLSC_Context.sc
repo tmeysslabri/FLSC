@@ -18,7 +18,13 @@ FLSC_Context : Dictionary {
 
 	contextInit {|context, keysValues|
 		refContext = context;
-		keysValues.do({|item| this.put(item[0], item[1])});
+		keysValues.do({|item|
+			var key = item[0];
+			var value = item[1];
+			// encapsuler les FLSC_UGen avec des FLSC_VarUGen
+			if(value.isFLSCUGen) { value = value.encapsulate };
+			this.put(key, value);
+		});
 		^this;
 	}
 
