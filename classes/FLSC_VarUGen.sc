@@ -9,7 +9,7 @@ FLSC_VarUGen : FLSC_SubsUGen {
 	}
 
 	value {|varDict|
-		^subGraphs[0].value(varDict);
+		^varDict[subGraphs[0]];
 	}
 
 	// identifier les FLSC_VarUGen pour ne pas les réencapsuler
