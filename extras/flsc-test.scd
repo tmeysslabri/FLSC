@@ -1,10 +1,7 @@
 
 (
 FLSC_Interpreter("
-	((patch (x y)
-	   [x y]
-	   (+ x y))
-	2 3)
+	(+ 2 3)
 ").evaluate;
 )
 
@@ -29,7 +26,7 @@ y.rate;
 
 // exemple de FLSC_ModFunc avec FLSC_UGen en argument
 (
-// il n'y a pas de paramètres pour le moment, puisque FLSC_Control n'est pas implémenté
+// fonction sans paramètres
 var parmNames = [];
 var uGenGraph = FLSC_UGen.newFromClass([220, 0], SinOsc, ['freq', 'phase'], minRate: 'audio');
 x = FLSC_ModFunc(uGenGraph.varList, parmNames,
@@ -56,6 +53,26 @@ y = x.value([330]);
 y = x.value([260]);
 y.def.add;
 z = Synth(y.def.name, ['out', 0] ++ y.args.asKeyValuePairs);
+z.free;
+
+// exemple de UGenFunc
+(
+var parmNames = [];
+// on appelle '+' sur deux oscillateurs
+var uGenGraph = FLSC_Call(FLSC_Var('+'), [
+	{FLSC_UGen.newFromClass([220, 0], SinOsc, ['freq', 'phase'], minRate: 'audio')},
+	{FLSC_UGen.newFromClass([330, 0], SinOsc, ['freq', 'phase'], minRate: 'audio')}
+]).value(FLSC_Context.library);
+
+// uGenGraph.postln;
+
+x = FLSC_ModFunc(uGenGraph.varList, parmNames,
+			{|varDict| uGenGraph.value(varDict)}, uGenGraph.timeControls);
+)
+
+y = x.value([]);
+y.def.add;
+z = Synth(y.def.name, ['out', 0]);
 z.free;
 
 
