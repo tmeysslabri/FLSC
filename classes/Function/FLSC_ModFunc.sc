@@ -39,6 +39,9 @@ FLSC_ModFunc : FLSC_Function {
 			(args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1]
 		].flop.do {|item| argDict.put(item[0], item[1]) };
 
+		// on ajoute les timeControls aux arguments
+		timeControls.do {|item| argDict.put(item[0], item[1]) };
+
 		// on l'ajoute à varDict, pour que les FLSC_Control puissent trouver leur argument
 		varDict.putAll(argDict);
 
@@ -49,9 +52,6 @@ FLSC_ModFunc : FLSC_Function {
 			{'control'} {"c"}
 			{'audio'}   {"a"}
 		};
-
-		// on ajoute les timeControls aux arguments
-		timeControls.do {|item| argDict.put(item[0], item[1]) };
 
 		// on peut maintenant calculer le graphe de UGen et donc la SynthDef
 		synthDef = SynthDef((funcId ++ suffix).asSymbol, {|out|

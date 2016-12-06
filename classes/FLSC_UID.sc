@@ -7,6 +7,6 @@ FLSC_UID {
 
 	*next {
 		current = current + 1;
-		^("UID" ++ current.asString);
+		^("uID" ++ current.asString);
 	}
 }

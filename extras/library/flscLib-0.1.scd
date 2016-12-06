@@ -153,4 +153,30 @@
 	})],
 	['apply', FLSC_Function(nil, ['func', 'arglist'],
 		{|ctxt| FLSC_Var('func').value(ctxt).value(FLSC_Var('arglist').value(ctxt))})],
+
+	// GENERATEURS DE SIGNAL:
+	// oscillateur sinusoïdal
+	['osc', FLSC_Function(nil, ['freq', 'phi'],
+		{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+			FLSC_Var('phi').value(ctxt)],
+			SinOsc, ['freq', 'phase'], minRate: 'audio')})],
+	// segment d'enveloppe
+	['seg', FLSC_Function(nil, ['start', 'end'],
+		{|ctxt|
+			FLSC_UGen.newFromClass([FLSC_Var('start').value(ctxt),
+			FLSC_Var('end').value(ctxt), FLSC_TimeControl([0, 'end'])],
+			Line, ['start', 'end', 'dur'],
+			minRate: 'control')})],
+	// enveloppe à nombre de points fixe
+	['env', FLSC_Function(nil, ['levels', 'times'],
+		{|ctxt| FLSC_UGen([FLSC_Var('levels').value(ctxt),
+			FLSC_TimeControl(FLSC_Var('times').value(ctxt))],
+			{|subs|
+				EnvGen.kr(Env(subs[0], subs[1]));
+			})
+		})],
+	// modulateurs:
+	// sinusoïdal
+	// triangle
+	// carré
 ]

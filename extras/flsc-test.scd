@@ -6,6 +6,33 @@ FLSC_Interpreter("
 )
 
 // et en plus, il chante !!! (avec un peu de bricolage)
+// exemple de module
+(
+y = FLSC_Interpreter("
+	((module (freq) (osc freq 0)) 240)
+").evaluate;
+)
+
+// les éléments de la ModSpec permettent effectivement d'obtenir un Synth
+y.def.add;
+z = Synth(y.def.name, ['out', 0] ++ y.args.asKeyValuePairs);
+z.free;
+
+// idem avec une enveloppe
+(
+y = FLSC_Interpreter("
+	((module (freq) (* (env [0 0.5 0] [0 1 2]) (osc freq 0))) 240)
+").evaluate;
+)
+y.def.add;
+(
+var timeWarp = {|t| #[0, 0.5, 2][t]};
+z = Synth(y.def.name, ['out', 0] ++ y.args.collect({|item|
+	item.value(timeWarp);
+}).asKeyValuePairs);
+)
+z.free;
+
 // premier exemple de ModFunc, avec des paramètres complètement fabriqués
 x = FLSC_ModFunc(List(), [], { SinOsc.ar(mul: 0.5) }, []);
 
