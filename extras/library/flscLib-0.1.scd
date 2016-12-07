@@ -196,13 +196,14 @@
 			LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
 
 	// ALTERATIONS DE SIGNATURE:
+	// A FAIRE: ajouter des vérifications sur les rate pour éviter les incohérences
 	// retard
 	['delay', FLSC_Function(nil, ['theta', 'sig'],
 		{|ctxt|
 			var dt = FLSC_Var('theta').value(ctxt);
-			var sig = FLSC_Var('sig').value(ctxt);
+			var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 			var warp = FLSC_WarpSpec({|t| t + dt}, sig);
-			FLSC_SignSpec(sig.rate, warp);
+			FLSC_SignSpec('audio', warp);
 	})],
 	// sous-signature
 	['subsign', FLSC_Function(nil, ['sign', 'sig'],

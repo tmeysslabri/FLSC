@@ -20,6 +20,16 @@ x = FLSC_Interpreter("
 // pour l'instant il n'est pas possible de récupérer l'information
 // pour jouer l'objet audionumérique résultant
 
+// exemple de delay sur une liste récursive (à 2 niveaux et 1 élément)
+(
+x = FLSC_Interpreter(
+	"(delay 0.2" +
+	"  [[((patch (freq) [0 0.5 2]" +
+	"    (m* (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])" +
+	"      (mosc freq 0))) 220)]])"
+).evaluate;
+)
+
 // exemple de module
 (
 y = FLSC_Interpreter("

@@ -1,7 +1,7 @@
 FLSC_ScoreSpec {
 	// la base d'échantillonnage, compatible avec les classes SC
 	var <rate;
-	// la liste des ScoreSpec référencées,dans leur ordre d'apparition
+	// la liste des ScoreSpec référencées, dans leur ordre d'apparition
 	var <varList;
 
 	*new {|timeBase, vars|
@@ -11,6 +11,10 @@ FLSC_ScoreSpec {
 	scoreSpecInit {|timeBase, vars|
 		rate = timeBase;
 		varList = vars;
+		^this;
+	}
+
+	asFLSCScoreSpec {
 		^this;
 	}
 }
