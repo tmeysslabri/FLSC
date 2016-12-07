@@ -194,4 +194,63 @@
 			FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
 			FLSC_Var('phi').value(ctxt), width],
 			LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
+
+	// ALTERATIONS DE SIGNATURE:
+	// retard
+	['delay', FLSC_Function(nil, ['theta', 'sig'],
+		{|ctxt|
+			var dt = FLSC_Var('theta').value(ctxt);
+			var sig = FLSC_Var('sig').value(ctxt);
+			var warp = FLSC_WarpSpec({|t| t + dt}, sig);
+			FLSC_SignSpec(sig.rate, warp);
+	})],
+	// sous-signature
+	['subsign', FLSC_Function(nil, ['sign', 'sig'],
+		{|ctxt|
+			var sign = FLSC_Var('sign').value(ctxt);
+			var sig = FLSC_Var('sig').value(ctxt);
+			var warp = FLSC_WarpSpec({|t|
+				case
+				{t == 0}      {0}
+				{t == 'end'}  {'end'}
+				{t.isInteger} {sign[t-1]}
+				{true}        {Error("Non-integer signature index").throw}
+			}, sig);
+			FLSC_SignSpec(sig.rate, warp);
+	})],
+	// compositions:
+	// sequentielle
+	['seq', FLSC_Function(nil, ['subs', 'sigs'],
+		{|ctxt|
+			var subs = FLSC_Var('subs').value(ctxt);
+			var sigs = FLSC_Var('sigs').value(ctxt);
+			var segs = [[0]++subs,subs++['end']].flop;
+			var warps = [segs, sigs].flop.collect {|item|
+				FLSC_WarpSpec({|t|
+					case
+					{t == 'end'}  {item[0][1]}
+					{t.isInteger} {item[0][0] + t}
+					{true}        {Error("Non-integer signature index").throw}
+				}, item[1])
+			};
+			FLSC_CompSpec('control', warps);
+	})],
+	// parallèle
+	['par', FLSC_Function(nil, ['subs', 'sigs'],
+		{|ctxt|
+			var subs = FLSC_Var('subs').value(ctxt);
+			var sigs = FLSC_Var('sigs').value(ctxt);
+			var warps;
+			if(subs.isFLSCNil) {subs = [0,'end'] ! sigs.size};
+			subs = subs.collect {|item| if(item.isFLSCNil) {[0,'end']} {item}};
+			warps = [subs, sigs].flop.collect {|item|
+				FLSC_WarpSpec({|t|
+					case
+					{t == 'end'}  {item[0][1]}
+					{t.isInteger} {item[0][0] + t}
+					{true}        {Error("Non-integer signature index").throw}
+				}, item[1])
+			};
+			FLSC_CompSpec('audio', warps);
+	})],
 ]

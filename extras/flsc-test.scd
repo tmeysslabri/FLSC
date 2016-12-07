@@ -14,7 +14,7 @@ FLSC_Interpreter("
 // exemple de patch
 (
 x = FLSC_Interpreter("
-	((patch (freq) [0 0.5 2] (m* (mseg 0 0.5) (mosc freq 0))) 220)
+	((patch (freq) [0 0.5 2] (m* (seq [1] [(mseg 0 0.5) (mseg 0.5 0)]) (mosc freq 0))) 220)
 ").evaluate;
 )
 // pour l'instant il n'est pas possible de récupérer l'information
