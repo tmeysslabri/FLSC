@@ -8,12 +8,32 @@ FLSC_Context : Dictionary {
 
 	*library {|version = "0.1", libName = "flscLib"|
 		var path = Platform.userExtensionDir +/+
-		"FLSC/extras/library" +/+ libName ++ "-" ++ version ++ ".scd";
-		var content = "[]";
-		if(File.exists(path), {
-			content = File.open(path, "r").readAllString;
-		});
-		^this.new(nil, content.interpret);
+		"FLSC/extras/library" +/+ libName ++ "-" ++ version;
+		var scLib = path ++ ".scd";
+		var flscLib = path ++ ".flsc.scd";
+		var content;
+		var lib;
+		// lecture de la bibliothèque native
+		if(File.exists(scLib))
+		{
+			var file = File(scLib, "r");
+			content = file.readAllString;
+			file.close;
+		}
+		{content = "[]"};
+		lib = this.new(nil, content.interpret);
+		// lecture de la bibliothèque FLSC
+		if(File.exists(flscLib))
+		{
+			var file = File(flscLib, "r");
+			content = file.readAllString;
+			file.close;
+		}
+		{content = "[]"};
+		content = content.interpret.collect
+		{|item| [item[0], FLSC_Interpreter(item[1]).evaluateLibrary(lib)]};
+		lib = this.new(lib, content);
+		^lib;
 	}
 
 	contextInit {|context, keysValues|

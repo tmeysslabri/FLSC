@@ -20,6 +20,10 @@ FLSC_Interpreter {
 		^semanticTree.value(FLSC_Context.library);
 	}
 
+	evaluateLibrary {|context|
+		^semanticTree.value(context);
+	}
+
 	asFLSC {
 		^semanticTree.asFLSC;
 	}
