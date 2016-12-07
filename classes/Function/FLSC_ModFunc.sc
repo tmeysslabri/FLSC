@@ -27,6 +27,8 @@ FLSC_ModFunc : FLSC_Function {
 		var varDict = IdentityDictionary();
 		// le uGenGraph résultant de l'évaluation des FLSC_UGen
 		var uGenGraph;
+		// le rate du module produit
+		var rate;
 
 		// on créée la varList de la ModSpec
 		args.collect {|item| if((item.rate == 'audio') || (item.rate == 'control'))
@@ -60,16 +62,16 @@ FLSC_ModFunc : FLSC_Function {
 			baseContext.do {|item| varDict.put(item, item.value(varDict)) };
 			uGenGraph = function.value(varDict);
 			switch(uGenGraph.rate)
-			{'audio'}   {Out.ar(out, uGenGraph)}
-			{'control'} {Out.kr(out, uGenGraph)}
+			{'audio'}   {rate = 'audio'; Out.ar(out, uGenGraph)}
+			{'control'} {rate = 'control'; Out.kr(out, uGenGraph)}
 			// il est possible que le résultat soit de rate 'scalar'
 			// (par exemple si il n'y a que des opérations arithmétiques sur des nombres)
 			// dans ce cas il faut quand même renvoyer un module, même si il est constant
 			// puisque les valeurs sont passées par des Control
-			{'scalar'}  {Out.kr(out, DC.kr(uGenGraph))}
+			{'scalar'}  {rate = 'control'; Out.kr(out, DC.kr(uGenGraph))}
 		});
 
 		// on peut finalement renvoyer le résultat: une FLSC_ModSpec
-		^FLSC_ModSpec(uGenGraph.rate, specVarList , synthDef, argDict);
+		^FLSC_ModSpec(rate, specVarList , synthDef, argDict);
 	}
 }
