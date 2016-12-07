@@ -30,6 +30,19 @@ x = FLSC_Interpreter(
 ).evaluate;
 )
 
+// exemple de FLSC_VarSpec
+(
+x = FLSC_Interpreter(
+	"(let ((myvar ((patch (freq) [0 0.5 2]" +
+	"                (m* (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])" +
+	"                  (mosc freq 0))) 220)))" +
+	"  myvar)"
+).evaluate;
+)
+
+x.varList;
+x.rate;
+
 // exemple de module
 (
 y = FLSC_Interpreter("

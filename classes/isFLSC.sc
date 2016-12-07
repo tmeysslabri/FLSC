@@ -3,4 +3,5 @@
 	notFLSCNil { ^true }
 
 	isFLSCUGen { ^false }
+	isFLSCScoreSpec { ^false }
 }

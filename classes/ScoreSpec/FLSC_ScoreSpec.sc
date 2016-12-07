@@ -14,7 +14,7 @@ FLSC_ScoreSpec {
 		^this;
 	}
 
-	asFLSCScoreSpec {
-		^this;
-	}
+	isFLSCScoreSpec { ^true; }
+	encapsulate { ^FLSC_VarSpec(this) }
+	asFLSCScoreSpec { ^this; }
 }

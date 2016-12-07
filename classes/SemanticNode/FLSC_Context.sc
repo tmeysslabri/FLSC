@@ -42,7 +42,9 @@ FLSC_Context : Dictionary {
 			var key = item[0];
 			var value = item[1];
 			// encapsuler les FLSC_UGen avec des FLSC_VarUGen
-			if(value.isFLSCUGen) { value = value.encapsulate };
+			// et les FLSC_ScoreSpec avec des FLSC_VarSpec
+			if(value.isFLSCUGen || value.isFLSCScoreSpec)
+			{ value = value.encapsulate };
 			this.put(key, value);
 		});
 		^this;
