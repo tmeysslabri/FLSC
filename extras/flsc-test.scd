@@ -1,7 +1,11 @@
 
 (
 FLSC_Interpreter("
-	(+ 2 3)
+	(letrec ((fact (lambda (n)
+	                 (if (gt? n 1)
+	                     (* n (fact (- n 1)))
+	                     1))))
+	  (fact 6))
 ").evaluate;
 )
 
@@ -22,6 +26,22 @@ z.free;
 (
 y = FLSC_Interpreter("
 	((module (freq) (* (env [0 0.5 0] [0 1 2]) (osc freq 0))) 240)
+").evaluate;
+)
+y.def.add;
+(
+var timeWarp = {|t| #[0, 0.5, 2][t]};
+z = Synth(y.def.name, ['out', 0] ++ y.args.collect({|item|
+	item.value(timeWarp);
+}).asKeyValuePairs);
+)
+z.free;
+
+// idem avec un modulateur carré
+// à noter que le troisième paramètre de largeur d'impulsion est optionnel
+(
+y = FLSC_Interpreter("
+	((module (freq) (* (env [0 0.5 0] [0 1 2]) (osc freq 0) (squ 64 0 0.2))) 240)
 ").evaluate;
 )
 y.def.add;
@@ -90,8 +110,6 @@ var uGenGraph = FLSC_Call(FLSC_Var('+'), [
 	{FLSC_UGen.newFromClass([220, 0], SinOsc, ['freq', 'phase'], minRate: 'audio')},
 	{FLSC_UGen.newFromClass([330, 0], SinOsc, ['freq', 'phase'], minRate: 'audio')}
 ]).value(FLSC_Context.library);
-
-// uGenGraph.postln;
 
 x = FLSC_ModFunc(uGenGraph.varList, parmNames,
 			{|varDict| uGenGraph.value(varDict)}, uGenGraph.timeControls);

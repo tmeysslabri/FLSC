@@ -177,6 +177,21 @@
 		})],
 	// modulateurs:
 	// sinusoïdal
+	['lfo', FLSC_Function(nil, ['freq', 'phi'],
+		{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+			FLSC_Var('phi').value(ctxt)],
+			SinOsc, ['freq', 'phase'], minRate: 'control')})],
 	// triangle
+	['tri', FLSC_Function(nil, ['freq', 'phi'],
+		{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+			FLSC_Var('phi').value(ctxt)],
+			LFTri, ['freq', 'iphase'], minRate: 'control')})],
 	// carré
+	['squ', FLSC_Function(nil, ['freq', 'phi', 'width'],
+		{|ctxt|
+			var width = FLSC_Var('width').value(ctxt);
+			if(width.isFLSCNil) {width = 0.5};
+			FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+			FLSC_Var('phi').value(ctxt), width],
+			LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
 ]
