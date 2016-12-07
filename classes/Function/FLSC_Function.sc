@@ -25,6 +25,7 @@ FLSC_Function {
 		^function.value(execContext);
 	}
 
+	// nécessaire pour ajouter la fonction dans son propre contexte en cas de letrec
 	addContext {|keysValues|
 		baseContext = FLSC_Context(baseContext, keysValues);
 	}
