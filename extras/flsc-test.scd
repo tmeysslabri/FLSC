@@ -11,7 +11,27 @@ FLSC_Interpreter("
 
 // et en plus, il chante !!! (avec un peu de bricolage)
 
-// exemple de patch
+// exemple d'appel à des modules arithmétiques produisant un simple nombre
+(
+var synth;
+var bus = Bus.control;
+var test = FLSC_Interpreter(
+	"(m+ 1 3)"
+).evaluate.postln;
+test.rate.postln;
+test.def.name.postln;
+Routine {
+	test.def.add;
+	bus.set(0);
+	s.sync;
+	synth = Synth(test.def.name, ['out', bus] ++ test.args.asKeyValuePairs);
+	1.wait;
+	bus.getSynchronous.postln;
+	synth.free;
+}.play;
+)
+
+// exemple d'appel à un patch
 (
 x = FLSC_Interpreter("
 	((patch (freq) [0 0.5 2] (m* (seq [1] [(mseg 0 0.5) (mseg 0.5 0)]) (mosc freq 0))) 220)
@@ -43,7 +63,7 @@ x = FLSC_Interpreter(
 x.varList;
 x.rate;
 
-// exemple de module
+// exemples de module
 (
 y = FLSC_Interpreter("
 	((module (freq) (osc freq 0)) 240)

@@ -30,7 +30,7 @@ FLSC_ModFunc : FLSC_Function {
 
 		// on créée la varList de la ModSpec
 		args.collect {|item| if((item.rate == 'audio') || (item.rate == 'control'))
-			{ specVarList = specVarList ++ item.varList }
+			{ specVarList = specVarList.union(item.varList) }
 		};
 
 		// on créée le dictionnaire des arguments
@@ -62,6 +62,11 @@ FLSC_ModFunc : FLSC_Function {
 			switch(uGenGraph.rate)
 			{'audio'}   {Out.ar(out, uGenGraph)}
 			{'control'} {Out.kr(out, uGenGraph)}
+			// il est possible que le résultat soit de rate 'scalar'
+			// (par exemple si il n'y a que des opérations arithmétiques sur des nombres)
+			// dans ce cas il faut quand même renvoyer un module, même si il est constant
+			// puisque les valeurs sont passées par des Control
+			{'scalar'}  {Out.kr(out, DC.kr(uGenGraph))}
 		});
 
 		// on peut finalement renvoyer le résultat: une FLSC_ModSpec
