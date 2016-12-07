@@ -10,6 +10,16 @@ FLSC_Interpreter("
 )
 
 // et en plus, il chante !!! (avec un peu de bricolage)
+
+// exemple de patch
+(
+x = FLSC_Interpreter("
+	((patch (freq) [0 0.5 2] (m* (mseg 0 0.5) (mosc freq 0))) 220)
+").evaluate;
+)
+// pour l'instant il n'est pas possible de récupérer l'information
+// pour jouer l'objet audionumérique résultant
+
 // exemple de module
 (
 y = FLSC_Interpreter("
