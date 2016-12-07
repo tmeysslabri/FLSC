@@ -1,4 +1,4 @@
-
+// exemple de fonction récursive (la factorielle)
 (
 FLSC_Interpreter("
 	(letrec ((fact (lambda (n)
@@ -28,7 +28,9 @@ y = FLSC_Interpreter("
 	((module (freq) (* (env [0 0.5 0] [0 1 2]) (osc freq 0))) 240)
 ").evaluate;
 )
+
 y.def.add;
+// il faut effectuer artificiellement la distorsion temporelle
 (
 var timeWarp = {|t| #[0, 0.5, 2][t]};
 z = Synth(y.def.name, ['out', 0] ++ y.args.collect({|item|
@@ -53,6 +55,7 @@ z = Synth(y.def.name, ['out', 0] ++ y.args.collect({|item|
 )
 z.free;
 
+// exemples plus anciens utilisant directement les primitives
 // premier exemple de ModFunc, avec des paramètres complètement fabriqués
 x = FLSC_ModFunc(List(), [], { SinOsc.ar(mul: 0.5) }, []);
 
