@@ -29,7 +29,7 @@ FLSC_WarpSpec {
 		// création du varDict par itération sur la varList
 		// il faut également récupérer les définitions, les bus, les messages, les bundles
 		subSpec.varList.do {|item|
-			var value = item.value(outBus, timeWarp, varDict);
+			var value = item.value(nil, timeWarp, varDict);
 			defs.putAll(value.defDict);
 			busses.addAll(value.busList);
 			msgs.addAll(value.bundle);

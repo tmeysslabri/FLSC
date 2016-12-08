@@ -48,7 +48,8 @@ FLSC_ModSpec : FLSC_ScoreSpec {
 				// on retourne le bus de sortie
 				score.outBus;
 			}
-		};
+			// ne pas oublier d'ajouter le Bus de sortie aux arguments
+		}.put('out', out);
 
 		// on ajoute la SynthDef locale aux défintitions
 		defs.put(def.name, def);

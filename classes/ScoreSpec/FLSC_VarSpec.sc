@@ -1,6 +1,13 @@
 FLSC_VarSpec : FLSC_ScoreSpec {
+	// la définition d'un raccord
+	classvar pipeAr, pipeKr;
 	// la ScoreSpec à laquelle on se réfère
 	var subSpec;
+
+	*initClass {
+		pipeAr = SynthDef('pipeAr', {|out, in| Out.ar(out, In.ar(in))});
+		pipeKr = SynthDef('pipeKr', {|out, in| Out.kr(out, In.kr(in))});
+	}
 
 	*new {|spec|
 		^super.new(spec.rate, spec.varList).listSpecInit(spec);
@@ -15,9 +22,20 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 	value {|outBus, timeWarp, varDict|
 		// on va chercher la référence dans le varDict
 		var sub = varDict[subSpec];
-		// toutes les informations ont déjà été ajoutées,
-		// seul le bus de sortie nous intéresse
-		^FLSC_Score(sub.outBus, Dictionary(), List(), List(), List());
+		// si outBus n'est pas nil, créer un raccord
+		if(outBus.notNil)
+		{
+			var pipe = switch(subSpec.rate)
+			{'audio'}   {pipeAr}
+			{'control'} {pipeKr};
+			^FLSC_Score(outBus, Dictionary.newFrom([pipe.name, pipe]), List(),
+				List.newFrom([pipe.name,
+					Dictionary.newFrom(['in', sub.outBus, 'out', outBus])]), List());
+		} {
+			// toutes les informations ont déjà été ajoutées,
+			// seul le bus de sortie nous intéresse
+			^FLSC_Score(sub.outBus, Dictionary(), List(), List(), List());
+		};
 	}
 
 	encapsulate { ^this; }
