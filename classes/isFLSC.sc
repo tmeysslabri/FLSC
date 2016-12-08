@@ -4,4 +4,5 @@
 
 	isFLSCUGen { ^false }
 	isFLSCScoreSpec { ^false }
+	isFLSCTime { ^false }
 }
