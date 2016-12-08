@@ -13,15 +13,15 @@ FLSC_Interpreter("
 (
 var res;
 var scoreSpec = FLSC_Interpreter(
-/*	"(let ((myvar */"((patch (freq) [0 0.5 2]" +
+	"(let ((myvar ((patch (freq) [0 0.5 2]" +
 	"                (m* (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])" +
-	"                  (mosc freq 0))) 220)"/*))" +
-	"  myvar)"*/
+	"                  (mosc freq 0))) 220)))" +
+	"  [(delay 0 myvar) (delay 1 myvar)])"
 ).evaluate;
 // il est nécessaire d'encapsuler dans une FLSC_WarpSpec neutre
 // dans le but de résoudre le contexte actuel (varList, bundle)
-// scoreSpec = FLSC_WarpSpec({|t| t}, scoreSpec);
-res = scoreSpec.value(0, {|t| t}, Dictionary()).postln;
+// scoreSpec = FLSC_SignSpec(scoreSpec.rate, FLSC_WarpSpec({|t| t}, scoreSpec));
+res = scoreSpec.asFLSCScoreSpec.value(0, {|t| t}, Dictionary()).postln;
 res.outBus.postln;
 res.defDict.postln;
 res.busList.postln;
