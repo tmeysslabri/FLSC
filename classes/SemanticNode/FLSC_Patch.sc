@@ -13,7 +13,7 @@ FLSC_Patch : FLSC_RestFuncDef {
 
 	value {|context|
 		var warpFunc = {|callContext|
-			var sig = nodeVal.value(callContext);
+			var sig = nodeVal.value(callContext).asFLSCScoreSpec;
 			var sign = signature.value(callContext);
 			var warp = FLSC_WarpSpec({|t|
 				case

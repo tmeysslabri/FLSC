@@ -250,7 +250,7 @@
 					{t == 'end'}  {item[0][1]}
 					{t.isInteger} {item[0][0] + t}
 					{true}        {Error("Non-integer signature index").throw}
-				}, item[1])
+				}, item[1].asFLSCScoreSpec)
 			};
 			FLSC_CompSpec('audio', warps);
 	})],
