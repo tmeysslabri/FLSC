@@ -13,4 +13,16 @@ FLSC_Bundle {
 		end = tf;
 		msgList = msgs;
 	}
+
+	asSCScorePair {|server|
+		var startBundle = [], endBundle = [];
+		msgList.do {|item|
+			var synth;
+			startBundle = server.makeBundle(false,
+				{ synth = item.asSynth }, startBundle);
+			endBundle = server.makeBundle(false,
+				{ synth.free }, endBundle);
+		};
+		^[[start] ++ startBundle, [end] ++ endBundle];
+	}
 }

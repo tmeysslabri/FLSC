@@ -1,8 +1,10 @@
 FLSC_Bus {
 	// le type de Bus représenté: 'audio' ou 'control'
-	var type;
+	var <type;
 	// le début et la fin de la réservation
-	var start, end;
+	var <start, <end;
+	// le Bus finalement alloué
+	var <>bus;
 
 	*new {|rate, t0, tf|
 		^super.new.busInit(rate, t0, tf)
@@ -12,5 +14,9 @@ FLSC_Bus {
 		type = rate;
 		start = t0;
 		end = tf;
+	}
+
+	value {
+		^bus;
 	}
 }

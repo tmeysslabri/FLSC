@@ -10,7 +10,7 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 		// on vérifie que les éléments sont tous de rate 'audio'
 		subSpecs.do {|item| if(item.rate != 'audio')
 			{Error("Non-audio member in ListSpec: %".format(item)).throw}};
-		varList = subSpecs.inject(List(), _.union(_.varList));
+		varList = subSpecs.inject(List()) {|acc, it| acc.union(it.varList)};
 		^super.new('audio', varList).listSpecInit(subSpecs);
 	}
 
@@ -31,18 +31,14 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 		var bundles = List();
 		// on itère sur les éléments
 		subSpecs.do {|item|
-			case
-			{item.isNumber}        {item}
-			{item.isFLSCTime}      {item.value(timeWarp)}
-			{item.isFLSCScoreSpec} {
-				// on évalue le sous-graphe
-				var score = item.value(nil, timeWarp, varDict);
-				// on ajoute les bus, les définitions, les messages, les bundle
-				busses.addAll(score.busList);
-				defs.putAll(score.defDict);
-				msgs.addAll(score.bundle);
-				bundles.addAll(score.bundleList);
-			}
+			// on évalue le sous-graphe
+			var score = item.value(outBus, timeWarp, varDict);
+			// on ajoute les bus, les définitions, les messages, les bundle
+			busses.addAll(score.busList);
+			defs.putAll(score.defDict);
+			// normalement pas nécessaire, puisqu'on est en dehors de patch
+			// msgs.addAll(score.bundle);
+			bundles.addAll(score.bundleList);
 		};
 
 		// le Bus de sortie est celui demandé, vérifier son existence
