@@ -43,8 +43,6 @@ FLSC_WarpSpec {
 		score = subSpec.value(outBus, newTimeWarp, varDict);
 		bundles.addAll(score.bundleList);
 		if(score.bundle.notEmpty) {
-			"% % %".format(score.bundle.collect(_.debug),
-				newTimeWarp.value(0), newTimeWarp.value('end')).postln;
 			bundles.add(FLSC_Bundle(
 			newTimeWarp.value(0), newTimeWarp.value('end'), msgs.addAll(score.bundle)))
 		};

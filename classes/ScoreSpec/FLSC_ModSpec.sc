@@ -1,9 +1,8 @@
 FLSC_ModSpec : FLSC_ScoreSpec {
 	// la SynthDef associée à cette instance de module
-	// DEBUG: champs rendus accessibles pour les tests
-	var <def;
+	var def;
 	// les arguments à passer à la SynthDef
-	var <args;
+	var args;
 
 	*new {|rate, varList, synthDef, synthArgs|
 		^super.new(rate, varList).modSpecInit(synthDef, synthArgs);
