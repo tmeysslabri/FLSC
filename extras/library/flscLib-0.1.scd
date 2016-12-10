@@ -201,7 +201,7 @@
 			var min = FLSC_Var('min').value(ctxt);
 			var max = FLSC_Var('max').value(ctxt);
 			FLSC_UGen.newFromClass([
-				FLSC_RestUGenFunc(nil, ['a', 'b'],
+				FLSC_UGenFunc(nil, ['a', 'b'],
 					{|ctxt| FLSC_Var('a').value(ctxt) -
 						FLSC_Var('b').value(ctxt)}).value([max, min]), min],
 				LFNoise0, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
@@ -211,7 +211,7 @@
 			var min = FLSC_Var('min').value(ctxt);
 			var max = FLSC_Var('max').value(ctxt);
 			FLSC_UGen.newFromClass([
-				FLSC_RestUGenFunc(nil, ['a', 'b'],
+				FLSC_UGenFunc(nil, ['a', 'b'],
 					{|ctxt| FLSC_Var('a').value(ctxt) -
 						FLSC_Var('b').value(ctxt)}).value([max, min]), min],
 				LFNoise1, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
