@@ -14,7 +14,13 @@ FLSC_ModFunc : FLSC_Function {
 		^this;
 	}
 
-	value {|args|
+	value {|arguments|
+		// les arguments, après réduction des listes
+		var args = arguments.collect {|item|
+			if(item.isArray)
+			{item.asFLSCScoreSpec}
+			{item}
+		};
 		// la SynthDef engendrée
 		var synthDef;
 		// le suffixe de cette variante de la SynthDef
@@ -31,7 +37,7 @@ FLSC_ModFunc : FLSC_Function {
 		var rate;
 
 		// on créée la varList de la ModSpec
-		args.collect {|item| if((item.rate == 'audio') || (item.rate == 'control'))
+		args.collect {|item| if(item.isFLSCScoreSpec)
 			{ specVarList = specVarList.union(item.varList) }
 		};
 

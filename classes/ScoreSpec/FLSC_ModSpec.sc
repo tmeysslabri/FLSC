@@ -36,10 +36,10 @@ FLSC_ModSpec : FLSC_ScoreSpec {
 			case
 			{item.isNumber}        {item}
 			{item.isFLSCTime}      {item.value(timeWarp)}
-			{item.isFLSCScoreSpec || item.isArray} {
+			{item.isFLSCScoreSpec} {
 				// on évalue le sous-graphe
 				// si c'est une liste, on en fait une FLSC_ListSpec
-				var score = item.asFLSCScoreSpec.value(nil, timeWarp, varDict);
+				var score = item.value(nil, timeWarp, varDict);
 				// on ajoute les bus, les définitions, les messages, les bundle
 				busses.addAll(score.busList);
 				defs.putAll(score.defDict);
