@@ -30,9 +30,10 @@ FLSC_Context : Dictionary {
 			file.close;
 		}
 		{content = "[]"};
-		content = content.interpret.collect
-		{|item| [item[0], FLSC_Interpreter(item[1]).evaluateLibrary(lib)]};
-		lib = this.new(lib, content);
+		content.interpret.collect {|batch| content = batch.collect
+			{|item| [item[0], FLSC_Interpreter(item[1]).evaluateLibrary(lib)]};
+			lib = this.new(lib, content);
+		};
 		^lib;
 	}
 

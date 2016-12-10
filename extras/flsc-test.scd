@@ -74,6 +74,24 @@ x = FLSC_Interpreter(
 x = FLSC_Interpreter(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
-	"     (mosc (m* (mrand 0.8 1.2) freq) 0))) 220)"
+	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)"
+).evaluateAndPlay;
+)
+
+// générateur d'enveloppe (! à éviter)
+(
+x = FLSC_Interpreter(
+	"((patch (freq) [0.5 2]" +
+	"   (m* (lmenv [0 0.1 0] [0 1 2])" +
+	"     (mosc freq 0))) 220)"
+).evaluateAndPlay;
+)
+
+// enveloppe à nombre de points variable
+(
+x = FLSC_Interpreter(
+	"((patch (freq) [0.5 2]" +
+	"   (m* (menv [0 0.1 0])" +
+	"     (mosc freq 0))) 220)"
 ).evaluateAndPlay;
 )
