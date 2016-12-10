@@ -9,4 +9,8 @@ FLSC_UID {
 		current = current + 1;
 		^("uID" ++ current.asString);
 	}
+
+	*reset {
+		current = 0;
+	}
 }

@@ -21,6 +21,8 @@ FLSC_Interpreter {
 	}
 
 	evaluate {
+		// réinitialiser les UID
+		FLSC_UID.reset;
 		treeValue = semanticTree.value(FLSC_Context.library);
 		^this;
 	}

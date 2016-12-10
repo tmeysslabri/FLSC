@@ -83,10 +83,19 @@ FLSC_Score {
 
 		// exécution de la partition
 		Routine({
+			// redémarrer le serveur pour oublier les anciennes SynthDef
 			server.bootSync;
+			// charger les SynthDef
 			defDict.do {|item| item.add };
 			server.sync;
+			// jouer la partition
 			score.play;
+			// attendre la fin
+			(score.endTime + 1).wait;
+			// supprimer les SynthDef
+			defDict.do {|item| SynthDef.removeAt(item.name)};
+			// quitter
+			// server.quit;
 		}).play;
 		^this;
 	}
