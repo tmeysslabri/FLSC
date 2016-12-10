@@ -1,12 +1,12 @@
 FLSC_Interpreter {
 	// la chaîne de caractères en entrée
-	var inputString;
+	var <inputString;
 	// l'arbre sémantique associé
-	var semanticTree;
+	var <semanticTree;
 	// la valeur calculée par l'arbre sémantique
-	var treeValue;
+	var <treeValue;
 	// la FLSC_Score résultante
-	var scoreValue;
+	var <scoreValue;
 
 	*new {|string|
 		^super.new.interpreterInit(string);
@@ -22,7 +22,7 @@ FLSC_Interpreter {
 
 	evaluate {
 		treeValue = semanticTree.value(FLSC_Context.library);
-		^treeValue;
+		^this;
 	}
 
 	evaluateLibrary {|context|
@@ -64,7 +64,7 @@ FLSC_Interpreter {
 		scoreValue = FLSC_Score(scoreValue.outBus, defs.putAll(scoreValue.defDict),
 			busses.addAll(scoreValue.busList), List(), bundles,
 			scoreValue.start, scoreValue.end);
-		^scoreValue;
+		^this;
 	}
 
 	play {
@@ -130,6 +130,7 @@ FLSC_Interpreter {
 			server.sync;
 			score.play;
 		}).play;
+		^this;
 	}
 
 	asFLSC {
