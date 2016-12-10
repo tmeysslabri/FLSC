@@ -25,28 +25,35 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 		// les SynthDef utilisées
 		var defs = Dictionary();
 		// les FLSC_MsgPair du contexte courant
-		// normalement ceci devrait être vide, puisqu'on est en dehors de patch
 		var msgs = List();
 		// les FLSC_Bundle des sous-graphes
 		var bundles = List();
 		// les dates de début et de fin
 		var start = inf, end = 0;
+		// le Bus de sortie est celui demandé, ou un nouveau Bus en son absence
+		// dans le deuxième cas on doit le créér, puis calculer le début et la fin
+		// suivant le résultat des sous-spécifications
+		var out = if(outBus.notNil) {outBus}
+		{
+			var bus = FLSC_Bus(rate, nil, nil);
+			busses.add(bus);
+			bus;
+		};
 		// on itère sur les éléments
 		subSpecs.do {|item|
 			// on évalue le sous-graphe
-			var score = item.value(outBus, timeWarp, varDict);
+			var score = item.value(out, timeWarp, varDict);
 			// on ajoute les bus, les définitions, les messages, les bundle
 			busses.addAll(score.busList);
 			defs.putAll(score.defDict);
-			// normalement pas nécessaire, puisqu'on est en dehors de patch
-			// msgs.addAll(score.bundle);
+			msgs.addAll(score.bundle);
 			bundles.addAll(score.bundleList);
 			start = min(start, score.start);
 			end = max(end, score.end);
 		};
 
-		// le Bus de sortie est celui demandé, vérifier son existence
-		if(outBus.isNil) {Error("ListSpec outBus is nil").throw};
+		// si aucun Bus de sortie n'est demandé, ajouter le début et la fin au Bus créé
+		if(outBus.isNil) {out.start = start; out.end = end;};
 
 		^FLSC_Score(outBus, defs, busses, msgs, bundles, start, end);
 	}
