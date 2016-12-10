@@ -133,6 +133,11 @@ FLSC_Interpreter {
 		^this;
 	}
 
+	evaluateAndPlay {
+		this.evaluate.asFLSCScore.play;
+		^this;
+	}
+
 	asFLSC {
 		^semanticTree.asFLSC;
 	}

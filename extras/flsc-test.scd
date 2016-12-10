@@ -17,7 +17,7 @@ x = FLSC_Interpreter(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"     (mosc freq 0))) 220)"
-).evaluate.asFLSCScore.play;
+).evaluateAndPlay;
 )
 
 // dédoublement d'un patch avec let
@@ -27,7 +27,7 @@ x = FLSC_Interpreter(
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"                  (mosc freq 0)))))" +
 	"  [(delay 0 (myvar 220)) (delay 1 (myvar 330))])"
-).evaluate.asFLSCScore.play;
+).evaluateAndPlay;
 )
 
 // dédoublement d'une application de patch avec let
@@ -37,7 +37,7 @@ x = FLSC_Interpreter(
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"                  (mosc freq 0))) 220)))" +
 	"  [(delay 0 myvar) (delay 1 myvar)])"
-).evaluate.asFLSCScore.play;
+).evaluateAndPlay;
 )
 
 // dédoublement d'un module
@@ -48,7 +48,7 @@ x = FLSC_Interpreter(
 	"           (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"             (mosc freq 0))))" +
 	"     (par [[0 4] [2 5]] [myvar myvar]))) 220)"
-).evaluate.asFLSCScore.play;
+).evaluateAndPlay;
 )
 
 // somme de partiels
@@ -59,5 +59,5 @@ x = FLSC_Interpreter(
 	"    (mapcar (lambda (i)" +
 	"              (m* (/ 0.1 i) (m* dyn (mosc (* i freq) 0))))" +
 	"      (range 1 8))) 110))"
-).evaluate.asFLSCScore.play;
+).evaluateAndPlay;
 )
