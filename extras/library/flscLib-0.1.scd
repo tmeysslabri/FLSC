@@ -196,20 +196,21 @@
 			LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
 
 	// ALTERATIONS DE SIGNATURE:
-	// A FAIRE: ajouter des vérifications sur les rate pour éviter les incohérences
 	// retard
 	['delay', FLSC_Function(nil, ['theta', 'sig'],
 		{|ctxt|
 			var dt = FLSC_Var('theta').value(ctxt);
 			var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 			var warp = FLSC_WarpSpec({|t| t + dt}, sig);
+			if(sig.rate != 'audio')
+			{Error("Non-audio in delay: %").format(sig).throw};
 			FLSC_SignSpec('audio', warp);
 	})],
 	// sous-signature
 	['subsign', FLSC_Function(nil, ['sign', 'sig'],
 		{|ctxt|
 			var sign = FLSC_Var('sign').value(ctxt);
-			var sig = FLSC_Var('sig').value(ctxt);
+			var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 			var warp = FLSC_WarpSpec({|t|
 				case
 				{t == 0}      {0}
@@ -227,12 +228,15 @@
 			var sigs = FLSC_Var('sigs').value(ctxt);
 			var segs = [[0]++subs,subs++['end']].flop;
 			var warps = [segs, sigs].flop.collect {|item|
+				var sig = item[1];
+				if(sig.rate != 'control')
+				{Error("Non-control in seq: %").format(sig).throw};
 				FLSC_WarpSpec({|t|
 					case
 					{t == 'end'}  {item[0][1]}
 					{t.isInteger} {item[0][0] + t}
 					{true}        {Error("Non-integer signature index").throw}
-				}, item[1])
+				}, sig)
 			};
 			FLSC_CompSpec('control', warps);
 	})],
@@ -245,12 +249,15 @@
 			if(subs.isFLSCNil) {subs = [0,'end'] ! sigs.size};
 			subs = subs.collect {|item| if(item.isFLSCNil) {[0,'end']} {item}};
 			warps = [subs, sigs].flop.collect {|item|
+				var sig = item[1].asFLSCScoreSpec;
+				if(sig.rate != 'audio')
+				{Error("Non-audio in par: %").format(sig).throw};
 				FLSC_WarpSpec({|t|
 					case
 					{t == 'end'}  {item[0][1]}
 					{t.isInteger} {item[0][0] + t}
 					{true}        {Error("Non-integer signature index").throw}
-				}, item[1].asFLSCScoreSpec)
+				}, sig)
 			};
 			FLSC_CompSpec('audio', warps);
 	})],
