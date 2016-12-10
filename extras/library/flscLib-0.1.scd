@@ -1,284 +1,286 @@
-[
-	// CONSTANTES
-	// ['nil', nil], // remplacé par FLSC_Nil
-	['false', false],
-	['true', true],
-	['inf', inf],
-	// FONCTIONS NUMERIQUES:
-	// opérateurs unaires:
-	['neg', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).neg})],
-	['abs', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).abs})],
-	['sign', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).sign})],
-	// opérateurs arithmétiques:
-	['+', FLSC_RestUGenFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).inject(0, _+_)})],
-	['*', FLSC_RestUGenFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).inject(1, _*_)})],
-	['-', FLSC_RestUGenFunc(nil, ['base', 'terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).inject(FLSC_Var('base').value(ctxt), _-_)})],
-	['/', FLSC_RestUGenFunc(nil, ['base', 'terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).inject(FLSC_Var('base').value(ctxt), _/_)})],
-	['**', FLSC_UGenFunc(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt) ** FLSC_Var('b').value(ctxt)})],
-	['mod', FLSC_UGenFunc(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt) % FLSC_Var('b').value(ctxt)})],
-	// fonctions usuelles:
-	['sin', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).sin})],
-	['cos', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).cos})],
-	['tan', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).tan})],
-	['log2', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).log2})],
-	['floor', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).floor})],
-	['ceil', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).ceil})],
-	['round', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).round})],
-	['min', FLSC_RestUGenFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).reduce(\min)})],
-	['max', FLSC_RestUGenFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).reduce(\max)})],
+{
+	// fonctions utilitaires:
+	// soustraction compatible avec les FLSC_UGen (pour rand et crand)
+	var minus = FLSC_UGenFunc(nil, ['a', 'b'],
+		{|ctxt| FLSC_Var('a').value(ctxt) -	FLSC_Var('b').value(ctxt)});
+	[
+		// CONSTANTES
+		// ['nil', nil], // remplacé par FLSC_Nil
+		['false', false],
+		['true', true],
+		['inf', inf],
+		// FONCTIONS NUMERIQUES:
+		// opérateurs unaires:
+		['neg', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).neg})],
+		['abs', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).abs})],
+		['sign', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).sign})],
+		// opérateurs arithmétiques:
+		['+', FLSC_RestUGenFunc(nil, ['terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).inject(0, _+_)})],
+		['*', FLSC_RestUGenFunc(nil, ['terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).inject(1, _*_)})],
+		['-', FLSC_RestUGenFunc(nil, ['base', 'terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).inject(FLSC_Var('base').value(ctxt), _-_)})],
+		['/', FLSC_RestUGenFunc(nil, ['base', 'terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).inject(FLSC_Var('base').value(ctxt), _/_)})],
+		['**', FLSC_UGenFunc(nil, ['a', 'b'],
+			{|ctxt| FLSC_Var('a').value(ctxt) ** FLSC_Var('b').value(ctxt)})],
+		['mod', FLSC_UGenFunc(nil, ['a', 'b'],
+			{|ctxt| FLSC_Var('a').value(ctxt) % FLSC_Var('b').value(ctxt)})],
+		// fonctions usuelles:
+		['sin', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).sin})],
+		['cos', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).cos})],
+		['tan', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).tan})],
+		['log2', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).log2})],
+		['floor', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).floor})],
+		['ceil', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).ceil})],
+		['round', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).round})],
+		['min', FLSC_RestUGenFunc(nil, ['terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).reduce(\min)})],
+		['max', FLSC_RestUGenFunc(nil, ['terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).reduce(\max)})],
 
-	// BOOLEENS:
-	// opérateurs:
-	['not', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).not})],
-	['and', FLSC_RestFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).inject(true, _&&_)})],
-	['or', FLSC_RestFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _||_)})],
-	['xor', FLSC_RestFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _.xor(_))})],
-	// tests:
-	['?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).notFLSCNil})],
-	['nil?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isFLSCNil})],
-	['boolean?', FLSC_Function(nil, ['a'],
-		{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(Boolean)})],
-	['number?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isNumber})],
-	['function?', FLSC_Function(nil, ['a'],
-		{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(FLSC_Function)})],
-	['list?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isArray})],
-	['empty?', FLSC_Function(nil, ['a'],
-		{|ctxt|
-			var val = FLSC_Var('a').value(ctxt);
-			val.isArray && (val.size == 0)})],
-	// comparaisons:
-	['eq?', FLSC_RestFunc(nil, ['first', 'rest'],
-		{|ctxt|
-			var first = FLSC_Var('first').value(ctxt);
-			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val| acc && (first == val)})})],
-	['neq?', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt) != FLSC_Var('b').value(ctxt)})],
-	['gt?', FLSC_RestFunc(nil, ['first', 'rest'],
-		{|ctxt|
-			var cur = FLSC_Var('first').value(ctxt);
-			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val|
-				var res = acc && (cur > val);
-				cur = val;
-				res})})],
-	['lt?', FLSC_RestFunc(nil, ['first', 'rest'],
-		{|ctxt|
-			var cur = FLSC_Var('first').value(ctxt);
-			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val|
-				var res = acc && (cur < val);
-				cur = val;
-				res})})],
-	['gte?', FLSC_RestFunc(nil, ['first', 'rest'],
-		{|ctxt|
-			var cur = FLSC_Var('first').value(ctxt);
-			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val|
-				var res = acc && (cur >= val);
-				cur = val;
-				res})})],
-	['lte?', FLSC_RestFunc(nil, ['first', 'rest'],
-		{|ctxt|
-			var cur = FLSC_Var('first').value(ctxt);
-			var rest = FLSC_Var('rest').value(ctxt);
-			rest.inject(true, {|acc, val|
-				var res = acc && (cur <= val);
-				cur = val;
-				res})})],
+		// BOOLEENS:
+		// opérateurs:
+		['not', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).not})],
+		['and', FLSC_RestFunc(nil, ['terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).inject(true, _&&_)})],
+		['or', FLSC_RestFunc(nil, ['terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _||_)})],
+		['xor', FLSC_RestFunc(nil, ['terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _.xor(_))})],
+		// tests:
+		['?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).notFLSCNil})],
+		['nil?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isFLSCNil})],
+		['boolean?', FLSC_Function(nil, ['a'],
+			{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(Boolean)})],
+		['number?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isNumber})],
+		['function?', FLSC_Function(nil, ['a'],
+			{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(FLSC_Function)})],
+		['list?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isArray})],
+		['empty?', FLSC_Function(nil, ['a'],
+			{|ctxt|
+				var val = FLSC_Var('a').value(ctxt);
+				val.isArray && (val.size == 0)})],
+		// comparaisons:
+		['eq?', FLSC_RestFunc(nil, ['first', 'rest'],
+			{|ctxt|
+				var first = FLSC_Var('first').value(ctxt);
+				var rest = FLSC_Var('rest').value(ctxt);
+				rest.inject(true, {|acc, val| acc && (first == val)})})],
+		['neq?', FLSC_Function(nil, ['a', 'b'],
+			{|ctxt| FLSC_Var('a').value(ctxt) != FLSC_Var('b').value(ctxt)})],
+		['gt?', FLSC_RestFunc(nil, ['first', 'rest'],
+			{|ctxt|
+				var cur = FLSC_Var('first').value(ctxt);
+				var rest = FLSC_Var('rest').value(ctxt);
+				rest.inject(true, {|acc, val|
+					var res = acc && (cur > val);
+					cur = val;
+					res})})],
+		['lt?', FLSC_RestFunc(nil, ['first', 'rest'],
+			{|ctxt|
+				var cur = FLSC_Var('first').value(ctxt);
+				var rest = FLSC_Var('rest').value(ctxt);
+				rest.inject(true, {|acc, val|
+					var res = acc && (cur < val);
+					cur = val;
+					res})})],
+		['gte?', FLSC_RestFunc(nil, ['first', 'rest'],
+			{|ctxt|
+				var cur = FLSC_Var('first').value(ctxt);
+				var rest = FLSC_Var('rest').value(ctxt);
+				rest.inject(true, {|acc, val|
+					var res = acc && (cur >= val);
+					cur = val;
+					res})})],
+		['lte?', FLSC_RestFunc(nil, ['first', 'rest'],
+			{|ctxt|
+				var cur = FLSC_Var('first').value(ctxt);
+				var rest = FLSC_Var('rest').value(ctxt);
+				rest.inject(true, {|acc, val|
+					var res = acc && (cur <= val);
+					cur = val;
+					res})})],
 
-	// LISTES:
-	// constructeurs:
-	['list', FLSC_RestFunc(nil, ['terms'], {|ctxt| FLSC_Var('terms').value(ctxt)})],
-	['cons', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| [FLSC_Var('a').value(ctxt)] ++ FLSC_Var('b').value(ctxt).asArray})],
-	['add', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt).asArray ++ [FLSC_Var('b').value(ctxt)]})],
-	['insert', FLSC_Function(nil, ['a', 'b', 'c'],
-		{|ctxt|
-			var index = FLSC_Var('c').value(ctxt);
-			FLSC_Var('a').value(ctxt)[..index-1] ++
-			[FLSC_Var('b').value(ctxt)] ++
-			FLSC_Var('a').value(ctxt)[index..]})],
-	['append', FLSC_RestFunc(nil, ['terms'],
-		{|ctxt| FLSC_Var('terms').value(ctxt).collect(_.asArray).inject([], _++_)})],
-	['range', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| (FLSC_Var('a').value(ctxt)..FLSC_Var('b').value(ctxt))})],
-	['reverse', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).reverse})],
-	// accesseurs:
-	['elt', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt)[FLSC_Var('b').value(ctxt)]})],
-	['subseq', FLSC_Function(nil, ['a', 'b', 'c'],
-		{|ctxt| FLSC_Var('a').value(ctxt)
-			[FLSC_Var('b').value(ctxt)..FLSC_Var('c').value(ctxt)-1]})],
-	['length', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).size})],
-	['position', FLSC_Function(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt).indexOf(FLSC_Var('b').value(ctxt))})],
-	// itération:
-	['mapcar', FLSC_RestFunc(nil, ['func', 'lists'],
-		{|ctxt|
-			var func = FLSC_Var('func').value(ctxt);
-			var lists = FLSC_Var('lists').value(ctxt);
-			lists.flop.collect({|item|
-				func.value(item)})
-	})],
-	['select', FLSC_Function(nil, ['func', 'list'],
-		{|ctxt|
-			var func = FLSC_Var('func').value(ctxt);
-			var list = FLSC_Var('list').value(ctxt);
-			list.select({|item, i| func.value([item, i])});
-	})],
-	['reduce', FLSC_Function(nil, ['func', 'list', 'init'],
-		{|ctxt|
-			var func = FLSC_Var('func').value(ctxt);
-			var list = FLSC_Var('list').value(ctxt);
-			var init = FLSC_Var('init').value(ctxt);
-			if(init.notFLSCNil,
-				{
-					list.inject(init, {|a,b| func.value([a, b])})
-				}, {
-					list.reduce({|a,b| func.value([a, b])})
-			});
-	})],
-	['apply', FLSC_Function(nil, ['func', 'arglist'],
-		{|ctxt| FLSC_Var('func').value(ctxt).value(FLSC_Var('arglist').value(ctxt))})],
-
-	// GENERATEURS DE SIGNAL:
-	// oscillateur sinusoïdal
-	['osc', FLSC_Function(nil, ['freq', 'phi'],
-		{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-			FLSC_Var('phi').value(ctxt)],
-			SinOsc, ['freq', 'phase'], minRate: 'audio')})],
-	// segment d'enveloppe
-	['seg', FLSC_Function(nil, ['start', 'end'],
-		{|ctxt|
-			FLSC_UGen.newFromClass([FLSC_Var('start').value(ctxt),
-			FLSC_Var('end').value(ctxt), FLSC_TimeControl([0, 'end'])],
-			Line, ['start', 'end', 'dur'],
-			minRate: 'control')})],
-	// enveloppe à nombre de points fixe
-	['env', FLSC_Function(nil, ['levels', 'times'],
-		{|ctxt| FLSC_UGen([FLSC_Var('levels').value(ctxt),
-			FLSC_TimeControl(FLSC_Var('times').value(ctxt))],
-			{|subs|
-				EnvGen.kr(Env(subs[0], subs[1]));
-			})
+		// LISTES:
+		// constructeurs:
+		['list', FLSC_RestFunc(nil, ['terms'], {|ctxt| FLSC_Var('terms').value(ctxt)})],
+		['cons', FLSC_Function(nil, ['a', 'b'],
+			{|ctxt| [FLSC_Var('a').value(ctxt)] ++ FLSC_Var('b').value(ctxt).asArray})],
+		['add', FLSC_Function(nil, ['a', 'b'],
+			{|ctxt| FLSC_Var('a').value(ctxt).asArray ++ [FLSC_Var('b').value(ctxt)]})],
+		['insert', FLSC_Function(nil, ['a', 'b', 'c'],
+			{|ctxt|
+				var index = FLSC_Var('c').value(ctxt);
+				FLSC_Var('a').value(ctxt)[..index-1] ++
+				[FLSC_Var('b').value(ctxt)] ++
+				FLSC_Var('a').value(ctxt)[index..]})],
+		['append', FLSC_RestFunc(nil, ['terms'],
+			{|ctxt| FLSC_Var('terms').value(ctxt).collect(_.asArray).inject([], _++_)})],
+		['range', FLSC_Function(nil, ['a', 'b'],
+			{|ctxt| (FLSC_Var('a').value(ctxt)..FLSC_Var('b').value(ctxt))})],
+		['reverse', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).reverse})],
+		// accesseurs:
+		['elt', FLSC_Function(nil, ['a', 'b'],
+			{|ctxt| FLSC_Var('a').value(ctxt)[FLSC_Var('b').value(ctxt)]})],
+		['subseq', FLSC_Function(nil, ['a', 'b', 'c'],
+			{|ctxt| FLSC_Var('a').value(ctxt)
+				[FLSC_Var('b').value(ctxt)..FLSC_Var('c').value(ctxt)-1]})],
+		['length', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).size})],
+		['position', FLSC_Function(nil, ['a', 'b'],
+			{|ctxt| FLSC_Var('a').value(ctxt).indexOf(FLSC_Var('b').value(ctxt))})],
+		// itération:
+		['mapcar', FLSC_RestFunc(nil, ['func', 'lists'],
+			{|ctxt|
+				var func = FLSC_Var('func').value(ctxt);
+				var lists = FLSC_Var('lists').value(ctxt);
+				lists.flop.collect({|item|
+					func.value(item)})
 		})],
-	// modulateurs:
-	// sinusoïdal
-	['lfo', FLSC_Function(nil, ['freq', 'phi'],
-		{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-			FLSC_Var('phi').value(ctxt)],
-			SinOsc, ['freq', 'phase'], minRate: 'control')})],
-	// triangle
-	['tri', FLSC_Function(nil, ['freq', 'phi'],
-		{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-			FLSC_Var('phi').value(ctxt)],
-			LFTri, ['freq', 'iphase'], minRate: 'control')})],
-	// carré
-	['squ', FLSC_Function(nil, ['freq', 'phi', 'width'],
-		{|ctxt|
-			var width = FLSC_Var('width').value(ctxt);
-			if(width.isFLSCNil) {width = 0.5};
-			FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-				FLSC_Var('phi').value(ctxt), width],
-				LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
-	// générateurs aléatoires:
-	// générateur par paliers
-	['rand', FLSC_Function(nil, ['min', 'max'],
-		{|ctxt|
-			var min = FLSC_Var('min').value(ctxt);
-			var max = FLSC_Var('max').value(ctxt);
-			FLSC_UGen.newFromClass([
-				FLSC_UGenFunc(nil, ['a', 'b'],
-					{|ctxt| FLSC_Var('a').value(ctxt) -
-						FLSC_Var('b').value(ctxt)}).value([max, min]), min],
-				LFNoise0, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
-	// générateur de ligne brisée
-	['crand', FLSC_Function(nil, ['min', 'max'],
-		{|ctxt|
-			var min = FLSC_Var('min').value(ctxt);
-			var max = FLSC_Var('max').value(ctxt);
-			FLSC_UGen.newFromClass([
-				FLSC_UGenFunc(nil, ['a', 'b'],
-					{|ctxt| FLSC_Var('a').value(ctxt) -
-						FLSC_Var('b').value(ctxt)}).value([max, min]), min],
-				LFNoise1, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
-	// ALTERATIONS DE SIGNATURE:
-	// retard
-	['delay', FLSC_Function(nil, ['theta', 'sig'],
-		{|ctxt|
-			var dt = FLSC_Var('theta').value(ctxt);
-			var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
-			var warp = FLSC_WarpSpec({|t| t + dt}, sig);
-			if(sig.rate != 'audio')
-			{Error("Non-audio in delay: %").format(sig).throw};
-			FLSC_SignSpec('audio', warp);
-	})],
-	// sous-signature
-	['subsign', FLSC_Function(nil, ['sign', 'sig'],
-		{|ctxt|
-			var sign = FLSC_Var('sign').value(ctxt);
-			var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
-			var warp = FLSC_WarpSpec({|t|
-				case
-				{t == 0}      {0}
-				{t == 'end'}  {'end'}
-				{t.isInteger} {sign[t-1]}
-				{true}        {Error("Non-integer signature index").throw}
-			}, sig);
-			FLSC_SignSpec(sig.rate, warp);
-	})],
-	// compositions:
-	// sequentielle
-	['seq', FLSC_Function(nil, ['subs', 'sigs'],
-		{|ctxt|
-			var subs = FLSC_Var('subs').value(ctxt);
-			var sigs = FLSC_Var('sigs').value(ctxt);
-			var segs = [[0]++subs,subs++['end']].flop;
-			var warps = [segs, sigs].flop.collect {|item|
-				var sig = item[1];
-				if(sig.rate != 'control')
-				{Error("Non-control in seq: %").format(sig).throw};
-				FLSC_WarpSpec({|t|
-					case
-					{t == 'end'}  {item[0][1]}
-					{t.isInteger} {item[0][0] + t}
-					{true}        {Error("Non-integer signature index").throw}
-				}, sig)
-			};
-			FLSC_CompSpec('control', warps);
-	})],
-	// parallèle
-	['par', FLSC_Function(nil, ['subs', 'sigs'],
-		{|ctxt|
-			var subs = FLSC_Var('subs').value(ctxt);
-			var sigs = FLSC_Var('sigs').value(ctxt);
-			var warps;
-			if(subs.isFLSCNil) {subs = [0,'end'] ! sigs.size};
-			subs = subs.collect {|item| if(item.isFLSCNil) {[0,'end']} {item}};
-			warps = [subs, sigs].flop.collect {|item|
-				var sig = item[1].asFLSCScoreSpec;
+		['select', FLSC_Function(nil, ['func', 'list'],
+			{|ctxt|
+				var func = FLSC_Var('func').value(ctxt);
+				var list = FLSC_Var('list').value(ctxt);
+				list.select({|item, i| func.value([item, i])});
+		})],
+		['reduce', FLSC_Function(nil, ['func', 'list', 'init'],
+			{|ctxt|
+				var func = FLSC_Var('func').value(ctxt);
+				var list = FLSC_Var('list').value(ctxt);
+				var init = FLSC_Var('init').value(ctxt);
+				if(init.notFLSCNil,
+					{
+						list.inject(init, {|a,b| func.value([a, b])})
+					}, {
+						list.reduce({|a,b| func.value([a, b])})
+				});
+		})],
+		['apply', FLSC_Function(nil, ['func', 'arglist'],
+			{|ctxt| FLSC_Var('func').value(ctxt).value(FLSC_Var('arglist').value(ctxt))})],
+
+		// GENERATEURS DE SIGNAL:
+		// oscillateur sinusoïdal
+		['osc', FLSC_Function(nil, ['freq', 'phi'],
+			{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+				FLSC_Var('phi').value(ctxt)],
+				SinOsc, ['freq', 'phase'], minRate: 'audio')})],
+		// segment d'enveloppe
+		['seg', FLSC_Function(nil, ['start', 'end'],
+			{|ctxt|
+				FLSC_UGen.newFromClass([FLSC_Var('start').value(ctxt),
+					FLSC_Var('end').value(ctxt), FLSC_TimeControl([0, 'end'])],
+					Line, ['start', 'end', 'dur'],
+					minRate: 'control')})],
+		// enveloppe à nombre de points fixe
+		['env', FLSC_Function(nil, ['levels', 'times'],
+			{|ctxt| FLSC_UGen([FLSC_Var('levels').value(ctxt),
+				FLSC_TimeControl(FLSC_Var('times').value(ctxt))],
+				{|subs|
+					EnvGen.kr(Env(subs[0], subs[1]));
+				})
+		})],
+		// modulateurs:
+		// sinusoïdal
+		['lfo', FLSC_Function(nil, ['freq', 'phi'],
+			{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+				FLSC_Var('phi').value(ctxt)],
+				SinOsc, ['freq', 'phase'], minRate: 'control')})],
+		// triangle
+		['tri', FLSC_Function(nil, ['freq', 'phi'],
+			{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+				FLSC_Var('phi').value(ctxt)],
+				LFTri, ['freq', 'iphase'], minRate: 'control')})],
+		// carré
+		['squ', FLSC_Function(nil, ['freq', 'phi', 'width'],
+			{|ctxt|
+				var width = FLSC_Var('width').value(ctxt);
+				if(width.isFLSCNil) {width = 0.5};
+				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+					FLSC_Var('phi').value(ctxt), width],
+					LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
+		// générateurs aléatoires:
+		// générateur par paliers
+		['rand', FLSC_Function(nil, ['min', 'max'],
+			{|ctxt|
+				var min = FLSC_Var('min').value(ctxt);
+				var max = FLSC_Var('max').value(ctxt);
+				FLSC_UGen.newFromClass([
+					minus.value([max, min]), min],
+					LFNoise0, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
+		// générateur de ligne brisée
+		['crand', FLSC_Function(nil, ['min', 'max'],
+			{|ctxt|
+				var min = FLSC_Var('min').value(ctxt);
+				var max = FLSC_Var('max').value(ctxt);
+				FLSC_UGen.newFromClass([
+					minus.value([max, min]), min],
+					LFNoise1, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
+		// ALTERATIONS DE SIGNATURE:
+		// retard
+		['delay', FLSC_Function(nil, ['theta', 'sig'],
+			{|ctxt|
+				var dt = FLSC_Var('theta').value(ctxt);
+				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
+				var warp = FLSC_WarpSpec({|t| t + dt}, sig);
 				if(sig.rate != 'audio')
-				{Error("Non-audio in par: %").format(sig).throw};
-				FLSC_WarpSpec({|t|
+				{Error("Non-audio in delay: %").format(sig).throw};
+				FLSC_SignSpec('audio', warp);
+		})],
+		// sous-signature
+		['subsign', FLSC_Function(nil, ['sign', 'sig'],
+			{|ctxt|
+				var sign = FLSC_Var('sign').value(ctxt);
+				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
+				var warp = FLSC_WarpSpec({|t|
 					case
-					{t == 'end'}  {item[0][1]}
-					{t.isInteger} {item[0][0] + t}
+					{t == 0}      {0}
+					{t == 'end'}  {'end'}
+					{t.isInteger} {sign[t-1]}
 					{true}        {Error("Non-integer signature index").throw}
-				}, sig)
-			};
-			FLSC_CompSpec('audio', warps);
-	})],
-]
+				}, sig);
+				FLSC_SignSpec(sig.rate, warp);
+		})],
+		// compositions:
+		// sequentielle
+		['seq', FLSC_Function(nil, ['subs', 'sigs'],
+			{|ctxt|
+				var subs = FLSC_Var('subs').value(ctxt);
+				var sigs = FLSC_Var('sigs').value(ctxt);
+				var segs = [[0]++subs,subs++['end']].flop;
+				var warps = [segs, sigs].flop.collect {|item|
+					var sig = item[1];
+					if(sig.rate != 'control')
+					{Error("Non-control in seq: %").format(sig).throw};
+					FLSC_WarpSpec({|t|
+						case
+						{t == 'end'}  {item[0][1]}
+						{t.isInteger} {item[0][0] + t}
+						{true}        {Error("Non-integer signature index").throw}
+					}, sig)
+				};
+				FLSC_CompSpec('control', warps);
+		})],
+		// parallèle
+		['par', FLSC_Function(nil, ['subs', 'sigs'],
+			{|ctxt|
+				var subs = FLSC_Var('subs').value(ctxt);
+				var sigs = FLSC_Var('sigs').value(ctxt);
+				var warps;
+				if(subs.isFLSCNil) {subs = [0,'end'] ! sigs.size};
+				subs = subs.collect {|item| if(item.isFLSCNil) {[0,'end']} {item}};
+				warps = [subs, sigs].flop.collect {|item|
+					var sig = item[1].asFLSCScoreSpec;
+					if(sig.rate != 'audio')
+					{Error("Non-audio in par: %").format(sig).throw};
+					FLSC_WarpSpec({|t|
+						case
+						{t == 'end'}  {item[0][1]}
+						{t.isInteger} {item[0][0] + t}
+						{true}        {Error("Non-integer signature index").throw}
+					}, sig)
+				};
+				FLSC_CompSpec('audio', warps);
+		})],
+	]
+}.value();
