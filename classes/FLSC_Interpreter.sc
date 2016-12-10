@@ -134,7 +134,11 @@ FLSC_Interpreter {
 	}
 
 	evaluateAndPlay {
-		this.evaluate.asFLSCScore.play;
+		this.evaluate;
+		case
+		{treeValue.isKindOf(FLSC_Error)} {treeValue.asFLSC.postln}
+		{treeValue.isKindOf(FLSC_ScoreSpec)} {this.asFLSCScore.play}
+		{true} {treeValue.postln};
 		^this;
 	}
 
