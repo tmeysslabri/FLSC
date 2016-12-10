@@ -14,4 +14,6 @@
 	['mlfo', "(module (freq phi) (lfo freq phi))"],
 	['mtri', "(module (freq phi) (tri freq phi))"],
 	['msqu', "(module (freq phi width) (squ freq phi width))"],
+	['mrand', "(module (min max) (rand min max))"],
+	['mcrand', "(module (min max) (crand min max))"],
 ]

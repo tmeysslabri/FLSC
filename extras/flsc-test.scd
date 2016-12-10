@@ -9,6 +9,13 @@ FLSC_Interpreter(
 ).evaluate.treeValue;
 )
 
+// erreur de syntaxe
+(
+FLSC_Interpreter(
+	")"
+).evaluateAndPlay;
+)
+
 // exemples de synthèse sonore
 
 // application de patch
@@ -59,5 +66,14 @@ x = FLSC_Interpreter(
 	"    (mapcar (lambda (i)" +
 	"              (m* (/ 0.1 i) (m* dyn (mosc (* i freq) 0))))" +
 	"      (range 1 8))) 110))"
+).evaluateAndPlay;
+)
+
+// sinusoïde bruitée
+(
+x = FLSC_Interpreter(
+	"((patch (freq) [0.5 2]" +
+	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
+	"     (mosc (m* (mrand 0.8 1.2) freq) 0))) 220)"
 ).evaluateAndPlay;
 )

@@ -192,9 +192,29 @@
 			var width = FLSC_Var('width').value(ctxt);
 			if(width.isFLSCNil) {width = 0.5};
 			FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-			FLSC_Var('phi').value(ctxt), width],
-			LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
-
+				FLSC_Var('phi').value(ctxt), width],
+				LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
+	// générateurs aléatoires:
+	// générateur par paliers
+	['rand', FLSC_Function(nil, ['min', 'max'],
+		{|ctxt|
+			var min = FLSC_Var('min').value(ctxt);
+			var max = FLSC_Var('max').value(ctxt);
+			FLSC_UGen.newFromClass([
+				FLSC_RestUGenFunc(nil, ['a', 'b'],
+					{|ctxt| FLSC_Var('a').value(ctxt) -
+						FLSC_Var('b').value(ctxt)}).value([max, min]), min],
+				LFNoise0, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
+	// générateur de ligne brisée
+	['crand', FLSC_Function(nil, ['min', 'max'],
+		{|ctxt|
+			var min = FLSC_Var('min').value(ctxt);
+			var max = FLSC_Var('max').value(ctxt);
+			FLSC_UGen.newFromClass([
+				FLSC_RestUGenFunc(nil, ['a', 'b'],
+					{|ctxt| FLSC_Var('a').value(ctxt) -
+						FLSC_Var('b').value(ctxt)}).value([max, min]), min],
+				LFNoise1, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
 	// ALTERATIONS DE SIGNATURE:
 	// retard
 	['delay', FLSC_Function(nil, ['theta', 'sig'],
