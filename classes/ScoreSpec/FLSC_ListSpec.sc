@@ -29,6 +29,8 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 		var msgs = List();
 		// les FLSC_Bundle des sous-graphes
 		var bundles = List();
+		// les dates de début et de fin
+		var start = inf, end = 0;
 		// on itère sur les éléments
 		subSpecs.do {|item|
 			// on évalue le sous-graphe
@@ -39,11 +41,13 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 			// normalement pas nécessaire, puisqu'on est en dehors de patch
 			// msgs.addAll(score.bundle);
 			bundles.addAll(score.bundleList);
+			start = min(start, score.start);
+			end = max(end, score.end);
 		};
 
 		// le Bus de sortie est celui demandé, vérifier son existence
 		if(outBus.isNil) {Error("ListSpec outBus is nil").throw};
 
-		^FLSC_Score(outBus, defs, busses, msgs, bundles);
+		^FLSC_Score(outBus, defs, busses, msgs, bundles, start, end);
 	}
 }

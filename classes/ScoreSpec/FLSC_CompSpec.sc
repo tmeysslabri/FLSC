@@ -39,6 +39,7 @@ FLSC_CompSpec : FLSC_ScoreSpec {
 			bundles.addAll(score.bundleList);
 		}
 
-		^FLSC_Score(out, defs, busses, List(), bundles);
+		^FLSC_Score(out, defs, busses, List(), bundles,
+			timeWarp.value(0), timeWarp.value('end'));
 	}
 }

@@ -55,12 +55,15 @@ FLSC_Interpreter {
 		scoreValue = spec.value(0, timeWarp, varDict);
 		bundles.addAll(scoreValue.bundleList);
 		if(scoreValue.bundle.notEmpty) {
-			"DEBUG: non-empty bundle in top-level FLSC_Score".postln;
+			Error("DEBUG: non-empty bundle in top-level FLSC_Score: %".format(
+				scoreValue.bundle)).throw;
+			// jamais atteint, supprimer
 			bundles.add(FLSC_Bundle(
 			timeWarp.value(0), timeWarp.value('end'), msgs.addAll(scoreValue.bundle)))
 		};
 		scoreValue = FLSC_Score(scoreValue.outBus, defs.putAll(scoreValue.defDict),
-			busses.addAll(scoreValue.busList), List(), bundles);
+			busses.addAll(scoreValue.busList), List(), bundles,
+			scoreValue.start, scoreValue.end);
 		^scoreValue;
 	}
 
@@ -75,7 +78,7 @@ FLSC_Interpreter {
 		var endIndex = 0;
 
 		// Score résultante
-		var score = Score();
+		var scoreDict = Dictionary(), score = Score();
 
 		// le serveur
 		var server = Server.default;
@@ -102,11 +105,22 @@ FLSC_Interpreter {
 		};
 
 		// création du Score
+		// l'ordre des bundles est signifiant, le conserver
+		// en concaténant les listes de messages de même date
 		scoreValue.bundleList.do
 		{|item|
 			var scorePair = item.asSCScorePair(server);
-			score.add(scorePair[0]); score.add(scorePair[1]);
+			scorePair.do {|item|
+				var key = item[0], value = item[1];
+				// "%: %".format(key, value).postln;
+				if(scoreDict[key].notNil)
+				{ scoreDict[key] = scoreDict[key] ++ value }
+				{ scoreDict[key] = value };
+			}
 		};
+		scoreDict.keysValuesDo {|key, value|
+			// "%: %".format(key, value).postln;
+			score.add([key] ++ value)};
 		score.sort;
 
 		// exécution de la partition

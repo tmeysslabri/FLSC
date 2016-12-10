@@ -23,6 +23,6 @@ FLSC_Bundle {
 			endBundle = server.makeBundle(false,
 				{ synth.free }, endBundle);
 		};
-		^[[start] ++ startBundle, [end] ++ endBundle];
+		^[[start, startBundle], [end, endBundle]];
 	}
 }

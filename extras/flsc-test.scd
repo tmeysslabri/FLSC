@@ -9,7 +9,9 @@ FLSC_Interpreter("
 ").evaluate;
 )
 
-// exemple de synthèse sonore
+// exemples de synthèse sonore
+
+// application de patch
 (
 x = FLSC_Interpreter(
 	"((patch (freq) [0.5 2]" +
@@ -18,12 +20,34 @@ x = FLSC_Interpreter(
 );
 )
 
+// dédoublement d'un patch avec let
+(
+x = FLSC_Interpreter(
+	"(let ((myvar (patch (freq) [0.5 2]" +
+	"                (m* (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])" +
+	"                  (mosc freq 0)))))" +
+	"  [(delay 0 (myvar 220)) (delay 1 (myvar 330))])"
+);
+)
+
+// dédoublement d'une application de patch avec let
 (
 x = FLSC_Interpreter(
 	"(let ((myvar ((patch (freq) [0.5 2]" +
 	"                (m* (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])" +
 	"                  (mosc freq 0))) 220)))" +
 	"  [(delay 0 myvar) (delay 1 myvar)])"
+);
+)
+
+// dédoublement d'un module
+(
+x = FLSC_Interpreter(
+	"((patch (freq) [0.5 1 1.5 2 3]" +
+	"   (let ((myvar " +
+	"           (m* (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])" +
+	"             (mosc freq 0))))" +
+	"     (par [[0 4] [2 5]] [myvar myvar]))) 220)"
 );
 )
 

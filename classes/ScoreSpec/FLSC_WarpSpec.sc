@@ -27,11 +27,9 @@ FLSC_WarpSpec {
 		var newTimeWarp = superTimeWarp <> timeWarp;
 		var varDict = Dictionary();
 		// création du varDict par itération sur la varList
-		// les variables doivent créer des outBus, sauf si la sortie est la sortie système
-		var varOut = if(outBus == 0) {0} {nil};
 		// il faut également récupérer les définitions, les bus, les messages, les bundles
 		subSpec.varList.do {|item|
-			var value = item.value(varOut, newTimeWarp, varDict);
+			var value = item.value(nil, newTimeWarp, varDict);
 			defs.putAll(value.defDict);
 			busses.addAll(value.busList);
 			msgs.addAll(value.bundle);
@@ -42,11 +40,12 @@ FLSC_WarpSpec {
 		// on rappelle sur la spécification de référence
 		score = subSpec.value(outBus, newTimeWarp, varDict);
 		bundles.addAll(score.bundleList);
-		if(score.bundle.notEmpty) {
+		msgs.addAll(score.bundle);
+		if(msgs.notEmpty) {
 			bundles.add(FLSC_Bundle(
-			newTimeWarp.value(0), newTimeWarp.value('end'), msgs.addAll(score.bundle)))
+			score.start, score.end, msgs))
 		};
 		^FLSC_Score(score.outBus, defs.putAll(score.defDict), busses.addAll(score.busList),
-			List(), bundles);
+			List(), bundles, score.start, score.end);
 	}
 }

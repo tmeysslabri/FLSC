@@ -56,6 +56,7 @@ FLSC_ModSpec : FLSC_ScoreSpec {
 		// on créée le message courant à la fin, pour respecter le chaînage causal
 		msgs.add(FLSC_MsgPair(def.name, synthArgs));
 
-		^FLSC_Score(out, defs, busses, msgs, bundles);
+		^FLSC_Score(out, defs, busses, msgs, bundles,
+			timeWarp.value(0), timeWarp.value('end'));
 	}
 }

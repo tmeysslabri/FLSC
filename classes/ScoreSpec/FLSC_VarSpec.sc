@@ -22,19 +22,22 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 	value {|outBus, timeWarp, varDict|
 		// on va chercher la référence dans le varDict
 		var sub = varDict[subSpec];
-		// si outBus n'est pas nil et n'est pas la sortie système, créer un raccord
-		if(outBus.notNil && (outBus != 0))
+		// si outBus n'est pas nil, créer un raccord
+		if(outBus.notNil)
 		{
 			var pipe = switch(subSpec.rate)
 			{'audio'}   {pipeAr}
 			{'control'} {pipeKr};
 			^FLSC_Score(outBus, Dictionary.newFrom([pipe.name, pipe]), List(),
 				List.newFrom([FLSC_MsgPair(pipe.name,
-					Dictionary.newFrom(['in', sub.outBus, 'out', outBus]))]), List());
+					Dictionary.newFrom(['in', sub.outBus, 'out', outBus]))]), List(),
+				sub.start, sub.end
+			);
 		} {
 			// toutes les informations ont déjà été ajoutées,
 			// seul le bus de sortie nous intéresse
-			^FLSC_Score(sub.outBus, Dictionary(), List(), List(), List());
+			^FLSC_Score(sub.outBus, Dictionary(), List(), List(), List(),
+				sub.start, sub.end);
 		};
 	}
 
