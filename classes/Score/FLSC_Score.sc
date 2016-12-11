@@ -42,8 +42,8 @@ FLSC_Score {
 		var server = Server.default;
 
 		// allocation des Bus
-		startTimes = busList.sort {|a,b| a.start < b.start};
-		endTimes = busList.sort {|a,b| a.end < b.end};
+		startTimes = busList.shallowCopy.sort {|a,b| a.start < b.start};
+		endTimes = busList.shallowCopy.sort {|a,b| a.end < b.end};
 		startTimes.do {|item|
 			while({item.start > endTimes[endIndex].end})
 			{
@@ -59,7 +59,14 @@ FLSC_Score {
 				switch(item.type)
 				{'audio'}   {Bus.audio}
 				{'control'} {Bus.control}
-			}
+			};
+		};
+
+		while({endIndex < endTimes.size})
+		{
+			var endBus = endTimes[endIndex];
+			busses[endBus.type].add(endBus.bus);
+			endIndex = endIndex + 1;
 		};
 
 		// création du Score
@@ -96,6 +103,8 @@ FLSC_Score {
 			(score.endTime + 1).wait;
 			// supprimer les SynthDef
 			defDict.do {|item| SynthDef.removeAt(item.name)};
+			// supprimer les Bus
+			busses.do {|list| list.do {|bus| bus.free}};
 			// quitter
 			// server.quit;
 		}).play;
