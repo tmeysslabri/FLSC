@@ -55,5 +55,3 @@ FLSC_Interpreter {
 		^semanticTree.asFLSC;
 	}
 }
-
-	
