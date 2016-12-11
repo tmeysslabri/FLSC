@@ -98,3 +98,18 @@ x = FLSC_Interpreter(
 	"     (mosc freq 0))) 220)"
 ).evaluateAndPlay;
 )
+
+// itération avec calcul sur le temps
+// (on entend des battements, est-ce normal ?)
+(
+x = FLSC_Interpreter(
+	"(let ((synth (patch (freq) [0.5 2]" +
+	"               (m* (menv [0 0.1 0])" +
+	"                 (mosc freq 0))))" +
+	"      (freq (lambda (t) (* 100 (** 2 (/ t 4))))))" +
+	"  (mapcar" +
+	"    (lambda (i) (let ((num (+ i (random))))" +
+	"                  (delay num (synth (freq num)))))" +
+	"    (range 0 8)))"
+).evaluateAndPlay;
+)
