@@ -15,7 +15,6 @@ FLSC_MsgPair {
 	}
 
 	asSynth {
-		^Synth(defName, synthArgs.collect({|item| item.value}).asKeyValuePairs,
-			addAction: 'addToTail');
+		^Synth(defName, synthArgs.collect({|item| item.value}).asKeyValuePairs);
 	}
 }

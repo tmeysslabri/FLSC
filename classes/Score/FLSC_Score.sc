@@ -63,13 +63,15 @@ FLSC_Score {
 		};
 
 		// création du Score
-		// l'ordre des bundles est signifiant, le conserver
-		// en concaténant les listes de messages de même date
-		bundleList.do
+		// l'ordre des bundles est signifiant, il faut l'inverser
+		// (puisque les messages sont du plus profond au plus proche de la racine)
+		// et concaténer les listes de messages de même date
+		bundleList.reverse.do
 		{|item|
 			var scorePair = item.asSCScorePair(server);
 			scorePair.do {|item|
-				var key = item[0], value = item[1];
+				// de même les listes de messages doivent être inversées
+				var key = item[0], value = item[1].reverse;
 				// "%: %".format(key, value).postln;
 				if(scoreDict[key].notNil)
 				{ scoreDict[key] = scoreDict[key] ++ value }
