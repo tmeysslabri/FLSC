@@ -9,6 +9,9 @@ FLSC_Interpreter(
 ).evaluate.treeValue;
 )
 
+// génération aléatoire
+FLSC_Interpreter("(random)").evaluate.treeValue;
+
 // erreur de syntaxe
 (
 FLSC_Interpreter(

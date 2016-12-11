@@ -10,6 +10,13 @@
 		['true', true],
 		['inf', inf],
 		// FONCTIONS NUMERIQUES:
+		// generateur aléatoire
+		// attention, si l'argument est un entier, random produira des entiers
+		['random', FLSC_Function(nil, ['max'],
+			{|ctxt|
+				var max = FLSC_Var('max').value(ctxt);
+				if(max.isFLSCNil) {max = 1.0};
+				max.rand;})],
 		// opérateurs unaires:
 		['neg', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).neg})],
 		['abs', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).abs})],
