@@ -55,6 +55,6 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 		// si aucun Bus de sortie n'est demandé, ajouter le début et la fin au Bus créé
 		if(outBus.isNil) {out.start = start; out.end = end;};
 
-		^FLSC_Score(outBus, defs, busses, msgs, bundles, start, end);
+		^FLSC_Score(out, defs, busses, msgs, bundles, start, end);
 	}
 }
