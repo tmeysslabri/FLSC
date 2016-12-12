@@ -23,8 +23,7 @@ FLSC_Interpreter {
 	evaluate {
 		// réinitialiser les UID
 		FLSC_UID.reset;
-		treeValue = semanticTree.value(FLSC_Context.library);
-		^this;
+		^treeValue = semanticTree.value(FLSC_Context.library);
 	}
 
 	evaluateLibrary {|context|
@@ -32,22 +31,20 @@ FLSC_Interpreter {
 	}
 
 	asFLSCScore {
-		scoreValue = treeValue.asFLSCScoreSpec.asFLSCScore;
-		^this;
+		^scoreValue = treeValue.asFLSCScoreSpec.asFLSCScore;
 	}
 
 	play {
-		scoreValue.play;
-		^this;
+		^scoreValue.play;
 	}
 
 	evaluateAndPlay {
-		this.evaluate;
-		case
-		{treeValue.isKindOf(FLSC_Error)} {treeValue.asFLSC.postln}
-		{treeValue.isFLSCScoreSpec || treeValue.isArray}
+		var res;
+		if(semanticTree.isKindOf(FLSC_Error)) {^semanticTree.asFLSC};
+		res = this.evaluate;
+		if(treeValue.isFLSCScoreSpec || treeValue.isArray)
 		{this.asFLSCScore.play}
-		{true} {treeValue.postln};
+		{treeValue.postln};
 		^this;
 	}
 
