@@ -44,7 +44,7 @@ FLSC_Context : Dictionary {
 			var value = item[1];
 			// encapsuler les FLSC_UGen avec des FLSC_VarUGen
 			// et les FLSC_ScoreSpec avec des FLSC_VarSpec
-			if(nonUnique && (value.isFLSCUGen || value.isFLSCScoreSpec))
+			if(nonUnique && (value.isFLSCUGen || value.isFLSCScoreSpec || value.isArray))
 			{ value = value.encapsulate };
 			this.put(key, value);
 		});
