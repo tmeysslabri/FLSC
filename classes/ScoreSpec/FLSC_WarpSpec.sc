@@ -46,6 +46,6 @@ FLSC_WarpSpec {
 			score.start, score.end, msgs))
 		};
 		^FLSC_Score(score.outBus, defs.putAll(score.defDict), busses.addAll(score.busList),
-			List(), bundles, score.start, score.end);
+			List(), bundles, score.start, score.end, score.rank);
 	}
 }

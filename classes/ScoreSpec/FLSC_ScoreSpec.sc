@@ -67,13 +67,13 @@ FLSC_ScoreSpec {
 		// ajouter systemOut à la fin
 		bundles.add(FLSC_Bundle(scoreValue.start, scoreValue.end,
 			List.newFrom([FLSC_MsgPair(systemOut.name,
-				Dictionary.newFrom(['in', scoreValue.outBus]))])));
+				Dictionary.newFrom(['in', scoreValue.outBus]), scoreValue.rank)])));
 		// ajouter la définition de la sortie système
 		defs.put(systemOut.name, systemOut);
 
 		// retourner le résultat
 		^FLSC_Score(scoreValue.outBus, defs, busses, List(), bundles,
-			scoreValue.start, scoreValue.end);
+			scoreValue.start, scoreValue.end, scoreValue.rank + 1);
 	}
 
 	isFLSCScoreSpec { ^true; }

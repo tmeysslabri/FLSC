@@ -3,18 +3,22 @@ FLSC_MsgPair {
 	var defName;
 	// les arguments d'appel
 	var synthArgs;
+	// le rang
+	var rank;
 
-	*new {|name, args|
-		^super.new.msgPairInit(name, args);
+	*new {|name, args, rank|
+		^super.new.msgPairInit(name, args, rank);
 	}
 
-	msgPairInit {|name, args|
+	msgPairInit {|name, args, rankNum|
 		defName = name;
 		synthArgs = args;
+		rank = rankNum;
 		^this;
 	}
 
-	asSynth {
-		^Synth(defName, synthArgs.collect({|item| item.value}).asKeyValuePairs);
+	asSynth {|groups|
+		^Synth(defName, synthArgs.collect({|item| item.value}).asKeyValuePairs,
+			groups[rank]);
 	}
 }

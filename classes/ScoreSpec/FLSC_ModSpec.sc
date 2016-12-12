@@ -30,6 +30,8 @@ FLSC_ModSpec : FLSC_ScoreSpec {
 		var msgs = List();
 		// les FLSC_Bundle des sous-graphes
 		var bundles = List();
+		// le rang de ce sous-graphe
+		var rank = 0;
 		// les arguments du message créé
 		// on itère sur les arguments
 		var synthArgs = args.collect {|item|
@@ -45,6 +47,7 @@ FLSC_ModSpec : FLSC_ScoreSpec {
 				defs.putAll(score.defDict);
 				msgs.addAll(score.bundle);
 				bundles.addAll(score.bundleList);
+				rank = max(rank, score.rank);
 				// on retourne le bus de sortie
 				score.outBus;
 			}
@@ -55,9 +58,9 @@ FLSC_ModSpec : FLSC_ScoreSpec {
 		defs.put(def.name, def);
 
 		// on créée le message courant à la fin, pour respecter le chaînage causal
-		msgs.add(FLSC_MsgPair(def.name, synthArgs));
+		msgs.add(FLSC_MsgPair(def.name, synthArgs, rank));
 
 		^FLSC_Score(out, defs, busses, msgs, bundles,
-			timeWarp.value(0), timeWarp.value('end'));
+			timeWarp.value(0), timeWarp.value('end'), rank + 1);
 	}
 }

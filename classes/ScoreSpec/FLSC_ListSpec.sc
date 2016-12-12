@@ -30,6 +30,8 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 		var bundles = List();
 		// les dates de début et de fin
 		var start = inf, end = 0;
+		// le rang global
+		var rank = 0;
 		// le Bus de sortie est celui demandé, ou un nouveau Bus en son absence
 		// dans le deuxième cas on doit le créér, puis calculer le début et la fin
 		// suivant le résultat des sous-spécifications
@@ -50,11 +52,12 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 			bundles.addAll(score.bundleList);
 			start = min(start, score.start);
 			end = max(end, score.end);
+			rank = max(rank, score.rank);
 		};
 
 		// si aucun Bus de sortie n'est demandé, ajouter le début et la fin au Bus créé
 		if(outBus.isNil) {out.start = start; out.end = end;};
 
-		^FLSC_Score(out, defs, busses, msgs, bundles, start, end);
+		^FLSC_Score(out, defs, busses, msgs, bundles, start, end, rank);
 	}
 }

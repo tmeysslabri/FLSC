@@ -14,12 +14,12 @@ FLSC_Bundle {
 		msgList = msgs;
 	}
 
-	asSCScorePair {|server|
+	asSCScorePair {|server, groups|
 		var startBundle = [], endBundle = [];
 		msgList.do {|item|
 			var synth;
 			startBundle = server.makeBundle(false,
-				{ synth = item.asSynth }, startBundle);
+				{ synth = item.asSynth(groups) }, startBundle);
 			endBundle = server.makeBundle(false,
 				{ synth.free }, endBundle);
 		};

@@ -11,12 +11,14 @@ FLSC_Score {
 	var <bundleList;
 	// les dates de début et de fin
 	var <start, <end;
+	// le rang du sous-graphe
+	var <rank;
 
-	*new {|out, defs, busses, msgs, bundles, t0, tf|
-		^super.new.scoreInit(out, defs, busses, msgs, bundles, t0, tf);
+	*new {|out, defs, busses, msgs, bundles, t0, tf, rank|
+		^super.new.scoreInit(out, defs, busses, msgs, bundles, t0, tf, rank);
 	}
 
-	scoreInit {|out, defs, busses, msgs, bundles, t0, tf|
+	scoreInit {|out, defs, busses, msgs, bundles, t0, tf, rankNum|
 		outBus = out;
 		defDict = defs;
 		busList = busses;
@@ -24,6 +26,7 @@ FLSC_Score {
 		bundleList = bundles;
 		start = t0;
 		end = tf;
+		rank = rankNum;
 		^this;
 	}
 
@@ -34,6 +37,10 @@ FLSC_Score {
 		var busses = Dictionary.newFrom(['audio', List(), 'control', List()]);
 		// indice d'itération sur endTimes
 		var endIndex = 0;
+
+		// les groupes utilisés pour le séquencement
+		var groups = Array.fill(rank) {ParGroup.basicNew};
+		var curGroup = nil;
 
 		// Score résultante
 		var scoreDict = Dictionary(), score = Score();
@@ -70,12 +77,20 @@ FLSC_Score {
 		};
 
 		// création du Score
+
+		// ajouter les messages de création des groupes, au début
+		scoreDict[start] = groups.collect
+		{|item|
+			var msg = item.newMsg(curGroup, 'addAfter');
+			curGroup = item;
+			msg;
+		};
 		// l'ordre des bundles est signifiant, il faut l'inverser
 		// (puisque les messages sont du plus profond au plus proche de la racine)
 		// et concaténer les listes de messages de même date
 		bundleList.reverse.do
 		{|item|
-			var scorePair = item.asSCScorePair(server);
+			var scorePair = item.asSCScorePair(server, groups);
 			scorePair.do {|item|
 				// de même les listes de messages doivent être inversées
 				var key = item[0], value = item[1].reverse;
@@ -85,6 +100,10 @@ FLSC_Score {
 				{ scoreDict[key] = value };
 			}
 		};
+
+		// ajouter les messages de terminaison des groupes, à la fin
+		scoreDict[end] = groups.collect {|item| item.freeMsg};
+
 		scoreDict.keysValuesDo {|key, value|
 			// "%: %".format(key, value).postln;
 			score.add([key] ++ value)};

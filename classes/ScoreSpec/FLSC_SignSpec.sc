@@ -34,6 +34,6 @@ FLSC_SignSpec : FLSC_ScoreSpec {
 
 		// le résultat est celui de la WarpSpec, avec le FLSC_Bus créé éventuellement
 		^FLSC_Score(out, defs.putAll(score.defDict), busses.addAll(score.busList),
-			List(), bundles.addAll(score.bundleList), score.start, score.end);
+			List(), bundles.addAll(score.bundleList), score.start, score.end, score.rank);
 	}
 }

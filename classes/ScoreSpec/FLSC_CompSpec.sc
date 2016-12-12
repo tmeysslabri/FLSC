@@ -25,6 +25,8 @@ FLSC_CompSpec : FLSC_ScoreSpec {
 		var defs = Dictionary();
 		// les FLSC_Bundle des sous-graphes
 		var bundles = List();
+		// le rang global
+		var rank = 0;
 
 		// on rappelle itérativement sur les FLSC_WarpSpec
 		// le bus demandé est le outBus
@@ -37,9 +39,10 @@ FLSC_CompSpec : FLSC_ScoreSpec {
 			busses.addAll(score.busList);
 			defs.putAll(score.defDict);
 			bundles.addAll(score.bundleList);
+			rank = max(rank, score.rank);
 		}
 
 		^FLSC_Score(out, defs, busses, List(), bundles,
-			timeWarp.value(0), timeWarp.value('end'));
+			timeWarp.value(0), timeWarp.value('end'), rank);
 	}
 }
