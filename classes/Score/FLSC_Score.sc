@@ -85,15 +85,16 @@ FLSC_Score {
 			curGroup = item;
 			msg;
 		};
-		// l'ordre des bundles est signifiant, il faut l'inverser
-		// (puisque les messages sont du plus profond au plus proche de la racine)
-		// et concaténer les listes de messages de même date
-		bundleList.reverse.do
+		// l'ordre des bundles n'est pas signifiant
+		// (puisque les messages sont classés dans les groupes par leur rang)
+		// il faut tout de même concaténer les listes de messages de date start et end
+		// de façon à ce que les groupes soient créés en premier et détruits en dernier
+		// (de plus cela économise des éléments de Score, lorsque les dates sont les mêmes)
+		bundleList.do
 		{|item|
 			var scorePair = item.asSCScorePair(server, groups);
 			scorePair.do {|item|
-				// de même les listes de messages doivent être inversées
-				var key = item[0], value = item[1].reverse;
+				var key = item[0], value = item[1];
 				// "%: %".format(key, value).postln;
 				if(scoreDict[key].notNil)
 				{ scoreDict[key] = scoreDict[key] ++ value }
