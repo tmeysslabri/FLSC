@@ -61,6 +61,17 @@ x = FLSC_Interpreter(
 ).evaluateAndPlay;
 )
 
+// dédoublement d'une liste
+(
+x = FLSC_Interpreter(
+	"(let* ((synth (patch (freq) [0.5 2]" +
+	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
+	"                  (mosc freq 0))))" +
+	"       (lst [(delay 0 (synth 220)) (delay 1 (synth 330))]))" +
+	"  [lst (delay 2 lst)])"
+).evaluateAndPlay;
+)
+
 // somme de partiels
 (
 x = FLSC_Interpreter(

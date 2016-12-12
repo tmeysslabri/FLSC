@@ -28,10 +28,10 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 			var pipe = switch(subSpec.rate)
 			{'audio'}   {pipeAr}
 			{'control'} {pipeKr};
-			^FLSC_Score(outBus, Dictionary.newFrom([pipe.name, pipe]), List(),
-				List.newFrom([FLSC_MsgPair(pipe.name,
+			^FLSC_Score(outBus, Dictionary.newFrom([pipe.name, pipe]), List(), List(),
+				[FLSC_Bundle(sub.start, sub.end, [FLSC_MsgPair(pipe.name,
 					Dictionary.newFrom(['in', sub.outBus, 'out', outBus]),
-					sub.rank)]), List(), sub.start, sub.end, sub.rank + 1
+					sub.rank)])], sub.start, sub.end, sub.rank + 1
 			);
 		} {
 			// toutes les informations ont déjà été ajoutées,
