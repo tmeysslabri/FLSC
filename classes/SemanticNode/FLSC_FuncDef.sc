@@ -12,7 +12,7 @@ FLSC_FuncDef : FLSC_SemanticNode {
 	}
 
 	value {|context|
-		^FLSC_Function(context, parmNames, {|callContext| nodeVal.value(callContext)});
+		^FLSC_Function(context, parmNames, {|callContext| nodeVal.value(callContext)}, true);
 	}
 
 	asFLSC {

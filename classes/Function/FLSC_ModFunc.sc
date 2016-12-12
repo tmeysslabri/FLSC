@@ -4,8 +4,8 @@ FLSC_ModFunc : FLSC_Function {
 	// les couples [UID, FLSC_Time] référencés par les FLSC_TimeUGen du graphe
 	var timeControls;
 
-	*new {|context, parms, func, times|
-		^super.new(context, parms, func).modFuncInit(times);
+	*new {|context, parms, func, times, nonUnique = false|
+		^super.new(context, parms, func, nonUnique).modFuncInit(times);
 	}
 
 	modFuncInit {|times|

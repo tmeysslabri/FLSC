@@ -66,9 +66,9 @@ x = FLSC_Interpreter(
 x = FLSC_Interpreter(
 	"(let ((dyn (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])))" +
 	"  ((patch (freq) [0.5 2]" +
-	"    (mapcar (lambda (i)" +
-	"              (m* (/ 0.1 i) (m* dyn (mosc (* i freq) 0))))" +
-	"      (range 1 8))) 110))"
+	"     (mapcar (lambda (i)" +
+	"               (m* (/ 0.1 i) (m* dyn (mosc (* i freq) 0))))" +
+	"       (range 1 8))) 110))"
 ).evaluateAndPlay;
 )
 

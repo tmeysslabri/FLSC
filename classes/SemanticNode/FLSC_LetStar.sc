@@ -2,7 +2,7 @@ FLSC_LetStar : FLSC_Let {
 	letBindings {|context|
 		var list = [nameList, valList].flop;
 		^list.inject([],
-			{|res, item| res ++ [[item[0], item[1].value(FLSC_Context(context, res))]]});
+			{|res, item| res ++ [[item[0], item[1].value(FLSC_Context(context, res, true))]]});
 	}
 
 	asFLSC {
