@@ -49,8 +49,8 @@ FLSC_Score {
 		var server = Server.default;
 
 		// allocation des Bus
-		startTimes = busList.shallowCopy.sort {|a,b| a.start < b.start};
-		endTimes = busList.shallowCopy.sort {|a,b| a.end < b.end};
+		startTimes = busList.copy.sort {|a,b| a.start < b.start};
+		endTimes = busList.copy.sort {|a,b| a.end < b.end};
 		startTimes.do {|item|
 			while({item.start > endTimes[endIndex].end})
 			{
@@ -60,8 +60,7 @@ FLSC_Score {
 			};
 			item.bus = if(busses[item.type].notEmpty)
 			{
-				var busList = busses[item.type];
-				busList.take(busList.first);
+				busses[item.type].pop;
 			} {
 				switch(item.type)
 				{'audio'}   {Bus.audio}

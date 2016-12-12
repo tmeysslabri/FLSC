@@ -15,6 +15,7 @@ FLSC_Bus {
 		type = rate;
 		start = t0;
 		end = tf;
+		^this;
 	}
 
 	value {

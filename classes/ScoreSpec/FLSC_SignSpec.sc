@@ -17,7 +17,7 @@ FLSC_SignSpec : FLSC_ScoreSpec {
 		// le Bus de sortie est celui demandé, ou un nouveau Bus en son absence
 		var out = if(outBus.notNil) {outBus}
 		{
-			var bus = FLSC_Bus(rate, timeWarp.value(0), timeWarp.value('end'));
+			var bus = FLSC_Bus(rate, nil, nil);
 			busses.add(bus);
 			bus;
 		};
@@ -31,6 +31,9 @@ FLSC_SignSpec : FLSC_ScoreSpec {
 		// le varDict n'est pas nécessaire,
 		// puisque les variables sont uniquement celles du sous-graphe
 		var score = subSpec.value(out, timeWarp);
+
+		// eventuellement affecter le début et la fin du Bus créé
+		if(outBus.isNil) {out.start = score.start; out.end = score.end;};
 
 		// le résultat est celui de la WarpSpec, avec le FLSC_Bus créé éventuellement
 		^FLSC_Score(out, defs.putAll(score.defDict), busses.addAll(score.busList),
