@@ -52,7 +52,7 @@ FLSC_Score {
 		startTimes = busList.copy.sort {|a,b| a.start < b.start};
 		endTimes = busList.copy.sort {|a,b| a.end < b.end};
 		startTimes.do {|item|
-			while({item.start > endTimes[endIndex].end})
+			while({item.start >= endTimes[endIndex].end})
 			{
 				var endBus = endTimes[endIndex];
 				busses[endBus.type].add(endBus.bus);
