@@ -61,7 +61,7 @@ FLSC_Score {
 			item.bus = if(busses[item.type].notEmpty)
 			{
 				var busList = busses[item.type];
-				busList.take(busList.first);
+				busList.pop;
 			} {
 				switch(item.type)
 				{'audio'}   {Bus.audio}
