@@ -119,7 +119,7 @@ FLSC_Score {
 			// jouer la partition
 			score.play;
 			// attendre la fin
-			(score.endTime + 1).wait;
+			(score.endTime + 0.1).wait;
 			// supprimer les SynthDef
 			defDict.do {|item| SynthDef.removeAt(item.name)};
 			// supprimer les Bus

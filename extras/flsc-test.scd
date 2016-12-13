@@ -1,6 +1,11 @@
 // exemples de base
 FLSC_Interpreter().read().read("(+ 1 2)").evaluate;
 FLSC_Interpreter().read("((lambda () 42))").evaluate;
+// génération aléatoire
+FLSC_Interpreter().read("(random)").evaluate;
+// erreur de syntaxe
+FLSC_Interpreter().read(")").evaluateAndPlay;
+
 
 // exemple de fonction récursive (la factorielle)
 (
@@ -13,17 +18,83 @@ FLSC_Interpreter().read(
 ).evaluate;
 )
 
-// génération aléatoire
-FLSC_Interpreter().read("(random)").evaluate.treeValue;
-
-// erreur de syntaxe
-(
-FLSC_Interpreter().read(
-	")"
-).evaluateAndPlay;
-)
-
 // exemples de synthèse sonore
+
+// routine de test automatique
+// les exemples individuels sont donnés plus bas
+(
+var interpreter = FLSC_Interpreter();
+var programs = [
+	// application de patch
+	"((patch (freq) [0.5 2]\n" +
+	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
+	"     (mosc freq 0))) 220)",
+// dédoublement d'un patch avec let
+	"(let ((myvar (patch (freq) [0.5 2]\n" +
+	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
+	"                  (mosc freq 0)))))\n" +
+	"  [(delay 0 (myvar 220)) (delay 1 (myvar 330))])",
+// dédoublement d'une application de patch avec let
+	"(let ((myvar ((patch (freq) [0.5 2]\n" +
+	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
+	"                  (mosc freq 0))) 220)))\n" +
+	"  [(delay 0 myvar) (delay 1 myvar)])",
+// dédoublement d'un module
+	"((patch (freq) [0.5 1 2 2.5 3]\n" +
+	"   (let ((myvar \n" +
+	"           (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
+	"             (mosc freq 0))))\n" +
+	"     (par [[0 3] [2 5]]\n" +
+	"          [(subsign [1] myvar)\n" +
+	"           (subsign [2] myvar)]))) 220)",
+// dédoublement d'une liste
+	"(let* ((synth (patch (freq) [0.5 2]\n" +
+	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
+	"                  (mosc freq 0))))\n" +
+	"       (lst [(delay 0 (synth 220)) (delay 1 (synth 330))]))\n" +
+	"  [lst (delay 2 lst)])",
+// somme de partiels
+	"(let ((dyn (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])))\n" +
+	"  ((patch (freq) [0.5 2]\n" +
+	"    (mapcar (lambda (i)\n" +
+	"              (m* (/ 0.1 i) (m* dyn (mosc (* i freq) 0))))\n" +
+	"      (range 1 8))) 110))",
+// sinusoïde bruitée
+	"((patch (freq) [0.5 2]\n" +
+	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
+	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)",
+// générateur d'enveloppe (! à éviter)
+	"((patch (freq) [0.5 2]\n" +
+	"   (m* (lmenv [0 0.1 0] [0 1 2])\n" +
+	"     (mosc freq 0))) 220)",
+// enveloppe à nombre de points variable
+	"((patch (freq) [0.5 2]\n" +
+	"   (m* (menv [0 0.1 0])\n" +
+	"     (mosc freq 0))) 220)",
+// itération avec calcul sur le temps
+// (on entend des battements, est-ce normal ?)
+	"(let ((synth (patch (freq) [0.5 2]\n" +
+	"               (m* (menv [0 0.1 0])\n" +
+	"                 (mosc freq 0))))\n" +
+	"      (freq (lambda (t) (* 100 (** 2 (/ t 4))))))\n" +
+	"  (mapcar\n" +
+	"    (lambda (i) (let ((num (+ i (random))))\n" +
+	"                  (delay num (synth (freq num)))))\n" +
+	"    (range 0 8)))",
+];
+
+Routine({
+	Server.default.bootSync;
+	programs.do {|string|
+		Server.default.sync;
+		"Executing:".postln; string.postln;
+		interpreter.read(string).evaluateAndPlay;
+		if(interpreter.scoreValue.notNil)
+		{(interpreter.scoreValue.end + 1).wait};
+	};
+	"DONE".postln;
+}).play;
+)
 
 // application de patch
 (

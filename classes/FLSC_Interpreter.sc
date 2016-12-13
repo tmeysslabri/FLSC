@@ -51,9 +51,8 @@ FLSC_Interpreter {
 	}
 
 	evaluateAndPlay {
-		var res;
 		if(semanticTree.isKindOf(FLSC_Error)) {^semanticTree.asFLSC};
-		res = this.evaluate;
+		this.evaluate;
 		if(treeValue.isFLSCScoreSpec || treeValue.isArray)
 		{this.asFLSCScore.play}
 		{treeValue.postln};
