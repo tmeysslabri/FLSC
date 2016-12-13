@@ -57,11 +57,13 @@ x = FLSC_Interpreter(
 // dédoublement d'un module
 (
 x = FLSC_Interpreter(
-	"((patch (freq) [0.5 1 1.5 2 3]" +
+	"((patch (freq) [0.5 1 2 2.5 3]" +
 	"   (let ((myvar " +
 	"           (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"             (mosc freq 0))))" +
-	"     (par [[0 4] [2 5]] [myvar myvar]))) 220)"
+	"     (par [[0 3] [2 5]]" +
+	"          [(subsign [1] myvar)" +
+	"           (subsign [2] myvar)]))) 220)"
 ).evaluateAndPlay;
 )
 
