@@ -5,18 +5,15 @@ FLSC_Function {
 	var funcParms;
 	// l'opération à executer: une Function d'un FLSC_Context
 	var function;
-	// la fonction peut-elle appeler plusieurs fois la même variable ?
-	var nonUnique;
 
-	*new {|context, parms, func, nonUnique = false|
-		^super.new.funcInit(context, parms, func, nonUnique);
+	*new {|context, parms, func|
+		^super.new.funcInit(context, parms, func);
 	}
 
-	funcInit {|context, parms, func, nUnq|
+	funcInit {|context, parms, func|
 		baseContext = context;
 		funcParms = parms;
 		function = func;
-		nonUnique = nUnq;
 		^this;
 	}
 
@@ -24,12 +21,12 @@ FLSC_Function {
 		var execContext = FLSC_Context(baseContext,
 			[funcParms,
 				(args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1]
-		].flop, nonUnique);
+		].flop);
 		^function.value(execContext);
 	}
 
 	// nécessaire pour ajouter la fonction dans son propre contexte en cas de letrec
 	addContext {|keysValues|
-		baseContext = FLSC_Context(baseContext, keysValues, true);
+		baseContext = FLSC_Context(baseContext, keysValues);
 	}
 }

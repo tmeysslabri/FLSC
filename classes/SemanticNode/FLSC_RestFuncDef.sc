@@ -13,8 +13,7 @@ FLSC_RestFuncDef : FLSC_FuncDef {
 
 	value {|context|
 		if(hasRest,
-			{ ^FLSC_RestFunc(context, parmNames,
-				{|callContext| nodeVal.value(callContext)}, true)},
+			{ ^FLSC_RestFunc(context, parmNames, {|callContext| nodeVal.value(callContext)}); },
 			{ ^super.value(context); }
 		);
 	}

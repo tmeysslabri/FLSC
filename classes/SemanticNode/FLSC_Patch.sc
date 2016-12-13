@@ -26,9 +26,9 @@ FLSC_Patch : FLSC_RestFuncDef {
 
 		if(hasRest)
 		{
-			^FLSC_RestFunc(context, parmNames, warpFunc, true)
+			^FLSC_RestFunc(context, parmNames, warpFunc)
 		} {
-			^FLSC_Function(context, parmNames, warpFunc, true)
+			^FLSC_Function(context, parmNames, warpFunc)
 		};
 	}
 

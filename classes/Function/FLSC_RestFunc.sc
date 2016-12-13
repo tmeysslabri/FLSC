@@ -1,6 +1,6 @@
 FLSC_RestFunc : FLSC_Function {
-	*new {|context, parms, func, nonUnique = false|
-		^super.new(context, parms, func, nonUnique);
+	*new {|context, parms, func|
+		^super.new(context, parms, func);
 	}
 
 	value {|args|

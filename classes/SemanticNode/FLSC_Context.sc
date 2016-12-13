@@ -2,8 +2,8 @@ FLSC_Context : Dictionary {
 	// contexte de référence: un FLSC_Context
 	var refContext;
 
-	*new {|context, keysValues, nonUnique = false|
-		^super.new.contextInit(context, keysValues, nonUnique);
+	*new {|context, keysValues|
+		^super.new.contextInit(context, keysValues);
 	}
 
 	*library {|version = "0.1", libName = "flscLib"|
@@ -37,14 +37,14 @@ FLSC_Context : Dictionary {
 		^lib;
 	}
 
-	contextInit {|context, keysValues, nonUnique|
+	contextInit {|context, keysValues|
 		refContext = context;
 		keysValues.do({|item|
 			var key = item[0];
 			var value = item[1];
 			// encapsuler les FLSC_UGen avec des FLSC_VarUGen
 			// et les FLSC_ScoreSpec avec des FLSC_VarSpec
-			if(nonUnique && (value.isFLSCUGen || value.isFLSCScoreSpec || value.isArray))
+			if(value.isFLSCUGen || value.isFLSCScoreSpec || value.isArray)
 			{ value = value.encapsulate };
 			this.put(key, value);
 		});
