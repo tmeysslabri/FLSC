@@ -1,4 +1,6 @@
 FLSC_Interpreter {
+	// la bibliothèque: un FLSC_Context
+	var library;
 	// la chaîne de caractères en entrée
 	var <inputString;
 	// l'arbre sémantique associé
@@ -8,26 +10,36 @@ FLSC_Interpreter {
 	// la FLSC_Score résultante
 	var <scoreValue;
 
-	*new {|string|
-		^super.new.interpreterInit(string);
-	}
-
-	interpreterInit{|string|
+	*getTree {|string|
 		var cmd = "echo '" ++ string ++ "' | " ++
 		Platform.userExtensionDir +/+ "FLSC/extras/FLSC2SC/build/flsc2sc";
+		^cmd.unixCmdGetStdOut.interpret;
+	}
+
+	*evaluateLibrary {|context, string|
+		^this.getTree(string).value(context);
+	}
+
+	*new {
+		^super.new.interpreterInit;
+	}
+
+	interpreterInit{
+		library = FLSC_Context.library;
+		^this;
+	}
+
+	read {|string|
 		inputString = string;
-		semanticTree = cmd.unixCmdGetStdOut.interpret;
+		semanticTree = this.class.getTree(string);
+		// réinitialiser les valeurs éventuellement calculées
+		treeValue = nil;
+		scoreValue = nil;
 		^this;
 	}
 
 	evaluate {
-		// réinitialiser les UID
-		FLSC_UID.reset;
-		^treeValue = semanticTree.value(FLSC_Context.library);
-	}
-
-	evaluateLibrary {|context|
-		^semanticTree.value(context);
+		^treeValue = semanticTree.value(library);
 	}
 
 	asFLSCScore {

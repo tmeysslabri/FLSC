@@ -31,7 +31,7 @@ FLSC_Context : Dictionary {
 		}
 		{content = "[]"};
 		content.interpret.collect {|batch| content = batch.collect
-			{|item| [item[0], FLSC_Interpreter(item[1]).evaluateLibrary(lib)]};
+			{|item| [item[0], FLSC_Interpreter.evaluateLibrary(lib, item[1])]};
 			lib = this.new(lib, content);
 		};
 		^lib;

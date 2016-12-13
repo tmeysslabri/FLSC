@@ -1,10 +1,10 @@
 // exemples de base
-FLSC_Interpreter("(+ 1 2)").evaluate;
-FLSC_Interpreter("((lambda () 42))").evaluate;
+FLSC_Interpreter().read().read("(+ 1 2)").evaluate;
+FLSC_Interpreter().read("((lambda () 42))").evaluate;
 
 // exemple de fonction récursive (la factorielle)
 (
-FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"(letrec ((fact (lambda (n)" +
 	"                 (if (gt? n 1)" +
 	"                     (* n (fact (- n 1)))" +
@@ -14,11 +14,11 @@ FLSC_Interpreter(
 )
 
 // génération aléatoire
-FLSC_Interpreter("(random)").evaluate.treeValue;
+FLSC_Interpreter().read("(random)").evaluate.treeValue;
 
 // erreur de syntaxe
 (
-FLSC_Interpreter(
+FLSC_Interpreter().read(
 	")"
 ).evaluateAndPlay;
 )
@@ -27,7 +27,7 @@ FLSC_Interpreter(
 
 // application de patch
 (
-FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"     (mosc freq 0))) 220)"
@@ -36,7 +36,7 @@ FLSC_Interpreter(
 
 // dédoublement d'un patch avec let
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"(let ((myvar (patch (freq) [0.5 2]" +
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"                  (mosc freq 0)))))" +
@@ -46,7 +46,7 @@ x = FLSC_Interpreter(
 
 // dédoublement d'une application de patch avec let
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"(let ((myvar ((patch (freq) [0.5 2]" +
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"                  (mosc freq 0))) 220)))" +
@@ -56,7 +56,7 @@ x = FLSC_Interpreter(
 
 // dédoublement d'un module
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"((patch (freq) [0.5 1 2 2.5 3]" +
 	"   (let ((myvar " +
 	"           (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
@@ -69,7 +69,7 @@ x = FLSC_Interpreter(
 
 // dédoublement d'une liste
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"(let* ((synth (patch (freq) [0.5 2]" +
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"                  (mosc freq 0))))" +
@@ -80,7 +80,7 @@ x = FLSC_Interpreter(
 
 // somme de partiels
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"(let ((dyn (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])))" +
 	"  ((patch (freq) [0.5 2]" +
 	"    (mapcar (lambda (i)" +
@@ -91,7 +91,7 @@ x = FLSC_Interpreter(
 
 // sinusoïde bruitée
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)"
@@ -100,7 +100,7 @@ x = FLSC_Interpreter(
 
 // générateur d'enveloppe (! à éviter)
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (lmenv [0 0.1 0] [0 1 2])" +
 	"     (mosc freq 0))) 220)"
@@ -109,7 +109,7 @@ x = FLSC_Interpreter(
 
 // enveloppe à nombre de points variable
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (menv [0 0.1 0])" +
 	"     (mosc freq 0))) 220)"
@@ -119,7 +119,7 @@ x = FLSC_Interpreter(
 // itération avec calcul sur le temps
 // (on entend des battements, est-ce normal ?)
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter().read(
 	"(let ((synth (patch (freq) [0.5 2]" +
 	"               (m* (menv [0 0.1 0])" +
 	"                 (mosc freq 0))))" +
