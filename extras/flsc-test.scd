@@ -6,8 +6,11 @@ FLSC_Interpreter(
 	"                     (* n (fact (- n 1)))" +
 	"                     1))))" +
 	"  (fact 6))"
-).evaluate.treeValue;
+).evaluate;
 )
+
+// exemple de base
+FLSC_Interpreter("(+ 1 2)").evaluate;
 
 // génération aléatoire
 FLSC_Interpreter("(random)").evaluate.treeValue;

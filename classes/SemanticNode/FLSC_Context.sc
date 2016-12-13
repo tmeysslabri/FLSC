@@ -44,9 +44,11 @@ FLSC_Context : Dictionary {
 			var value = item[1];
 			// encapsuler les FLSC_UGen avec des FLSC_VarUGen
 			// et les FLSC_ScoreSpec avec des FLSC_VarSpec
-			if(value.isFLSCUGen || value.isFLSCScoreSpec || value.isArray)
+			// ! l'encapsulation est prise en charge par FLSC_Function
+			// if(value.isFLSCUGen || value.isFLSCScoreSpec || value.isArray)
+			if(key.isFLSCUnique.not)
 			{ value = value.encapsulate };
-			this.put(key, value);
+			this.put(key.value, value);
 		});
 		^this;
 	}

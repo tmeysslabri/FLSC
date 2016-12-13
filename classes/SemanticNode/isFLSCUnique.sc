@@ -1,0 +1,3 @@
++ Symbol {
+	isFLSCUnique { ^true }
+}

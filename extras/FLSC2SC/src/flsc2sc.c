@@ -1432,7 +1432,7 @@ yyreduce:
 
   case 31:
 #line 161 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("'", cons((yyvsp[0].str), cons("'", NULL))); }
+    { (yyval.ptr) = cons("FLSC_NonUnique('", cons((yyvsp[0].str), cons("')", NULL))); }
 #line 1437 "flsc2sc.c" /* yacc.c:1646  */
     break;
 

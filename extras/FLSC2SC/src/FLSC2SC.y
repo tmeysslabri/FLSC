@@ -158,7 +158,7 @@ Var:		SYMB	{ $$ = cons("FLSC_Var('", cons($1, cons("')", NULL))); }
 
 Num:		NUM	{ $$ = cons("FLSC_Num(", cons($1, cons(")", NULL))); }
 
-Ident:		SYMB	{ $$ = cons("'", cons($1, cons("'", NULL))); }
+Ident:		SYMB	{ $$ = cons("FLSC_NonUnique('", cons($1, cons("')", NULL))); }
 
 List:		BRL ExprList1 BRR
 		{ $$ = concat(cons("FLSC_List([",

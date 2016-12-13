@@ -7,3 +7,7 @@
 		}
 	}
 }
+
++ Object {
+	encapsulate { ^this }
+}
