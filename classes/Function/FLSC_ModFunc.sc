@@ -36,16 +36,23 @@ FLSC_ModFunc : FLSC_Function {
 		// le rate du module produit
 		var rate;
 
-		// on créée la varList de la ModSpec
-		args.collect {|item| if(item.isFLSCScoreSpec)
-			{ specVarList = specVarList.union(item.varList) }
+		// on créée le dictionnaire des arguments
+		if(funcParms.notEmpty) {
+			[
+				funcParms,
+				(args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1]
+			].flop.do {|item| argDict.put(
+				item[0].value,
+				if(item[0].isFLSCUnique)
+				{item[1]}
+				{item[1].encapsulate}
+			)};
 		};
 
-		// on créée le dictionnaire des arguments
-		[
-			funcParms,
-			(args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1]
-		].flop.do {|item| argDict.put(item[0], item[1]) };
+		// on créée la varList de la ModSpec
+		argDict.do {|item| if(item.isFLSCScoreSpec)
+			{ specVarList = specVarList.union(item.varList) }
+		};
 
 		// on ajoute les timeControls aux arguments
 		timeControls.do {|item| argDict.put(item[0], item[1]) };

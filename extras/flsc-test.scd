@@ -1,3 +1,7 @@
+// exemples de base
+FLSC_Interpreter("(+ 1 2)").evaluate;
+FLSC_Interpreter("((lambda () 42))").evaluate;
+
 // exemple de fonction récursive (la factorielle)
 (
 FLSC_Interpreter(
@@ -8,9 +12,6 @@ FLSC_Interpreter(
 	"  (fact 6))"
 ).evaluate;
 )
-
-// exemple de base
-FLSC_Interpreter("(+ 1 2)").evaluate;
 
 // génération aléatoire
 FLSC_Interpreter("(random)").evaluate.treeValue;
@@ -26,7 +27,7 @@ FLSC_Interpreter(
 
 // application de patch
 (
-x = FLSC_Interpreter(
+FLSC_Interpreter(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"     (mosc freq 0))) 220)"

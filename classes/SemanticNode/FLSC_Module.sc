@@ -6,7 +6,7 @@ FLSC_Module : FLSC_FuncDef {
 	value {|context|
 		// on rajoute les FLSC_Control correspondants aux paramètres dans le contexte
 		var baseContext = FLSC_Context(context, parmNames.collect
-			{|item| [item, FLSC_Control(item)] });
+			{|item| [item, FLSC_Control(item.value)] });
 		// ceci permet d'évaluer directement le corps et d'obtenir
 		// une expression algorithmiquement invariante (de type FLSC_UGen)
 		var uGenGraph = nodeVal.value(baseContext);

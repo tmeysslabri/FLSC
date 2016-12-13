@@ -18,10 +18,16 @@ FLSC_Function {
 	}
 
 	value {|args|
-		var execContext = FLSC_Context(baseContext,
+		var execContext;
+		if(funcParms.notEmpty)
+		{
+			execContext = FLSC_Context(baseContext,
 			[funcParms,
-				(args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1]
-		].flop);
+					(args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1]
+			].flop);
+		} {
+			execContext = baseContext;
+		}
 		^function.value(execContext);
 	}
 
