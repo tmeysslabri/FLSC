@@ -26,6 +26,7 @@ int yyerror(char *s);
 %token <str> PARL
 %token <str> PARR
 %token <str> AMP
+%token <str> UNQ
 %token <str> BRL
 %token <str> BRR
 
@@ -158,7 +159,8 @@ Var:		SYMB	{ $$ = cons("FLSC_Var('", cons($1, cons("')", NULL))); }
 
 Num:		NUM	{ $$ = cons("FLSC_Num(", cons($1, cons(")", NULL))); }
 
-Ident:		SYMB	{ $$ = cons("FLSC_NonUnique('", cons($1, cons("')", NULL))); }
+Ident:		SYMB		{ $$ = cons("FLSC_NonUnique('", cons($1, cons("')", NULL))); }
+		| UNQ SYMB	{ $$ = cons("'", cons($2, cons("'", NULL))); }
 
 List:		BRL ExprList1 BRR
 		{ $$ = concat(cons("FLSC_List([",
