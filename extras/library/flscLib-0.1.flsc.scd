@@ -16,6 +16,14 @@
 		['mrand', "(module (!min !max) (rand min max))"],
 		['mcrand', "(module (!min !max) (crand min max))"],
 
+		// modules HF
+		['mhfseg', "(module (!start !end) (hfseg start end))"],
+		['mhftri', "(module (!freq !phi) (hftri freq phi))"],
+		['mhfsqu', "(module (!freq !phi !width) (hfsqu freq phi width))"],
+
+		// modules de conversion
+		['mk2a', "(module (!sig) (k2a sig))"],
+
 		// env ne peut pas être directement transformé en module
 		// parce que levels et times sont des tableaux de taille indéfinie
 		// on peut utiliser une fonction qui génère un module
@@ -34,8 +42,29 @@
 			"    (seq (range 1 (- len 2))" +
 			"      (mapcar (lambda (start end) (mseg start end))" +
 			"        (subseq levels 0 (- len 1)) (subseq levels 1 len)))))"],
+		// idem avec des segments HF
+		['mhfenv',
+			"(lambda (levels)" +
+			"  (let* ((len (length levels))" +
+			"         (!contents" +
+			"           (flop" +
+			"             (mapcar (lambda (time start end) [time (mhfseg start end)])" +
+			"               (flop [(range 0 (- len 2)) (range 1 (- len 1))])" +
+			"               (subseq levels 0 (- len 1)) (subseq levels 1 len)))))" +
+			"    (par (elt contents 0) (elt contents 1))))"
+		],
 		// la composition hybride permet de faire une composition séquentielle
 		// sur des signaux de type contrôle ou audio
+		['hybrid',
+			"(lambda (breaks !sigs)" +
+			"  (let ((segs (flop [(cons 0 breaks) (add breaks end)]))" +
+			"        (!audio" +
+			"          (mapcar" +
+			"            (lambda (!sig) (if (audio? sig) sig (mk2a sig)))" +
+			"            sigs)))" +
+			"    (par segs audio)))"
+		],
+		/*
 		['hybrid',
 			"(lambda (breaks !sigs)" +
 			"  (let* ((segs (flop [(cons 0 breaks) (add breaks end)]))" +
@@ -50,6 +79,7 @@
 			"                     (select (lambda (!item) (? (elt item 1))) contents)) 0 2))" +
 			"         (!control (elt (flop contents) 2)))" +
 			"    (m+ (apply par audio) (seq breaks control))))"
-		]
+		],
+		*/
 	],
 ]

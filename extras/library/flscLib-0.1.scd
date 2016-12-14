@@ -216,6 +216,36 @@
 				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
 					FLSC_Var('phi').value(ctxt), width],
 					LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
+		// générateurs HF:
+		// segment d'enveloppe
+		['hfseg', FLSC_Function(nil, ['start', 'end'],
+			{|ctxt|
+				FLSC_UGen.newFromClass([FLSC_Var('start').value(ctxt),
+					FLSC_Var('end').value(ctxt), FLSC_TimeControl([0, 'end'])],
+					Line, ['start', 'end', 'dur'],
+					minRate: 'audio')})],
+		// enveloppe à nombre de points fixe
+		['hfenv', FLSC_Function(nil, ['levels', 'times'],
+			{|ctxt| FLSC_UGen([FLSC_Var('levels').value(ctxt),
+				FLSC_TimeControl(FLSC_Var('times').value(ctxt))],
+				{|subs|
+					EnvGen.ar(Env(subs[0], subs[1]));
+				})
+		})],
+		// triangle
+		['hftri', FLSC_Function(nil, ['freq', 'phi'],
+			{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+				FLSC_Var('phi').value(ctxt)],
+				LFTri, ['freq', 'iphase'], minRate: 'audio')})],
+		// carré
+		['hfsqu', FLSC_Function(nil, ['freq', 'phi', 'width'],
+			{|ctxt|
+				var width = FLSC_Var('width').value(ctxt);
+				if(width.isFLSCNil) {width = 0.5};
+				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
+					FLSC_Var('phi').value(ctxt), width],
+					LFPulse, ['freq', 'iphase', 'width'], minRate: 'audio')})],
+
 		// générateurs aléatoires:
 		// générateur par paliers
 		['rand', FLSC_Function(nil, ['min', 'max'],
@@ -233,6 +263,19 @@
 				FLSC_UGen.newFromClass([
 					minus.value([max, min]), min],
 					LFNoise1, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
+		// conversions:
+		// contrôle vers audio
+		['k2a', FLSC_Function(nil, ['input'],
+			{|ctxt|
+				FLSC_UGen([FLSC_Var('input').value(ctxt)],
+					{|subs|
+						var input = subs[0];
+						if(input.rate != 'control')
+						{Error("Non-control in k2a: %".format(input)).throw};
+						K2A.ar(input)
+				});
+		})],
+
 		// ALTERATIONS DE SIGNATURE:
 		// retard
 		['delay', FLSC_Function(nil, ['theta', 'sig'],

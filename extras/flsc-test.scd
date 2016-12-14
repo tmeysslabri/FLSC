@@ -94,6 +94,18 @@ var programs = [
 	"            (m* (subsign [1] (menv [0 0.1 0]))\n" +
 	"                (mosc (* 100 (** 2 (/ i 4))) 0))])\n" +
 	"         (range 0 (- num 1)))))) 9)",
+	// enveloppe HF
+	"((patch (freq) [0.5 1 1.004 1.008 2]\n" +
+	"   (m* (mhfenv [0 0.1 0.1 0.2 0.1 0])\n" +
+	"       (mosc freq 0)))\n" +
+	" 220)",
+	// composition hybride
+	"((patch (freq) [0.5 1 1.004 1.008 2]\n" +
+	"   (m* (hybrid [1 2 3 4]\n" +
+	"          [(mseg 0 0.1) (mseg 0.1 0.1)\n" +
+	"           (mhfseg 0.1 0.2) (mhfseg 0.2 0.1) (mseg 0.1 0)])\n" +
+	"       (mosc freq 0)))\n" +
+	" 220)",
 ];
 
 Routine({
@@ -231,3 +243,25 @@ FLSC_Interpreter().read(
 ).evaluateAndPlay;
 )
 
+// enveloppe HF
+(
+FLSC_Interpreter().read(
+	"((patch (freq) [0.5 1 1.004 1.008 2]" +
+	"   (m* (mhfenv [0 0.1 0.1 0.2 0.1 0])" +
+	"       (mosc freq 0)))" +
+	" 220)"
+).evaluateAndPlay
+)
+
+// composition hybride
+// (même résultat, mais plus efficace)
+(
+FLSC_Interpreter().read(
+	"((patch (freq) [0.5 1 1.004 1.008 2]" +
+	"   (m* (hybrid [1 2 3 4]" +
+	"          [(mseg 0 0.1) (mseg 0.1 0.1)" +
+	"           (mhfseg 0.1 0.2) (mhfseg 0.2 0.1) (mseg 0.1 0)])" +
+	"       (mosc freq 0)))" +
+	" 220)"
+).evaluateAndPlay
+)
