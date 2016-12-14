@@ -137,6 +137,9 @@
 		['length', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).size})],
 		['position', FLSC_Function(nil, ['a', 'b'],
 			{|ctxt| FLSC_Var('a').value(ctxt).indexOf(FLSC_Var('b').value(ctxt))})],
+		// opérations sur les listes:
+		['flop', FLSC_Function(nil, ['list'],
+			{|ctxt| FLSC_Var('list').value(ctxt).flop})],
 		// itération:
 		['mapcar', FLSC_RestFunc(nil, ['func', 'lists'],
 			{|ctxt|

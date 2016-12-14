@@ -29,17 +29,17 @@ var programs = [
 	"((patch (freq) [0.5 2]\n" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
 	"     (mosc freq 0))) 220)",
-// dédoublement d'un patch avec let
+	// dédoublement d'un patch avec let
 	"(let ((myvar (patch (freq) [0.5 2]\n" +
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
 	"                  (mosc freq 0)))))\n" +
 	"  [(delay 0 (myvar 220)) (delay 1 (myvar 330))])",
-// dédoublement d'une application de patch avec let
+	// dédoublement d'une application de patch avec let
 	"(let ((myvar ((patch (freq) [0.5 2]\n" +
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
 	"                  (mosc freq 0))) 220)))\n" +
 	"  [(delay 0 myvar) (delay 1 myvar)])",
-// dédoublement d'un module
+	// dédoublement d'un module
 	"((patch (freq) [0.5 1 2 2.5 3]\n" +
 	"   (let ((myvar \n" +
 	"           (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
@@ -47,32 +47,32 @@ var programs = [
 	"     (par [[0 3] [2 5]]\n" +
 	"          [(subsign [1] myvar)\n" +
 	"           (subsign [2] myvar)]))) 220)",
-// dédoublement d'une liste
+	// dédoublement d'une liste
 	"(let* ((synth (patch (freq) [0.5 2]\n" +
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
 	"                  (mosc freq 0))))\n" +
 	"       (lst [(delay 0 (synth 220)) (delay 1 (synth 330))]))\n" +
 	"  [lst (delay 2 lst)])",
-// somme de partiels
+	// somme de partiels
 	"(let ((dyn (seq [1] [(mseg 0 0.5) (mseg 0.5 0)])))\n" +
 	"  ((patch (freq) [0.5 2]\n" +
 	"    (mapcar (lambda (i)\n" +
 	"              (m* (/ 0.1 i) (m* dyn (mosc (* i freq) 0))))\n" +
 	"      (range 1 8))) 110))",
-// sinusoïde bruitée
+	// sinusoïde bruitée
 	"((patch (freq) [0.5 2]\n" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
 	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)",
-// générateur d'enveloppe (! à éviter)
+	// générateur d'enveloppe (! à éviter)
 	"((patch (freq) [0.5 2]\n" +
 	"   (m* (lmenv [0 0.1 0] [0 1 2])\n" +
 	"     (mosc freq 0))) 220)",
-// enveloppe à nombre de points variable
+	// enveloppe à nombre de points variable
 	"((patch (freq) [0.5 2]\n" +
 	"   (m* (menv [0 0.1 0])\n" +
 	"     (mosc freq 0))) 220)",
-// itération avec calcul sur le temps
-// (on entend des battements, est-ce normal ?)
+	// itération avec calcul sur le temps
+	// (on entend des battements, est-ce normal ?)
 	"(let ((synth (patch (freq) [0.5 2]\n" +
 	"               (m* (menv [0 0.1 0])\n" +
 	"                 (mosc freq 0))))\n" +
@@ -81,6 +81,16 @@ var programs = [
 	"    (lambda (i) (let ((num (+ i (random))))\n" +
 	"                  (delay num (synth (freq num)))))\n" +
 	"    (range 0 8)))",
+	// itération, forme standard
+	"((patch (num) (* 0.5 (range 1 (+ 3 num)))\n" +
+	"   (apply par\n" +
+	"     (flop\n" +
+	"       (mapcar\n" +
+	"         (lambda (i)\n" +
+	"           [[i (+ 3 i)]\n" +
+	"            (m* (subsign [1] (menv [0 0.1 0]))\n" +
+	"                (mosc (* 100 (** 2 (/ i 4))) 0))])\n" +
+	"         (range 0 (- num 1)))))) 9)",
 ];
 
 Routine({
@@ -201,3 +211,20 @@ FLSC_Interpreter().read(
 	"    (range 0 8)))"
 ).evaluateAndPlay;
 )
+
+// itération, forme standard
+// sur une gamme à 8 tons égaux
+(
+FLSC_Interpreter().read(
+	"((patch (num) (* 0.25 (range 1 (+ 3 num)))\n" +
+	"   (apply par\n" +
+	"     (flop\n" +
+	"       (mapcar\n" +
+	"         (lambda (i)\n" +
+	"           [[i (+ 3 i)]\n" +
+	"            (m* (subsign [1] (menv [0 0.1 0]))\n" +
+	"                (mosc (* 200 (** 2 (/ i 8))) 0))])\n" +
+	"         (range 0 (- num 1)))))) 17)"
+).evaluateAndPlay;
+)
+
