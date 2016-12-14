@@ -117,7 +117,7 @@ extern int yydebug;
     PARL = 259,
     PARR = 260,
     AMP = 261,
-    UNQ = 262,
+    NUNQ = 262,
     BRL = 263,
     BRR = 264,
     NIL = 265,
@@ -473,7 +473,7 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "ERROR", "PARL", "PARR", "AMP", "UNQ",
+  "$end", "error", "$undefined", "ERROR", "PARL", "PARR", "AMP", "NUNQ",
   "BRL", "BRR", "NIL", "LAMBDA", "LET", "LETREC", "LETSTAR", "PATCH",
   "MODULE", "IF", "COND", "ELSE", "SYMB", "NUM", "$accept", "Top", "Expr",
   "SpecForm", "Func", "Lambda", "Let", "Patch", "Module", "Conditional",
@@ -1433,13 +1433,13 @@ yyreduce:
 
   case 31:
 #line 162 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_NonUnique('", cons((yyvsp[0].str), cons("')", NULL))); }
+    { (yyval.ptr) = cons("'", cons((yyvsp[0].str), cons("'", NULL))); }
 #line 1438 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 32:
 #line 163 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("'", cons((yyvsp[0].str), cons("'", NULL))); }
+    { (yyval.ptr) = cons("FLSC_NonUnique('", cons((yyvsp[0].str), cons("')", NULL))); }
 #line 1444 "flsc2sc.c" /* yacc.c:1646  */
     break;
 

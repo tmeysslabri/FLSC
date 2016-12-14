@@ -12,7 +12,7 @@ parr	\)
 brl	\[
 brr	\]
 amp	\&
-unique	!
+nunq	!
 
 nil	nil
 
@@ -41,7 +41,7 @@ other	.
 {brl}		{ return(BRL); }
 {brr}		{ return(BRR); }
 {amp}		{ return(AMP); }
-{unique}	{ return(UNQ); }
+{nunq}		{ return(NUNQ); }
 
 {nil}		{ return(NIL); }
 

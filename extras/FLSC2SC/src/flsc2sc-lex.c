@@ -816,7 +816,7 @@ YY_RULE_SETUP
 case 7:
 YY_RULE_SETUP
 #line 44 "FLSC2SC.l"
-{ return(UNQ); }
+{ return(NUNQ); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP

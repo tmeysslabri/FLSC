@@ -106,6 +106,17 @@ var programs = [
 	"           (mhfseg 0.1 0.2) (mhfseg 0.2 0.1) (mseg 0.1 0)])\n" +
 	"       (mosc freq 0)))\n" +
 	" 220)",
+	// variable non-unique
+	// sans signalement
+	"((patch (freq) [0.5 2]\n" +
+	"   (let ((myvar (m* (menv [0 0.1 0]) (mosc freq 0))))\n" +
+	"     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))\n" +
+	" 220)",
+	// avec signalement, plus économique
+	"((patch (freq) [0.5 2]\n" +
+	"   (let ((!myvar (m* (menv [0 0.1 0]) (mosc freq 0))))\n" +
+	"     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))\n" +
+	" 220)",
 ];
 
 Routine({
@@ -264,4 +275,24 @@ FLSC_Interpreter().read(
 	"       (mosc freq 0)))" +
 	" 220)"
 ).evaluateAndPlay
+)
+
+// variable non-unique
+// sans signalement
+(
+FLSC_Interpreter().read(
+	"((patch (freq) [0.5 2]" +
+	"   (let ((myvar (m* (menv [0 0.1 0]) (mosc freq 0))))" +
+	"     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))" +
+	" 220)"
+).evaluateAndPlay;
+)
+// avec signalement, plus économique
+(
+FLSC_Interpreter().read(
+	"((patch (freq) [0.5 2]" +
+	"   (let ((!myvar (m* (menv [0 0.1 0]) (mosc freq 0))))" +
+	"     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))" +
+	" 220)"
+).evaluateAndPlay;
 )

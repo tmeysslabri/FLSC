@@ -49,7 +49,7 @@ extern int yydebug;
     PARL = 259,
     PARR = 260,
     AMP = 261,
-    UNQ = 262,
+    NUNQ = 262,
     BRL = 263,
     BRR = 264,
     NIL = 265,
