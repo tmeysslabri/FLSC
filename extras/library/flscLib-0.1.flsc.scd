@@ -34,7 +34,7 @@
 			"    (seq (range 1 (- len 2))" +
 			"      (mapcar (lambda (start end) (mseg start end))" +
 			"        (subseq levels 0 (- len 1)) (subseq levels 1 len)))))"],
-		// la composition hybride permet de faire une composition séqurntielle
+		// la composition hybride permet de faire une composition séquentielle
 		// sur des signaux de type contrôle ou audio
 		['hybrid',
 			"(lambda (breaks !sigs)" +
