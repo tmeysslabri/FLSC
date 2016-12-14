@@ -20,6 +20,9 @@ FLSC_Interpreter().read(
 
 // exemples de synthèse sonore
 
+// création d'un module
+FLSC_Interpreter().read("(control? (m* 1 1))").evaluate;
+
 // routine de test automatique
 // les exemples individuels sont donnés plus bas
 (

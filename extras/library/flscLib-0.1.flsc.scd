@@ -34,5 +34,22 @@
 			"    (seq (range 1 (- len 2))" +
 			"      (mapcar (lambda (start end) (mseg start end))" +
 			"        (subseq levels 0 (- len 1)) (subseq levels 1 len)))))"],
+		// la composition hybride permet de faire une composition séqurntielle
+		// sur des signaux de type contrôle ou audio
+		['hybrid',
+			"(lambda (breaks !sigs)" +
+			"  (let* ((segs (flop [(cons 0 breaks) (add breaks end)]))" +
+			"         (!contents" +
+			"           (mapcar" +
+			"             (lambda (!sig i)" +
+			"               (cons (elt segs i)" +
+			"                 (if (audio? sig) [sig (mseg 0 0)] [nil sig])))" +
+			"             sigs (range 0 (- (length sigs) 1))))" +
+			"         (!audio" +
+			"           (subseq (flop" +
+			"                     (select (lambda (!item) (? (elt item 1))) contents)) 0 2))" +
+			"         (!control (elt (flop contents) 2)))" +
+			"    (m+ (apply par audio) (seq breaks control))))"
+		]
 	],
 ]

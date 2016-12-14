@@ -9,6 +9,7 @@
 		['false', false],
 		['true', true],
 		['inf', inf],
+		['end', 'end'], // fin pour les signatures temporelles
 		// FONCTIONS NUMERIQUES:
 		// generateur aléatoire
 		// attention, si l'argument est un entier, random produira des entiers
@@ -56,19 +57,25 @@
 			{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _||_)})],
 		['xor', FLSC_RestFunc(nil, ['terms'],
 			{|ctxt| FLSC_Var('terms').value(ctxt).inject(false, _.xor(_))})],
-		// tests:
-		['?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).notFLSCNil})],
-		['nil?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isFLSCNil})],
-		['boolean?', FLSC_Function(nil, ['a'],
-			{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(Boolean)})],
-		['number?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isNumber})],
-		['function?', FLSC_Function(nil, ['a'],
-			{|ctxt| FLSC_Var('a').value(ctxt).isKindOf(FLSC_Function)})],
-		['list?', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).isArray})],
-		['empty?', FLSC_Function(nil, ['a'],
+		// tests de type:
+		['?', FLSC_Function(nil, ['obj'], {|ctxt| FLSC_Var('obj').value(ctxt).notFLSCNil})],
+		['nil?', FLSC_Function(nil, ['obj'], {|ctxt| FLSC_Var('obj').value(ctxt).isFLSCNil})],
+		['boolean?', FLSC_Function(nil, ['obj'],
+			{|ctxt| FLSC_Var('obj').value(ctxt).isKindOf(Boolean)})],
+		['number?', FLSC_Function(nil, ['obj'], {|ctxt| FLSC_Var('obj').value(ctxt).isNumber})],
+		['function?', FLSC_Function(nil, ['obj'],
+			{|ctxt| FLSC_Var('obj').value(ctxt).isKindOf(FLSC_Function)})],
+		['list?', FLSC_Function(nil, ['obj'], {|ctxt| FLSC_Var('obj').value(ctxt).isArray})],
+		['empty?', FLSC_Function(nil, ['obj'],
 			{|ctxt|
-				var val = FLSC_Var('a').value(ctxt);
+				var val = FLSC_Var('obj').value(ctxt);
 				val.isArray && (val.size == 0)})],
+		['sig?', FLSC_Function(nil, ['obj'],
+			{|ctxt| FLSC_Var('obj').value(ctxt).isFLSCScoreSpec})],
+		['audio?', FLSC_Function(nil, ['obj'],
+			{|ctxt| FLSC_Var('obj').value(ctxt).rate == 'audio'})],
+		['control?', FLSC_Function(nil, ['obj'],
+			{|ctxt| FLSC_Var('obj').value(ctxt).rate == 'control'})],
 		// comparaisons:
 		['eq?', FLSC_RestFunc(nil, ['first', 'rest'],
 			{|ctxt|
@@ -253,11 +260,11 @@
 		})],
 		// compositions:
 		// sequentielle
-		['seq', FLSC_Function(nil, ['subs', 'sigs'],
+		['seq', FLSC_Function(nil, ['breaks', 'sigs'],
 			{|ctxt|
-				var subs = FLSC_Var('subs').value(ctxt);
+				var breaks = FLSC_Var('breaks').value(ctxt);
 				var sigs = FLSC_Var('sigs').value(ctxt);
-				var segs = [[0]++subs,subs++['end']].flop;
+				var segs = [[0]++breaks,breaks++['end']].flop;
 				var warps = [segs, sigs].flop.collect {|item|
 					var sig = item[1];
 					if(sig.rate != 'control')
