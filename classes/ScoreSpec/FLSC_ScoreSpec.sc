@@ -28,7 +28,11 @@ FLSC_ScoreSpec {
 		// le resultat de l'évaluation du noeud: une FLSC_Score
 		var scoreValue;
 		// distorsion temporelle par défaut
-		var timeWarp = {|t| t};
+		var timeWarp = {|t|
+			if(t.isNumber.not)
+			{Error("Global time value is not a number: %".format(t)).throw}
+			{t}
+		};
 		// définitions, bus, messages, bundle accumulés
 		var defs = Dictionary();
 		var busses = List();
