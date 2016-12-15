@@ -59,6 +59,15 @@ FLSC_Interpreter {
 		^this;
 	}
 
+	evaluateAndRecord {
+		if(semanticTree.isKindOf(FLSC_Error)) {^semanticTree.asFLSC};
+		this.evaluate;
+		if(treeValue.isFLSCScoreSpec || treeValue.isArray)
+		{this.asFLSCScore.recordNRT}
+		{treeValue.postln};
+		^this;
+	}
+
 	asFLSC {
 		^semanticTree.asFLSC;
 	}

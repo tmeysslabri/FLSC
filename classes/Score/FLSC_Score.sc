@@ -30,7 +30,7 @@ FLSC_Score {
 		^this;
 	}
 
-	play {
+	asScorePair {
 		// listes permettant l'allocation de Bus
 		var startTimes, endTimes;
 		// réserves de Bus pour l'allocation
@@ -109,6 +109,15 @@ FLSC_Score {
 			score.add([key] ++ value)};
 		score.sort;
 
+		^[score, busses];
+	}
+
+	play {
+		var scorePair = this.asScorePair;
+		var score = scorePair[0];
+		var busses = scorePair[1];
+		var server = Server.default;
+
 		// exécution de la partition
 		Routine({
 			// redémarrer le serveur pour oublier les anciennes SynthDef
@@ -130,4 +139,26 @@ FLSC_Score {
 		^this;
 	}
 
+	recordNRT {
+		// récupérer la partition
+		var scorePair = this.asScorePair;
+		var score = scorePair[0];
+		var busses = scorePair[1];
+		var baseDir = Platform.userExtensionDir +/+ "FLSC/recordings";
+		// créér les définitions
+		defDict.do {|item| item.writeDefFile };
+		score.recordNRT(baseDir +/+ "FLSC-osc",
+			baseDir +/+ "FLSC" ++ Date.getDate.stamp ++ ".wav",
+			sampleRate: 48000,
+			headerFormat: "WAV",
+			options: ServerOptions.new.numOutputBusChannels_(2),
+			action:
+			{
+				defDict.do {|item| File.delete(Platform.userAppSupportDir +/+
+					"synthdefs" +/+ item.name ++ ".scsyndef")};
+				busses.do {|list| list.do {|bus| bus.free}};
+				"Recording finished.".postln;
+			}
+		);
+	}
 }
