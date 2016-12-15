@@ -68,7 +68,7 @@ var programs = [
 	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)",
 	// générateur d'enveloppe (! à éviter)
 	"((patch (freq) [0.5 2]\n" +
-	"   (m* (lmenv [0 0.1 0] [0 1 2])\n" +
+	"   (m* (lmenv [0 0.1 0] [1])\n" +
 	"     (mosc freq 0))) 220)",
 	// enveloppe à nombre de points variable
 	"((patch (freq) [0.5 2]\n" +
@@ -209,7 +209,7 @@ FLSC_Interpreter().read(
 (
 FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
-	"   (m* (lmenv [0 0.1 0] [0 1 2])" +
+	"   (m* (lmenv [0 0.1 0] [1])" +
 	"     (mosc freq 0))) 220)"
 ).evaluateAndPlay;
 )

@@ -192,7 +192,7 @@
 		// enveloppe à nombre de points fixe
 		['env', FLSC_Function(nil, ['levels', 'times'],
 			{|ctxt| FLSC_UGen([FLSC_Var('levels').value(ctxt),
-				FLSC_TimeControl(FLSC_Var('times').value(ctxt))],
+				FLSC_TimeControl([0] ++ FLSC_Var('times').value(ctxt) ++ ['end'])],
 				{|subs|
 					EnvGen.kr(Env(subs[0], subs[1]));
 				})
@@ -227,7 +227,7 @@
 		// enveloppe à nombre de points fixe
 		['hfenv', FLSC_Function(nil, ['levels', 'times'],
 			{|ctxt| FLSC_UGen([FLSC_Var('levels').value(ctxt),
-				FLSC_TimeControl(FLSC_Var('times').value(ctxt))],
+				FLSC_TimeControl([0] ++ FLSC_Var('times').value(ctxt) ++ ['end'])],
 				{|subs|
 					EnvGen.ar(Env(subs[0], subs[1]));
 				})
