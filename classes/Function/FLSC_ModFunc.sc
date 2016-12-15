@@ -43,9 +43,13 @@ FLSC_ModFunc : FLSC_Function {
 				(args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1]
 			].flop.do {|item| argDict.put(
 				item[0].value,
+				// ??? est-il nécessaire d'encapsuler les variables ?
+				/*
 				if(item[0].isFLSCUnique)
 				{item[1]}
 				{item[1].encapsulate}
+				*/
+				item[1]
 			)};
 		};
 

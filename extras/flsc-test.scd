@@ -117,6 +117,12 @@ var programs = [
 	"   (let ((!myvar (m* (menv [0 0.1 0]) (mosc freq 0))))\n" +
 	"     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))\n" +
 	" 220)",
+	// contrôle non-unique
+	"(let ((dual (module (!shape)\n" +
+	"              (* 0.1 shape (osc (* 220 (+ 1 shape)) 0)))))\n" +
+	"  ((patch (shape) [0.5 2]\n" +
+	"     (dual shape))\n" +
+	"   (menv [0 1 0])))",
 ];
 
 Routine({
@@ -294,5 +300,24 @@ FLSC_Interpreter().read(
 	"   (let ((!myvar (m* (menv [0 0.1 0]) (mosc freq 0))))" +
 	"     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))" +
 	" 220)"
+).evaluateAndPlay;
+)
+
+// contrôle non-unique
+// pas de bug, il est possible d'appeler plusieurs fois un même Symbol.ir
+(
+FLSC_Interpreter().read(
+	"((patch (shape1) [0.5 2]" +
+	"   ((module (shape2) (* 0.1 shape2 (osc (* 220 (+ 1 shape2)) 0))) shape1))" +
+	" (menv [0 1 0]))"
+).evaluateAndPlay;
+)
+
+(
+FLSC_Interpreter().read(
+	"(let ((dual (module (!shape) (* 0.1 shape (osc (* 220 (+ 1 shape)) 0)))))\n" +
+	"  ((patch (shape) [0.5 2]\n" +
+	"     (dual shape))\n" +
+	"   (menv [0 1 0])))",
 ).evaluateAndPlay;
 )
