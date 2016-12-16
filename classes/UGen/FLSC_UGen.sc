@@ -16,7 +16,12 @@ FLSC_UGen : FLSC_SubsUGen {
 	*newFromClass {|subs, class, argNames, defaults = #[], minRate = 'control'|
 		var func = {|subs|
 			var rate = subs.inject(rateToInt[minRate])
-			{|acc, item| min(acc,rateToInt[item.rate]) };
+			{|acc, item|
+				var rate = item.rate;
+				if(rate.notNil)
+				{min(acc,rateToInt[rate])}
+				{acc}
+			};
 			var args = [argNames,subs].flop.inject(List())
 			{|acc, item| acc.addAll(item) };
 			args.addAll(defaults);

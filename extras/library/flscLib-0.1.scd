@@ -179,8 +179,10 @@
 		// GENERATEURS DE SIGNAL:
 		// oscillateur sinusoïdal
 		['osc', FLSC_Function(nil, ['freq', 'phi'],
-			{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-				FLSC_Var('phi').value(ctxt)],
+			{|ctxt|
+				var phi = FLSC_Var('phi').value(ctxt);
+				if(phi.isFLSCNil) {phi = nil};
+				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt), phi],
 				SinOsc, ['freq', 'phase'], minRate: 'audio')})],
 		// segment d'enveloppe
 		['seg', FLSC_Function(nil, ['start', 'end'],
@@ -200,21 +202,26 @@
 		// modulateurs:
 		// sinusoïdal
 		['lfo', FLSC_Function(nil, ['freq', 'phi'],
-			{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-				FLSC_Var('phi').value(ctxt)],
+			{|ctxt|
+				var phi = FLSC_Var('phi').value(ctxt);
+				if(phi.isFLSCNil) {phi = nil};
+				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt), phi],
 				SinOsc, ['freq', 'phase'], minRate: 'control')})],
 		// triangle
 		['tri', FLSC_Function(nil, ['freq', 'phi'],
-			{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-				FLSC_Var('phi').value(ctxt)],
+			{|ctxt|
+				var phi = FLSC_Var('phi').value(ctxt);
+				if(phi.isFLSCNil) {phi = nil};
+				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt), phi],
 				LFTri, ['freq', 'iphase'], minRate: 'control')})],
 		// carré
 		['squ', FLSC_Function(nil, ['freq', 'phi', 'width'],
 			{|ctxt|
+				var phi = FLSC_Var('phi').value(ctxt);
 				var width = FLSC_Var('width').value(ctxt);
-				if(width.isFLSCNil) {width = 0.5};
-				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-					FLSC_Var('phi').value(ctxt), width],
+				if(phi.isFLSCNil) {phi = nil};
+				if(width.isFLSCNil) {width = nil};
+				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt), phi, width],
 					LFPulse, ['freq', 'iphase', 'width'], minRate: 'control')})],
 		// générateurs HF:
 		// segment d'enveloppe
@@ -234,16 +241,19 @@
 		})],
 		// triangle
 		['hftri', FLSC_Function(nil, ['freq', 'phi'],
-			{|ctxt| FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-				FLSC_Var('phi').value(ctxt)],
-				LFTri, ['freq', 'iphase'], minRate: 'audio')})],
+			{|ctxt|
+				var phi = FLSC_Var('phi').value(ctxt);
+				if(phi.isFLSCNil) {phi = nil};
+				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt), phi],
+					LFTri, ['freq', 'iphase'], minRate: 'audio')})],
 		// carré
 		['hfsqu', FLSC_Function(nil, ['freq', 'phi', 'width'],
 			{|ctxt|
+				var phi = FLSC_Var('phi').value(ctxt);
 				var width = FLSC_Var('width').value(ctxt);
-				if(width.isFLSCNil) {width = 0.5};
-				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt),
-					FLSC_Var('phi').value(ctxt), width],
+				if(phi.isFLSCNil) {phi = nil};
+				if(width.isFLSCNil) {width = nil};
+				FLSC_UGen.newFromClass([FLSC_Var('freq').value(ctxt), phi, width],
 					LFPulse, ['freq', 'iphase', 'width'], minRate: 'audio')})],
 
 		// générateurs aléatoires:
@@ -252,6 +262,8 @@
 			{|ctxt|
 				var min = FLSC_Var('min').value(ctxt);
 				var max = FLSC_Var('max').value(ctxt);
+				if(min.isFLSCNil) {min = 0.0};
+				if(max.isFLSCNil) {max = 1.0};
 				FLSC_UGen.newFromClass([
 					minus.value([max, min]), min],
 					LFNoise0, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
@@ -260,6 +272,8 @@
 			{|ctxt|
 				var min = FLSC_Var('min').value(ctxt);
 				var max = FLSC_Var('max').value(ctxt);
+				if(min.isFLSCNil) {min = 0.0};
+				if(max.isFLSCNil) {max = 1.0};
 				FLSC_UGen.newFromClass([
 					minus.value([max, min]), min],
 					LFNoise1, ['mul', 'add'], ['freq', 500], minRate: 'control')})],

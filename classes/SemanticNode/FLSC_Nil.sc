@@ -8,6 +8,10 @@ FLSC_Nil : FLSC_SemanticNode {
 		^this;
 	}
 
+	rate {
+		^nil;
+	}
+
 	isFLSCNil {
 		^true;
 	}

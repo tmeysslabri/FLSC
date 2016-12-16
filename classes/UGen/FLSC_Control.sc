@@ -18,8 +18,9 @@ FLSC_Control : FLSC_AbstractUGen {
 	value {|varDict|
 		var input = varDict[controlName];
 		^switch(input.rate)
-		{'audio'}   {In.ar(controlName.ir())}
-		{'control'} {In.kr(controlName.ir())}
-		{'scalar'}  {controlName.ir};
+		{'audio'}   {In.ar(controlName.ir)}
+		{'control'} {In.kr(controlName.ir)}
+		{'scalar'}  {controlName.ir}
+		{nil}       {nil};
 	}
 }

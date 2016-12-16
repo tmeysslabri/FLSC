@@ -36,11 +36,12 @@ FLSC_ModFunc : FLSC_Function {
 		// le rate du module produit
 		var rate;
 
+		// on complète les arguments si nécessaire
+		args = (args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1];
 		// on créée le dictionnaire des arguments
 		if(funcParms.notEmpty) {
 			[
-				funcParms,
-				(args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1]
+				funcParms, args
 			].flop.do {|item| argDict.put(
 				item[0].value,
 				// ??? est-il nécessaire d'encapsuler les variables ?
@@ -70,6 +71,7 @@ FLSC_ModFunc : FLSC_Function {
 			{'scalar'}  {"n"}
 			{'control'} {"c"}
 			{'audio'}   {"a"}
+			{nil}       {"x"}
 		};
 
 		// on peut maintenant calculer le graphe de UGen et donc la SynthDef

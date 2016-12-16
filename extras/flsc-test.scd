@@ -66,6 +66,13 @@ var programs = [
 	"((patch (freq) [0.5 2]\n" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
 	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)",
+	// modulateur carré
+	// noter les paramètres absents (phase, largeur d'impulsion)
+	"((patch (freq modfreq) [0.5 1.5 2]\n" +
+	"   (m* (m- 1 (m* (menv [0 1 1 0]) (msqu modfreq)))\n" +
+	"     (m* (menv [0 0.1 0.1 0])\n" +
+	"       (mosc freq))))" +
+	" 220 64)",
 	// générateur d'enveloppe (! à éviter)
 	"((patch (freq) [0.5 2]\n" +
 	"   (m* (lmenv [0 0.1 0] [1])\n" +
@@ -208,6 +215,18 @@ FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)"
+).evaluateAndPlay;
+)
+
+// modulateur carré
+// noter les paramètres absents (phase, largeur d'impulsion)
+(
+FLSC_Interpreter().read(
+	"((patch (freq modfreq) [0.5 1.5 2]" +
+	"   (m* (m- 1 (m* (menv [0 1 1 0]) (msqu modfreq)))" +
+	"     (m* (menv [0 0.1 0.1 0])" +
+	"       (mosc freq))))" +
+	" 220 64)"
 ).evaluateAndPlay;
 )
 
