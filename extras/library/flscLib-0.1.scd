@@ -311,7 +311,7 @@
 				var warp = FLSC_WarpSpec({|t| t + dt}, sig);
 				if(sig.rate != 'audio')
 				{Error("Non-audio in delay: %").format(sig).throw};
-				FLSC_SignSpec('audio', warp);
+				FLSC_GlobalSignSpec('audio', warp);
 		})],
 		// sous-signature
 		['subsign', FLSC_Function(nil, ['sign', 'sig'],
@@ -325,7 +325,7 @@
 					{t.isInteger} {sign[t-1]}
 					{true}        {Error("Non-integer signature index").throw}
 				}, sig);
-				FLSC_SignSpec(sig.rate, warp);
+				FLSC_LocalSignSpec(sig.rate, warp);
 		})],
 		// compositions:
 		// sequentielle

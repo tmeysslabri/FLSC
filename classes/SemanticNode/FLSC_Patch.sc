@@ -22,7 +22,7 @@ FLSC_Patch : FLSC_RestFuncDef {
 				{t.isInteger} {sign[t-1]}
 				{true}        {Error("Non-integer signature index").throw}
 			}, sig);
-			FLSC_SignSpec(sig.rate, warp); };
+			FLSC_GlobalSignSpec(sig.rate, warp); };
 
 		if(hasRest)
 		{

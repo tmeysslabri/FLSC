@@ -5,6 +5,8 @@ FLSC_ScoreSpec {
 	var <rate;
 	// la liste des ScoreSpec référencées, dans leur ordre d'apparition
 	var <varList;
+	// l'objet Score construit
+	var score;
 
 	*initClass {
 		systemOut = SynthDef('systemOut', {|in|
@@ -80,6 +82,13 @@ FLSC_ScoreSpec {
 			scoreValue.start, scoreValue.end, scoreValue.rank + 1);
 	}
 
+	value {|outBus, timeWarp, varDict|
+		score = FLSC_Score();
+		score.outBus = this.makeOut(outBus, timeWarp);
+		^score;
+	}
+
+	// méthodes génériques
 	isFLSCScoreSpec { ^true; }
 	encapsulate { ^FLSC_VarSpec(this) }
 	asFLSCScoreSpec { ^this; }

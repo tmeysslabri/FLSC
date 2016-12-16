@@ -1,4 +1,4 @@
-FLSC_ListSpec : FLSC_ScoreSpec {
+FLSC_ListSpec : FLSC_GlobalScoreSpec {
 	// la liste de ListSpec/ScoreSpec/VarSpec à laquelle on se réfère
 	var subSpecs;
 
@@ -20,6 +20,7 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 	}
 
 	value {|outBus, timeWarp, varDict|
+		/*
 		// les bus utilisés
 		var busses = List();
 		// les SynthDef utilisées
@@ -28,21 +29,41 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 		var msgs = List();
 		// les FLSC_Bundle des sous-graphes
 		var bundles = List();
-		// les dates de début et de fin
-		var start = inf, end = 0;
-		// le rang global
-		var rank = 0;
+		*/
 		// le Bus de sortie est celui demandé, ou un nouveau Bus en son absence
 		// dans le deuxième cas on doit le créér, puis calculer le début et la fin
 		// suivant le résultat des sous-spécifications
+		/*
 		var out = if(outBus.notNil) {outBus}
 		{
 			var bus = FLSC_Bus(rate, nil, nil);
 			busses.add(bus);
 			bus;
 		};
+		*/
+
+		super.value(outBus, timeWarp, varDict);
+
+		// les dates de début et de fin
+		score.start = inf;
+		score.end = 0;
+		// le rang global
+		score.rank = 0;
+
 		// on itère sur les éléments
 		subSpecs.do {|item|
+			// on évalue le sous-graphe
+			var subScore = item.value(score.outBus, timeWarp, varDict);
+			// on ajoute les bus, les définitions, les messages, les bundle
+			score.busList.addAll(subScore.busList);
+			score.defDict.putAll(subScore.defDict);
+			score.bundle.addAll(subScore.bundle);
+			score.bundleList.addAll(subScore.bundleList);
+			score.start = min(score.start, subScore.start);
+			score.end = max(score.end, subScore.end);
+			score.rank = max(score.rank, subScore.rank);
+
+			/*
 			// on évalue le sous-graphe
 			var score = item.value(out, timeWarp, varDict);
 			// on ajoute les bus, les définitions, les messages, les bundle
@@ -53,11 +74,17 @@ FLSC_ListSpec : FLSC_ScoreSpec {
 			start = min(start, score.start);
 			end = max(end, score.end);
 			rank = max(rank, score.rank);
+			*/
 		};
 
 		// si aucun Bus de sortie n'est demandé, ajouter le début et la fin au Bus créé
-		if(outBus.isNil) {out.start = start; out.end = end;};
+		if(outBus.isNil) {
+			score.outBus.start = score.start;
+			score.outBus.end = score.end;
+		};
+		// ajouter le rang calculé
 
-		^FLSC_Score(out, defs, busses, msgs, bundles, start, end, rank);
+		^score;
+		// ^FLSC_Score(out, defs, busses, msgs, bundles, start, end, rank);
 	}
 }

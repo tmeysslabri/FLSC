@@ -1,20 +1,21 @@
 FLSC_Score {
 	// le FLSC_Bus de sortie
-	var <outBus;
+	var <>outBus;
 	// le dictionnaire [SynthDef.name: SynthDef] des définitions employées
-	var <defDict;
+	var <>defDict;
 	// la liste des FLSC_Bus employés dans ce sous-graphe
-	var <busList;
+	var <>busList;
 	// la liste des FLSC_MsgPair contenus dans ce support temporel
-	var <bundle;
+	var <>bundle;
 	// la liste des FLSC_Bundle des sous supports temporels
-	var <bundleList;
+	var <>bundleList;
 	// les dates de début et de fin
-	var <start, <end;
+	var <>start, <>end;
 	// le rang du sous-graphe
-	var <rank;
+	var <>rank;
 
-	*new {|out, defs, busses, msgs, bundles, t0, tf, rank|
+	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
+		t0, tf, rank|
 		^super.new.scoreInit(out, defs, busses, msgs, bundles, t0, tf, rank);
 	}
 

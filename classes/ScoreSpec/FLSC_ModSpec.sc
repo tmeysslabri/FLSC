@@ -1,4 +1,4 @@
-FLSC_ModSpec : FLSC_ScoreSpec {
+FLSC_ModSpec : FLSC_LocalScoreSpec {
 	// la SynthDef associée à cette instance de module
 	var def;
 	// les arguments à passer à la SynthDef
@@ -16,51 +16,60 @@ FLSC_ModSpec : FLSC_ScoreSpec {
 
 	value {|outBus, timeWarp, varDict|
 		// les bus utilisés
-		var busses = List();
+		// var busses = List();
 		// le Bus de sortie est celui demandé, ou un nouveau Bus en son absence
+		/*
 		var out = if(outBus.notNil) {outBus}
 		{
 			var bus = FLSC_Bus(rate, timeWarp.value(0), timeWarp.value('end'));
 			busses.add(bus);
 			bus;
 		};
+		*/
 		// les SynthDef utilisées
-		var defs = Dictionary();
+		// var defs = Dictionary();
 		// les FLSC_MsgPair du contexte courant
-		var msgs = List();
+		// var msgs = List();
 		// les FLSC_Bundle des sous-graphes
-		var bundles = List();
+		// var bundles = List();
 		// le rang de ce sous-graphe
 		var rank = 0;
 		// les arguments du message créé
 		// on itère sur les arguments
-		var synthArgs = args.collect {|item|
+		var synthArgs;
+
+		super.value(outBus, timeWarp, varDict);
+
+		synthArgs = args.collect {|item|
 			case
 			{item.isNumber}        {item}
 			{item.isFLSCTime}      {item.value(timeWarp)}
 			{item.isFLSCScoreSpec} {
 				// on évalue le sous-graphe
-				// si c'est une liste, on en fait une FLSC_ListSpec
-				var score = item.value(nil, timeWarp, varDict);
+				var subScore = item.value(nil, timeWarp, varDict);
 				// on ajoute les bus, les définitions, les messages, les bundle
-				busses.addAll(score.busList);
-				defs.putAll(score.defDict);
-				msgs.addAll(score.bundle);
-				bundles.addAll(score.bundleList);
-				rank = max(rank, score.rank);
+				score.busList.addAll(subScore.busList);
+				score.defDict.putAll(subScore.defDict);
+				score.bundle.addAll(subScore.bundle);
+				score.bundleList.addAll(subScore.bundleList);
+				rank = max(rank, subScore.rank);
 				// on retourne le bus de sortie
-				score.outBus;
+				subScore.outBus;
 			}
 			// ne pas oublier d'ajouter le Bus de sortie aux arguments
-		}.put('out', out);
+		}.put('out', score.outBus);
 
 		// on ajoute la SynthDef locale aux défintitions
-		defs.put(def.name, def);
+		score.defDict.put(def.name, def);
 
-		// on créée le message courant à la fin, pour respecter le chaînage causal
-		msgs.add(FLSC_MsgPair(def.name, synthArgs, rank));
+		// on créée le message courant
+		score.bundle.add(FLSC_MsgPair(def.name, synthArgs, rank));
 
-		^FLSC_Score(out, defs, busses, msgs, bundles,
-			timeWarp.value(0), timeWarp.value('end'), rank + 1);
+		// ajouter les temps de début et de fin, et le rang
+		score.start = timeWarp.value(0);
+		score.end = timeWarp.value('end');
+		score.rank = rank + 1;
+
+		^score;
 	}
 }
