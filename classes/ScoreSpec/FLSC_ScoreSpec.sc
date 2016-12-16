@@ -61,10 +61,10 @@ FLSC_ScoreSpec {
 		// sinon, créér le dernier bundle
 		if(scoreValue.bundle.notEmpty) {
 			/*
-			Error("DEBUG: non-empty bundle in top-level FLSC_Score: %".format(
+			Error("DEBUG: non-empty bundle in top-level FLSC_ScoreSpec: %".format(
 				scoreValue.bundle)).throw;
 			*/
-			"DEBUG: non-empty bundle in top-level FLSC_Score: %".format(
+			"DEBUG: non-empty bundle in top-level FLSC_ScoreSpec: %".format(
 				scoreValue.bundle).postln;
 			bundles.add(FLSC_Bundle(scoreValue.start, scoreValue.end, scoreValue.bundle));
 		};
