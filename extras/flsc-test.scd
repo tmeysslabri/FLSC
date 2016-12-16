@@ -1,5 +1,5 @@
 // exemples de base
-FLSC_Interpreter().read().read("(+ 1 2)").evaluate;
+FLSC_Interpreter().read("(+ 1 2)").evaluate;
 FLSC_Interpreter().read("((lambda () 42))").evaluate;
 // génération aléatoire
 FLSC_Interpreter().read("(random)").evaluate;
