@@ -22,11 +22,6 @@ FLSC_Let : FLSC_SemanticNode {
 		^[nameList, args].flop;
 	}
 
-/*
-	value {|context|
-		^FLSC_Call(FLSC_Lambda(nameList, nodeVal), valList).value(context);
-	}
-*/
 	asFLSC {
 		var letList;
 		if (nameList.notEmpty) {
