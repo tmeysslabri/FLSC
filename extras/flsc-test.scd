@@ -321,3 +321,18 @@ FLSC_Interpreter().read(
 	"   (menv [0 1 0])))",
 ).evaluateAndPlay;
 )
+
+// exemple d'enregistrement
+(
+FLSC_Interpreter().read(
+	"((patch (num) (* 0.25 (range 1 (+ 3 num)))\n" +
+	"   (apply par\n" +
+	"     (flop\n" +
+	"       (mapcar\n" +
+	"         (lambda (i)\n" +
+	"           [[i (+ 3 i)]\n" +
+	"            (m* (subsign [1] (menv [0 0.1 0]))\n" +
+	"                (mosc (* 200 (** 2 (/ i 8))) 0))])\n" +
+	"         (range 0 (- num 1)))))) 17)"
+).evaluateAndRecord;
+)
