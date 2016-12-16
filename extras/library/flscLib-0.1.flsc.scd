@@ -14,8 +14,8 @@
 		['mlfo', "(module (freq phi) (lfo freq phi))"],
 		['mtri', "(module (freq phi) (tri freq phi))"],
 		['msqu', "(module (freq phi width) (squ freq phi width))"],
-		['mrand', "(module (min max) (rand min max))"],
-		['mcrand', "(module (min max) (crand min max))"],
+		['mrand', "(module (max min) (rand max min))"],
+		['mcrand', "(module (max min) (crand max min))"],
 
 		// modules HF
 		['mhfseg', "(module (start end) (hfseg start end))"],

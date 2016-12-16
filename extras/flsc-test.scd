@@ -65,7 +65,7 @@ var programs = [
 	// sinusoïde bruitée
 	"((patch (freq) [0.5 2]\n" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])\n" +
-	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)",
+	"     (mosc (m* (mrand 1.1 0.9) freq) 0))) 220)",
 	// modulateur carré
 	// noter les paramètres absents (phase, largeur d'impulsion)
 	"((patch (freq modfreq) [0.5 1.5 2]\n" +
@@ -214,7 +214,16 @@ FLSC_Interpreter().read(
 FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
-	"     (mosc (m* (mrand 0.9 1.1) freq) 0))) 220)"
+	"     (mosc (m* (m+ (m* 0.2 (mrand)) 0.9) freq) 0))) 220)"
+).evaluateAndPlay;
+)
+
+// idem avec mrand sans paramètres (moins économique)
+(
+FLSC_Interpreter().read(
+	"((patch (freq) [0.5 2]" +
+	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
+	"     (mosc (m* (m+ (m* 0.2 (mrand)) 0.9) freq) 0))) 220)"
 ).evaluateAndPlay;
 )
 

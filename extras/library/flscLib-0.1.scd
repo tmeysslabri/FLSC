@@ -1,8 +1,4 @@
 {
-	// fonctions utilitaires:
-	// soustraction compatible avec les FLSC_UGen (pour rand et crand)
-	var minus = FLSC_UGenFunc(nil, ['a', 'b'],
-		{|ctxt| FLSC_Var('a').value(ctxt) -	FLSC_Var('b').value(ctxt)});
 	[
 		// CONSTANTES
 		// ['nil', nil], // remplacé par FLSC_Nil
@@ -258,25 +254,41 @@
 
 		// générateurs aléatoires:
 		// générateur par paliers
-		['rand', FLSC_Function(nil, ['min', 'max'],
+		['rand', FLSC_Function(nil, ['max', 'min'],
 			{|ctxt|
-				var min = FLSC_Var('min').value(ctxt);
 				var max = FLSC_Var('max').value(ctxt);
-				if(min.isFLSCNil) {min = 0.0};
-				if(max.isFLSCNil) {max = 1.0};
-				FLSC_UGen.newFromClass([
-					minus.value([max, min]), min],
-					LFNoise0, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
+				var min = FLSC_Var('min').value(ctxt);
+				if(max.isFLSCNil) {max = 1};
+				if(min.isFLSCNil) {min = 0};
+				FLSC_UGen([max, min],
+					{|subs|
+						var max = subs[0];
+						var min = subs[1];
+						if(max.isNil) {max = 1};
+						if(min.isNil) {min = 0};
+						if((max.rate == 'audio') || (min.rate == 'audio'))
+						{LFNoise0.ar(500, max - min, min)}
+						{LFNoise0.kr(500, max - min, min)};
+					}
+		)})],
 		// générateur de ligne brisée
-		['crand', FLSC_Function(nil, ['min', 'max'],
+		['crand', FLSC_Function(nil, ['max', 'min'],
 			{|ctxt|
-				var min = FLSC_Var('min').value(ctxt);
 				var max = FLSC_Var('max').value(ctxt);
-				if(min.isFLSCNil) {min = 0.0};
-				if(max.isFLSCNil) {max = 1.0};
-				FLSC_UGen.newFromClass([
-					minus.value([max, min]), min],
-					LFNoise1, ['mul', 'add'], ['freq', 500], minRate: 'control')})],
+				var min = FLSC_Var('min').value(ctxt);
+				if(max.isFLSCNil) {max = 1};
+				if(min.isFLSCNil) {min = 0};
+				FLSC_UGen([max, min],
+					{|subs|
+						var max = subs[0];
+						var min = subs[1];
+						if(max.isNil) {max = 1};
+						if(min.isNil) {min = 0};
+						if((max.rate == 'audio') || (min.rate == 'audio'))
+						{LFNoise1.ar(500, max - min, min)}
+						{LFNoise1.kr(500, max - min, min)};
+					}
+		)})],
 		// conversions:
 		// contrôle vers audio
 		['k2a', FLSC_Function(nil, ['input'],
