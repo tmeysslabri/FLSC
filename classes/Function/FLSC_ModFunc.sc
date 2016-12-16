@@ -40,18 +40,8 @@ FLSC_ModFunc : FLSC_Function {
 		args = (args ++ (FLSC_Nil()!(funcParms.size - args.size)))[..funcParms.size-1];
 		// on créée le dictionnaire des arguments
 		if(funcParms.notEmpty) {
-			[
-				funcParms, args
-			].flop.do {|item| argDict.put(
-				item[0].value,
-				// ??? est-il nécessaire d'encapsuler les variables ?
-				/*
-				if(item[0].isFLSCUnique)
-				{item[1]}
-				{item[1].encapsulate}
-				*/
-				item[1]
-			)};
+			[funcParms, args].flop.do
+			{|item| argDict.put(item[0].value, item[1])};
 		};
 
 		// on créée la varList de la ModSpec
