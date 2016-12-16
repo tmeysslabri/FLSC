@@ -1,38 +1,20 @@
 FLSC_Nil : FLSC_SemanticNode {
 
-	*new {
-		^super.new(nil);
-	}
+	*new {^super.new(nil)}
 
-	value {
-		^this;
-	}
+	value {^this}
 
-	rate {
-		^nil;
-	}
+	rate {^nil}
 
-	isFLSCNil {
-		^true;
-	}
+	isFLSCNil {^true}
 
-	notFLSCNil {
-		^false;
-	}
+	notFLSCNil {^false}
 
-	== {|obj|
-		^obj.isFLSCNil;
-	}
+	== {|obj| ^obj.isFLSCNil}
 
-	!= {|obj|
-		^obj.notFLSCNil;
-	}
+	!= {|obj| ^obj.notFLSCNil}
 
-	hash {
-		^this.instVarHash;
-	}
+	hash {^this.instVarHash}
 
-	asArray {
-		^[];
-	}
+	asArray {^[]}
 }
