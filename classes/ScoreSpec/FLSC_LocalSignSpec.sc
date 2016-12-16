@@ -40,13 +40,15 @@ FLSC_LocalSignSpec : FLSC_LocalScoreSpec {
 		subScore = subSpec.value(score.outBus, timeWarp);
 
 		// récupérer les valeurs de la subScore
+		score.add(subScore);
+		/*
 		score.defDict.putAll(subScore.defDict);
 		score.busList.addAll(subScore.busList);
 		score.bundleList.addAll(subScore.bundleList);
 		score.start = subScore.start;
 		score.end = subScore.end;
 		score.rank = subScore.rank;
-
+		*/
 		// eventuellement affecter le début et la fin du Bus créé
 		/*
 		if(outBus.isNil) {

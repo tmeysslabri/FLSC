@@ -31,7 +31,7 @@ FLSC_CompSpec : FLSC_LocalScoreSpec {
 		super.value(outBus, timeWarp, varDict);
 
 		// le rang global
-		score.rank = 0;
+		// score.rank = 0;
 
 		// on rappelle itérativement sur les FLSC_WarpSpec
 		// le bus demandé est le outBus
@@ -41,13 +41,18 @@ FLSC_CompSpec : FLSC_LocalScoreSpec {
 			var subScore = item.value(score.outBus, timeWarp);
 			// on ajoute les bus, les définitions, les bundle
 			// il n'y a pas de messages dans le contexte courant
+			score.add(subScore);
+			/*
 			score.busList.addAll(subScore.busList);
 			score.defDict.putAll(subScore.defDict);
 			score.bundleList.addAll(subScore.bundleList);
 			score.rank = max(score.rank, subScore.rank);
+			*/
 		};
 
-		// ajouter les temps de début et de fin, et le rang
+		// ajouter les temps de début et de fin
+		// (au cas où les subSpecs seraient sur un support temporel plus réduit)
+		// ??? est-ce nécessaire ?
 		score.start = timeWarp.value(0);
 		score.end = timeWarp.value('end');
 		// score.rank = rank;

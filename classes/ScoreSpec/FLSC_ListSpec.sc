@@ -55,6 +55,8 @@ FLSC_ListSpec : FLSC_GlobalScoreSpec {
 			// on évalue le sous-graphe
 			var subScore = item.value(score.outBus, timeWarp, varDict);
 			// on ajoute les bus, les définitions, les messages, les bundle
+			score.add(subScore);
+			/*
 			score.busList.addAll(subScore.busList);
 			score.defDict.putAll(subScore.defDict);
 			score.bundle.addAll(subScore.bundle);
@@ -62,7 +64,7 @@ FLSC_ListSpec : FLSC_GlobalScoreSpec {
 			score.start = min(score.start, subScore.start);
 			score.end = max(score.end, subScore.end);
 			score.rank = max(score.rank, subScore.rank);
-
+			*/
 			/*
 			// on évalue le sous-graphe
 			var score = item.value(out, timeWarp, varDict);

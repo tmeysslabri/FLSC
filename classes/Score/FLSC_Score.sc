@@ -15,7 +15,7 @@ FLSC_Score {
 	var <>rank;
 
 	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
-		t0, tf, rank|
+		t0 = inf, tf = 0, rank = 0|
 		^super.new.scoreInit(out, defs, busses, msgs, bundles, t0, tf, rank);
 	}
 
@@ -30,6 +30,19 @@ FLSC_Score {
 		rank = rankNum;
 		^this;
 	}
+
+	add {|subScore|
+		// on ajoute les bus, les définitions, les messages, les bundle
+		busList.addAll(subScore.busList);
+		defDict.putAll(subScore.defDict);
+		bundle.addAll(subScore.bundle);
+		bundleList.addAll(subScore.bundleList);
+		// on recalcule le début, la fin et le rang
+		start = min(start, subScore.start);
+		end = max(end, subScore.end);
+		rank = max(rank, subScore.rank);
+	}
+
 
 	asScorePair {
 		// listes permettant l'allocation de Bus
