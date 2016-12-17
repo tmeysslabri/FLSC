@@ -27,59 +27,43 @@ FLSC_ScoreSpec {
 
 	// méthode appelée à la racine du graphe de FLSC_ScoreSpec
 	asFLSCScore {
-		// le resultat de l'évaluation du noeud: une FLSC_Score
-		var scoreValue;
 		// distorsion temporelle par défaut
 		var timeWarp = {|t|
 			if(t.isNumber.not)
 			{Error("Global time value is not a number: %".format(t)).throw}
 			{t}
 		};
-		// définitions, bus, messages, bundle accumulés
-		var defs = Dictionary();
-		var busses = List();
-		var msgs = List();
-		var bundles = List();
-		// et varDict pour l'interprétation des FLSC_Score
+		// varDict pour l'interprétation des FLSC_Score
 		var varDict = Dictionary();
 
 		// évaluer la varList
 		// (il est possible que des variables ne soient pas encore évaluées)
 		varList.do {|item|
-			var value = item.value(nil, timeWarp, varDict);
-			defs.putAll(value.defDict);
-			busses.addAll(value.busList);
-			msgs.addAll(value.bundle);
-			bundles.addAll(value.bundleList);
-			varDict.put(item, value);
+			var subScore = item.value(nil, timeWarp, varDict);
+			score.add(subScore);
+			varDict.put(item, subScore);
 		};
 		// evaluer la ScoreSpec dans le contexte global
-		scoreValue = this.value(nil, timeWarp, varDict);
-		// récupérer les bundle, les defs, les bus
-		bundles.addAll(scoreValue.bundleList);
-		defs.putAll(scoreValue.defDict);
-		busses.addAll(scoreValue.busList);
+		score.add(this.value(nil, timeWarp, varDict));
+
 		// vérifier qu'il ne reste plus de messages en attente
-		// sinon, créér le dernier bundle
-		if(scoreValue.bundle.notEmpty) {
-			/*
+		// sinon, déclencher une erreur
+		// (cela signifie qu'un module est présent en dehors d'un patch)
+		if(score.bundle.notEmpty) {
 			Error("DEBUG: non-empty bundle in top-level FLSC_ScoreSpec: %".format(
-				scoreValue.bundle)).throw;
-			*/
-			"DEBUG: non-empty bundle in top-level FLSC_ScoreSpec: %".format(
-				scoreValue.bundle).postln;
-			bundles.add(FLSC_Bundle(scoreValue.start, scoreValue.end, scoreValue.bundle));
+				score.bundle)).throw;
 		};
 		// ajouter systemOut à la fin
-		bundles.add(FLSC_Bundle(scoreValue.start, scoreValue.end,
-			List.newFrom([FLSC_MsgPair(systemOut.name,
-				Dictionary.newFrom(['in', scoreValue.outBus]), scoreValue.rank)])));
+		score.bundle.add(FLSC_MsgPair(systemOut.name,
+				Dictionary.newFrom(['in', score.outBus]), score.rank));
+		score.pushBundle;
+		// incrémenter score.rank, pour créér le dernier groupe
+		score.rank = score.rank + 1;
 		// ajouter la définition de la sortie système
-		defs.put(systemOut.name, systemOut);
+		score.defDict.put(systemOut.name, systemOut);
 
 		// retourner le résultat
-		^FLSC_Score(scoreValue.outBus, defs, busses, List(), bundles,
-			scoreValue.start, scoreValue.end, scoreValue.rank + 1);
+		^score;
 	}
 
 	value {|outBus, timeWarp, varDict|
