@@ -15,27 +15,7 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 	}
 
 	value {|outBus, timeWarp, varDict|
-		// les bus utilisés
-		// var busses = List();
-		// le Bus de sortie est celui demandé, ou un nouveau Bus en son absence
-		/*
-		var out = if(outBus.notNil) {outBus}
-		{
-			var bus = FLSC_Bus(rate, timeWarp.value(0), timeWarp.value('end'));
-			busses.add(bus);
-			bus;
-		};
-		*/
-		// les SynthDef utilisées
-		// var defs = Dictionary();
-		// les FLSC_MsgPair du contexte courant
-		// var msgs = List();
-		// les FLSC_Bundle des sous-graphes
-		// var bundles = List();
-		// le rang de ce sous-graphe
-		// var rank = 0;
-		// les arguments du message créé
-		// on itère sur les arguments
+		// les arguments à passer au synthétiseur
 		var synthArgs;
 
 		super.value(outBus, timeWarp, varDict);
@@ -48,14 +28,6 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 				// on évalue le sous-graphe
 				var subScore = item.value(nil, timeWarp, varDict);
 				score.add(subScore);
-				/*
-				// on ajoute les bus, les définitions, les messages, les bundle
-				score.busList.addAll(subScore.busList);
-				score.defDict.putAll(subScore.defDict);
-				score.bundle.addAll(subScore.bundle);
-				score.bundleList.addAll(subScore.bundleList);
-				rank = max(rank, subScore.rank);
-				*/
 				// on retourne le bus de sortie
 				subScore.outBus;
 			}
@@ -69,6 +41,7 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 		score.bundle.add(FLSC_MsgPair(def.name, synthArgs, score.rank));
 
 		// ajouter les temps de début et de fin, et le rang
+		// (obligatoire car il n'y a pas nécessairement de subScore)
 		score.start = timeWarp.value(0);
 		score.end = timeWarp.value('end');
 		score.rank = score.rank + 1;

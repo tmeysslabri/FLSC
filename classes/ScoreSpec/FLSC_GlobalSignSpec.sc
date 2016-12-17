@@ -12,34 +12,6 @@ FLSC_GlobalSignSpec : FLSC_GlobalScoreSpec {
 	}
 
 	value {|outBus, timeWarp, varDict|
-		/*
-		// les bus utilisés
-		var busses = List();
-		// le Bus de sortie est celui demandé, ou un nouveau Bus en son absence
-		var out = if(outBus.notNil) {outBus}
-		{
-			var bus = FLSC_Bus(rate, nil, nil);
-			busses.add(bus);
-			bus;
-		};
-		// les SynthDef utilisées
-		var defs = Dictionary();
-		// les FLSC_Bundle des sous-graphes
-		var bundles = List();
-
-		// on rappelle sur la FLSC_WarpSpec
-		// le bus demandé est le bus de sortie
-		// le varDict n'est pas nécessaire,
-		// puisque les variables sont uniquement celles du sous-graphe
-		var score = subSpec.value(out, timeWarp);
-
-		// eventuellement affecter le début et la fin du Bus créé
-		if(outBus.isNil) {out.start = score.start; out.end = score.end;};
-
-		// le résultat est celui de la WarpSpec, avec le FLSC_Bus créé éventuellement
-		^FLSC_Score(out, defs.putAll(score.defDict), busses.addAll(score.busList),
-			List(), bundles.addAll(score.bundleList), score.start, score.end, score.rank);
-		*/
 		// le résultat de l'évaluation du sous-graphe
 		var subScore;
 
@@ -53,22 +25,12 @@ FLSC_GlobalSignSpec : FLSC_GlobalScoreSpec {
 
 		// récupérer les valeurs de la subScore
 		score.add(subScore);
-		/*
-		score.defDict.putAll(subScore.defDict);
-		score.busList.addAll(subScore.busList);
-		score.bundleList.addAll(subScore.bundleList);
-		score.start = subScore.start;
-		score.end = subScore.end;
-		score.rank = subScore.rank;
-		*/
-
 		// eventuellement affecter le début et la fin du Bus créé
 		if(outBus.isNil) {
 			score.outBus.start = subScore.start;
 			score.outBus.end = subScore.end;
 		};
-		// le résultat est celui de la WarpSpec, avec le FLSC_Bus créé éventuellement
-		^score;
 
+		^score;
 	}
 }
