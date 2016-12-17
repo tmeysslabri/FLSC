@@ -130,6 +130,13 @@ var programs = [
 	"  ((patch (shape) [0.5 2]\n" +
 	"     (dual shape))\n" +
 	"   (menv [0 1 0])))",
+	// exemple de nowarp (distribution de signal)
+	"((patch (freq) [1 2 3 4]\n" +
+	"   (nowarp ((freq (mseg freq (* 4 freq))))\n" +
+	"     (let ((sound (lambda (pitch)\n" +
+	"                    (m* (menv [0 0.1 0]) (mosc (m* pitch freq))))))\n" +
+	"       (par [[0 2] [1 3] [2 4]]\n" +
+	"         [(sound 1) (sound 0.75) (sound 0.5)])))) 220)",
 ];
 
 Routine({
@@ -365,14 +372,15 @@ FLSC_Interpreter().read(
 ).evaluateAndRecord;
 )
 
-// nowarp
+// exemple de nowarp (distribution de signal)
 (
 FLSC_Interpreter().read(
-	"((patch () [1 2 3]" +
-	"   (nowarp ((freq (mseg 120 360)))" +
-	"     (let ((sound (m* (menv [0 0.1 0]) (mosc freq))))" +
-	"       (par [[0 2] [1 3]]" +
-	"         [sound sound])))))"
+	"((patch (freq) [1 2 3 4]" +
+	"   (nowarp ((freq (mseg freq (* 4 freq))))" +
+	"     (let ((sound (lambda (pitch)" +
+	"                    (m* (menv [0 0.1 0]) (mosc (m* pitch freq))))))" +
+	"       (par [[0 2] [1 3] [2 4]]" +
+	"         [(sound 1) (sound 0.75) (sound 0.5)])))) 220)"
 ).evaluateAndPlay;
 )
 

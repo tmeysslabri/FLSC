@@ -17,18 +17,20 @@ FLSC_SplitSpec : FLSC_LocalScoreSpec {
 	value {|outBus, timeWarp, varDict, noWarpDict|
 		// le résultat de l'évaluation du sous-graphe
 		var subScore;
+		// on copie le noWarpDict pour éliminer les interférences
+		var newNoWarpDict = noWarpDict.copy;
 
-		super.value(outBus, timeWarp, varDict, noWarpDict);
+		super.value(outBus, timeWarp, varDict, newNoWarpDict);
 
 		noWarpList.do {|item|
-			var subScore = item.value(nil, timeWarp, varDict, noWarpDict);
+			var subScore = item.value(nil, timeWarp, varDict, newNoWarpDict);
 			// il faut également récupérer les définitions, les bus, les messages, les bundles
 			score.add(subScore);
-			noWarpDict.put(item, subScore);
+			newNoWarpDict.put(item, subScore);
 		};
 
 		// on rappelle sur la subSpec
-		subScore = subSpec.value(score.outBus, timeWarp, varDict, noWarpDict);
+		subScore = subSpec.value(score.outBus, timeWarp, varDict, newNoWarpDict);
 
 		// récupérer les valeurs de la subScore
 		score.add(subScore);

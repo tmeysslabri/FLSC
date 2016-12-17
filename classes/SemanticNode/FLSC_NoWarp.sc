@@ -20,12 +20,14 @@ FLSC_NoWarp : FLSC_Let {
 	}
 
 	value {|context|
-		var val = super.value(context);
-		^if(val.isFLSCScoreSpec)
-		{
-			var varList = List().addAll(val.varList);
-			noWarpList.do {|item| varList = varList.union(item.varList)};
-			FLSC_SplitSpec(val.rate, val.varList, val, noWarpList)}
-		{val}
+		// la valeur doit être une FLSC_ScoreSpec,
+		// sinon on ne peut pas l'encapsuler et obtenir la résolution par le noWarpDict
+		var val = super.value(context).asFLSCScoreSpec;
+		// on créée la varList dans l'environnement du nowarp
+		// elle inclut les variables référencées dans noWarpList
+		var varList = List().addAll(val.varList);
+		noWarpList.do {|item| varList = varList.union(item.varList)};
+		// le résultat est une FLSC_SplitSpec
+		^FLSC_SplitSpec(val.rate, val.varList, val, noWarpList);
 	}
 }
