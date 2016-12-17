@@ -43,6 +43,12 @@ FLSC_Score {
 		rank = max(rank, subScore.rank);
 	}
 
+	pushBundle {
+		if(bundle.notEmpty) {
+			bundleList.add(FLSC_Bundle(start, end, bundle));
+			bundle = List();
+		};
+	}
 
 	asScorePair {
 		// listes permettant l'allocation de Bus
