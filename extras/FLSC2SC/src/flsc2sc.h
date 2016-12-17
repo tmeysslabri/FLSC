@@ -57,13 +57,14 @@ extern int yydebug;
     LET = 267,
     LETREC = 268,
     LETSTAR = 269,
-    PATCH = 270,
-    MODULE = 271,
-    IF = 272,
-    COND = 273,
-    ELSE = 274,
-    SYMB = 275,
-    NUM = 276
+    NOWARP = 270,
+    PATCH = 271,
+    MODULE = 272,
+    IF = 273,
+    COND = 274,
+    ELSE = 275,
+    SYMB = 276,
+    NUM = 277
   };
 #endif
 
@@ -77,7 +78,7 @@ union YYSTYPE
 	char *str;
 	wptr *ptr;
 
-#line 81 "flsc2sc.h" /* yacc.c:1909  */
+#line 82 "flsc2sc.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

@@ -11,17 +11,17 @@ FLSC_GlobalSignSpec : FLSC_GlobalScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict|
+	value {|outBus, timeWarp, varDict, noWarpDict|
 		// le résultat de l'évaluation du sous-graphe
 		var subScore;
 
-		super.value(outBus, timeWarp, varDict);
+		super.value(outBus, timeWarp, varDict, noWarpDict);
 
 		// on rappelle sur la FLSC_WarpSpec
 		// le bus demandé est le bus de sortie
 		// le varDict n'est pas nécessaire,
 		// puisque les variables sont uniquement celles du sous-graphe
-		subScore = subSpec.value(score.outBus, timeWarp);
+		subScore = subSpec.value(score.outBus, timeWarp, noWarpDict);
 
 		// récupérer les valeurs de la subScore
 		score.add(subScore);

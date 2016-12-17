@@ -14,7 +14,7 @@ FLSC_WarpSpec {
 		^this;
 	}
 
-	value {|outBus, superTimeWarp|
+	value {|outBus, superTimeWarp, noWarpDict|
 		// résultat de l'évaluation du sous-graphe
 		var score = FLSC_Score();
 		// création de la distorsion locale
@@ -22,7 +22,7 @@ FLSC_WarpSpec {
 		var varDict = Dictionary();
 		// création du varDict par itération sur la varList
 		subSpec.varList.do {|item|
-			var subScore = item.value(nil, newTimeWarp, varDict);
+			var subScore = item.value(nil, newTimeWarp, varDict, noWarpDict);
 			// il faut également récupérer les définitions, les bus, les messages, les bundles
 			score.add(subScore);
 			varDict.put(item, subScore);
@@ -31,7 +31,7 @@ FLSC_WarpSpec {
 		// le outBus est simplement celui passé en argument
 		score.outBus = outBus;
 		// on rappelle sur la spécification de référence
-		score.add(subSpec.value(outBus, newTimeWarp, varDict));
+		score.add(subSpec.value(outBus, newTimeWarp, varDict, noWarpDict));
 		// ajouter les messages courants à la bundleList, si il y en a
 		score.pushBundle;
 

@@ -32,6 +32,7 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		};
 		// varDict pour l'interprétation des FLSC_Score
 		var varDict = Dictionary();
+		var noWarpDict = Dictionary();
 
 		score = FLSC_Score();
 
@@ -39,12 +40,12 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		// (il est possible que des variables ne soient pas encore évaluées,
 		// si elles sont en dehors des GlobalSignSpec)
 		varList.do {|item|
-			var subScore = item.value(nil, timeWarp, varDict);
+			var subScore = item.value(nil, timeWarp, varDict, noWarpDict);
 			score.add(subScore);
 			varDict.put(item, subScore);
 		};
 		// evaluer la ScoreSpec référencée dans le contexte global
-		subScore = subSpec.value(nil, timeWarp, varDict);
+		subScore = subSpec.value(nil, timeWarp, varDict, noWarpDict);
 		// récupérer le outBus et le contenu
 		score.outBus = subScore.outBus;
 		score.add(subScore);

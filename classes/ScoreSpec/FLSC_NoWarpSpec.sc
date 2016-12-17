@@ -1,4 +1,4 @@
-FLSC_VarSpec : FLSC_ScoreSpec {
+FLSC_NoWarpSpec : FLSC_ScoreSpec {
 	// la définition d'un raccord
 	classvar pipeAr, pipeKr;
 	// la ScoreSpec à laquelle on se réfère
@@ -10,18 +10,20 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 	}
 
 	*new {|spec|
-		^super.new(spec.rate, spec.varList).varSpecInit(spec);
+		^super.new(spec.rate, spec.varList).noWarpSpecInit(spec);
 	}
 
-	varSpecInit {|spec|
+	noWarpSpecInit {|spec|
 		subSpec = spec;
-		varList.add(subSpec);
 		^this;
 	}
 
 	value {|outBus, timeWarp, varDict, noWarpDict|
-		// on va chercher la référence dans le varDict
-		var sub = varDict[subSpec];
+		// on va chercher la référence dans le noWarpDict
+		var sub = noWarpDict[subSpec];
+		// les dates de début et de fin doivent correspondre à l'appelant
+		var start = timeWarp.value(0);
+		var end = timeWarp.value('end');
 		// si outBus n'est pas nil, créer un raccord
 		if(outBus.notNil)
 		{
@@ -29,15 +31,15 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 			{'audio'}   {pipeAr}
 			{'control'} {pipeKr};
 			^FLSC_Score(outBus, Dictionary.newFrom([pipe.name, pipe]), List(), List(),
-				[FLSC_Bundle(sub.start, sub.end, [FLSC_MsgPair(pipe.name,
+				[FLSC_Bundle(start, end, [FLSC_MsgPair(pipe.name,
 					Dictionary.newFrom(['in', sub.outBus, 'out', outBus]),
-					sub.rank)])], sub.start, sub.end, sub.rank + 1
+					sub.rank)])], start, end, sub.rank + 1
 			);
 		} {
 			// toutes les informations ont déjà été ajoutées,
 			// seul le bus de sortie nous intéresse
 			^FLSC_Score(sub.outBus, Dictionary(), List(), List(), List(),
-				sub.start, sub.end, sub.rank);
+				start, end, sub.rank);
 		};
 	}
 

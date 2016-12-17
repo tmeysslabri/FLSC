@@ -8,15 +8,6 @@ FLSC_ScoreSpec {
 	// l'objet Score construit
 	var score;
 
-	/*
-	*initClass {
-		systemOut = SynthDef('systemOut', {|in|
-			// duplication de la sortie du programme
-			Out.ar(0, In.ar(in)!2);
-		});
-	}
-	*/
-
 	*new {|timeBase, vars|
 		^super.new.scoreSpecInit(timeBase, vars);
 	}
@@ -33,7 +24,7 @@ FLSC_ScoreSpec {
 		^FLSC_OutSpec(rate, varList, this).value;
 	}
 
-	value {|outBus, timeWarp, varDict|
+	value {|outBus, timeWarp, varDict, noWarpDict|
 		score = FLSC_Score();
 		score.outBus = this.makeOut(outBus, timeWarp);
 		^score;

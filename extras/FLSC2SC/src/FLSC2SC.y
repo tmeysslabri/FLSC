@@ -36,6 +36,7 @@ int yyerror(char *s);
 %token <str> LET
 %token <str> LETREC
 %token <str> LETSTAR
+%token <str> NOWARP
 %token <str> PATCH
 %token <str> MODULE
 
@@ -64,6 +65,8 @@ int yyerror(char *s);
 %type <ptr> Var
 %type <ptr> Num
 %type <ptr> Ident
+
+%type <ptr> LetOp
 
 %type <ptr> List
 
@@ -99,13 +102,13 @@ Lambda:		PARL LAMBDA PARL IdList1 PARR Expr PARR
 			lnbrk(1, $8))), cons(",",
 			lnbrk(-1, cons("true)", NULL)))); }
 
-Let:		PARL LET PARL LetList1 PARR Expr PARR
-		{ $$ = concat(concat(cons("FLSC_Let([",
+Let:		PARL LetOp PARL LetList1 PARR Expr PARR
+		{ $$ = concat(concat(concat($2,
 			lnbrk(1, $4)),
 			lnbrk(0, cons("],",
 			lnbrk(0, $6)))),
 			lnbrk(-1, cons(")", NULL))); }
-
+/*
 		| PARL LETREC PARL LetList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_LetRec([",
 			lnbrk(1, $4)),
@@ -119,7 +122,7 @@ Let:		PARL LET PARL LetList1 PARR Expr PARR
 			lnbrk(0, cons("],",
 			lnbrk(0, $6)))),
 			lnbrk(-1, cons(")", NULL))); }
-
+*/
 Patch:		PARL PATCH PARL IdList1 PARR Expr Expr PARR
 		{ $$ = concat(concat(concat(cons("FLSC_Patch([", $4), cons("],",
 			lnbrk(1, $6))), cons(",",
@@ -161,6 +164,11 @@ Num:		NUM	{ $$ = cons("FLSC_Num(", cons($1, cons(")", NULL))); }
 
 Ident:		SYMB		{ $$ = cons("'", cons($1, cons("'", NULL))); }
 		| NUNQ SYMB	{ $$ = cons("FLSC_NonUnique('", cons($2, cons("')", NULL))); }
+
+LetOp:		LET		{ $$ = cons("FLSC_Let([", NULL); }
+		| LETREC	{ $$ = cons("FLSC_LetRec([", NULL); }
+		| LETSTAR	{ $$ = cons("FLSC_LetStar([", NULL); }
+		| NOWARP	{ $$ = cons("FLSC_NoWarp([", NULL); }
 
 List:		BRL ExprList1 BRR
 		{ $$ = concat(cons("FLSC_List([",

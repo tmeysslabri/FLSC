@@ -20,6 +20,7 @@ lambda	lambda
 let	let
 letrec	letrec
 letstar	let\*
+nowarp  nowarp
 patch	patch
 module	module
 
@@ -46,11 +47,13 @@ other	.
 {nil}		{ return(NIL); }
 
 {lambda}	{ return(LAMBDA); }
+{patch}		{ return(PATCH); }
+{module}	{ return(MODULE); }
+
 {let}		{ return(LET); }
 {letrec}	{ return(LETREC); }
 {letstar}	{ return(LETSTAR); }
-{patch}		{ return(PATCH); }
-{module}	{ return(MODULE); }
+{nowarp}	{ return(NOWARP); }
 
 {if}		{ return(IF); }
 {cond}		{ return(COND); }

@@ -19,13 +19,13 @@ FLSC_ListSpec : FLSC_GlobalScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict|
-		super.value(outBus, timeWarp, varDict);
+	value {|outBus, timeWarp, varDict, noWarpDict|
+		super.value(outBus, timeWarp, varDict, noWarpDict);
 
 		// on itère sur les éléments
 		subSpecs.do {|item|
 			// on évalue le sous-graphe
-			var subScore = item.value(score.outBus, timeWarp, varDict);
+			var subScore = item.value(score.outBus, timeWarp, varDict, noWarpDict);
 			// on ajoute les bus, les définitions, les messages, les bundle
 			score.add(subScore);
 		};

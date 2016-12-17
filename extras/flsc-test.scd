@@ -364,3 +364,16 @@ FLSC_Interpreter().read(
 	"         (range 0 (- num 1)))))) 17)"
 ).evaluateAndRecord;
 )
+
+// nowarp
+(
+FLSC_Interpreter().read(
+	"((patch () [1 2 3]" +
+	"   (nowarp ((freq (mseg 120 360)))" +
+	"     (let ((sound (m* (menv [0 0.1 0]) (mosc freq))))" +
+	"       (par [[0 2] [1 3]]" +
+	"         [sound sound])))))"
+).evaluateAndPlay;
+)
+
+

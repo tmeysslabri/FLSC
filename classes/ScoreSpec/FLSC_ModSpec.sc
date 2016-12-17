@@ -14,11 +14,11 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict|
+	value {|outBus, timeWarp, varDict, noWarpDict|
 		// les arguments à passer au synthétiseur
 		var synthArgs;
 
-		super.value(outBus, timeWarp, varDict);
+		super.value(outBus, timeWarp, varDict, noWarpDict);
 
 		synthArgs = args.collect {|item|
 			case
@@ -26,7 +26,7 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 			{item.isFLSCTime}      {item.value(timeWarp)}
 			{item.isFLSCScoreSpec} {
 				// on évalue le sous-graphe
-				var subScore = item.value(nil, timeWarp, varDict);
+				var subScore = item.value(nil, timeWarp, varDict, noWarpDict);
 				score.add(subScore);
 				// on retourne le bus de sortie
 				subScore.outBus;

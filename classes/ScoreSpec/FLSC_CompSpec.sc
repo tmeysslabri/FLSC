@@ -11,7 +11,7 @@ FLSC_CompSpec : FLSC_LocalScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict|
+	value {|outBus, timeWarp, varDict, noWarpDict|
 		super.value(outBus, timeWarp, varDict);
 
 		// on rappelle itérativement sur les FLSC_WarpSpec
@@ -19,7 +19,7 @@ FLSC_CompSpec : FLSC_LocalScoreSpec {
 		// le varDict n'est pas nécessaire,
 		// puisque les variables sont uniquement celles du sous-graphe
 		subSpecs.do {|item|
-			var subScore = item.value(score.outBus, timeWarp);
+			var subScore = item.value(score.outBus, timeWarp, noWarpDict);
 			// on ajoute les bus, les définitions, les bundle
 			// il n'y a pas de messages dans le contexte courant
 			score.add(subScore);
