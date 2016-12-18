@@ -69,6 +69,9 @@
 		],
 
 		// FONCTIONS SUR LES MODULES
+		// somme et produit itérés
+		['mn+', "(lambda (& terms) (reduce m+ terms))"],
+		['mn*', "(lambda (& terms) (reduce m* terms))"],
 		// la fonction menv produit une enveloppe de taille variable
 		// en assemblant des mseg avec seq
 		// les indices sont sytématiquement les entiers successifs
