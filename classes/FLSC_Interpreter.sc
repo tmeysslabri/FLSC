@@ -59,10 +59,12 @@ FLSC_Interpreter {
 		{^scoreValue};
 	}
 
-	recordNRT {|before, after|
+	recordNRT {|outFile, before = 0, after = 0, headerFormat = "WAV", sampleRate = 44100,
+		sampleFormat = "int16", numChannels = 2|
 		if(scoreValue.isNil) {this.asFLSCScore(before, after)};
 		if(scoreValue.isKindOf(FLSC_Score))
-		{^scoreValue.recordNRT}
+		{^scoreValue.recordNRT(outFile, headerFormat, sampleRate,
+			sampleFormat, numChannels)}
 		{^scoreValue};
 	}
 

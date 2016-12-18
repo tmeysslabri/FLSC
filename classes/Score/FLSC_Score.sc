@@ -159,19 +159,20 @@ FLSC_Score {
 		^this;
 	}
 
-	recordNRT {
+	recordNRT {|outFile, headerFormat = "WAV", sampleRate = 44100,
+		sampleFormat = "int16", numChannels = 2|
 		// récupérer la partition
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
 		var busses = scorePair[1];
 		var baseDir = Platform.userExtensionDir +/+ "FLSC/recordings";
+		var fileName = if(outFile.notNil) {outFile}
+		{baseDir +/+ "FLSC" ++ Date.getDate.stamp ++ "." ++ headerFormat};
 		// créér les définitions
 		defDict.do {|item| item.writeDefFile };
-		score.recordNRT(baseDir +/+ "FLSC-osc",
-			baseDir +/+ "FLSC" ++ Date.getDate.stamp ++ ".wav",
-			sampleRate: 48000,
-			headerFormat: "WAV",
-			options: ServerOptions.new.numOutputBusChannels_(2),
+		score.recordNRT(baseDir +/+ "FLSC-osc", fileName, nil,
+			sampleRate,	headerFormat, sampleFormat,
+			ServerOptions.new.numOutputBusChannels_(numChannels),
 			action:
 			{
 				defDict.do {|item| File.delete(Platform.userAppSupportDir +/+
