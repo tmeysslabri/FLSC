@@ -93,13 +93,21 @@ SpecForm:	Func | Conditional
 
 Func:		Lambda | Let | Patch | Module
 
-Lambda:		PARL LAMBDA PARL IdList PARR Expr PARR
+Lambda:		PARL LAMBDA PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Lambda([", $4), cons("],",
 			lnbrk(1, $6))),
 			lnbrk(-1, cons(")", NULL))); }
-		| PARL LAMBDA PARL IdList AMP Ident PARR Expr PARR
-		{ $$ = concat(concat(concat(cons("FLSC_Lambda([", $4), $6), cons("],",
+		| PARL LAMBDA PARL IdList1 AMP Ident PARR Expr PARR
+		{ $$ = concat(concat(concat(cons("FLSC_Lambda([", $4), cons(",", $6)), cons("],",
 			lnbrk(1, $8))), cons(",",
+			lnbrk(-1, cons("true)", NULL)))); }
+		|PARL LAMBDA PARL PARR Expr PARR
+		{ $$ = concat(cons("FLSC_Lambda([],",
+			lnbrk(1, $5)),
+			lnbrk(-1, cons(")", NULL))); }
+		| PARL LAMBDA PARL AMP Ident PARR Expr PARR
+		{ $$ = concat(concat(cons("FLSC_Lambda([", $5), cons("],",
+			lnbrk(1, $7))), cons(",",
 			lnbrk(-1, cons("true)", NULL)))); }
 
 Let:		PARL LetOp PARL LetList1 PARR Expr PARR
@@ -109,20 +117,34 @@ Let:		PARL LetOp PARL LetList1 PARR Expr PARR
 			lnbrk(0, $6)))),
 			lnbrk(-1, cons(")", NULL))); }
 
-Patch:		PARL PATCH PARL IdList PARR Expr Expr PARR
+Patch:		PARL PATCH PARL IdList1 PARR Expr Expr PARR
 		{ $$ = concat(concat(concat(cons("FLSC_Patch([", $4), cons("],",
 			lnbrk(1, $6))), cons(",",
 			lnbrk(0, $7))),
 			lnbrk(-1, cons(")", NULL))); }
-		| PARL PATCH PARL IdList AMP Ident PARR Expr Expr PARR
-		{ $$ = concat(concat(concat(concat(cons("FLSC_Patch([", $4), $6), cons("],",
+		| PARL PATCH PARL IdList1 AMP Ident PARR Expr Expr PARR
+		{ $$ = concat(concat(concat(concat(cons("FLSC_Patch([", $4), cons(",", $6)), cons("],",
 			lnbrk(1, $8))), cons(",",
 			lnbrk(0, $9))), cons(",",
+			lnbrk(-1, cons("true)", NULL)))); }
+		| PARL PATCH PARL PARR Expr Expr PARR
+		{ $$ = concat(concat(cons("FLSC_Patch([],",
+			lnbrk(1, $5)), cons(",",
+			lnbrk(0, $6))),
+			lnbrk(-1, cons(")", NULL))); }
+		| PARL PATCH PARL AMP Ident PARR Expr Expr PARR
+		{ $$ = concat(concat(concat(cons("FLSC_Patch([", $5), cons("],",
+			lnbrk(1, $7))), cons(",",
+			lnbrk(0, $8))), cons(",",
 			lnbrk(-1, cons("true)", NULL)))); }
 
 Module:		PARL MODULE PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Module([", $4), cons("],",
 			lnbrk(1, $6))),
+			lnbrk(-1, cons(")", NULL))); }
+		| PARL MODULE PARL PARR Expr PARR
+		{ $$ = concat(cons("FLSC_Module([],",
+			lnbrk(1, $5)),
 			lnbrk(-1, cons(")", NULL))); }
 
 Conditional:	If | Cond
@@ -167,8 +189,8 @@ ExprList1:	%empty		{ $$ = cons("", NULL); }
 ExprList:	%empty		{ $$ = cons("", NULL); }
 		| Expr ExprList	{ $$ = concat(cons(",", lnbrk(0, $1)), $2); }
 
-IdList1:	%empty			{ $$ = cons("", NULL); }
-		| IdList Ident		{ $$ = concat($1, $2); }
+IdList1:	/*%empty			{ $$ = cons("", NULL); }
+		|*/ IdList Ident		{ $$ = concat($1, $2); }
 
 IdList:		%empty			{ $$ = cons("", NULL); }
 		| IdList Ident		{ $$ = concat(concat($1, $2), cons(",", NULL)); }
