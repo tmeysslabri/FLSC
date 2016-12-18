@@ -106,11 +106,17 @@ var programs = [
 	"   (m* (mhfenv [0 0.1 0.1 0.2 0.1 0])\n" +
 	"       (mosc freq 0)))\n" +
 	" 220)",
-	// composition hybride
+	// idem avec composition hybride
 	"((patch (freq) [0.5 1 1.004 1.008 2]\n" +
 	"   (m* (hybrid [1 2 3 4]\n" +
 	"          [(mseg 0 0.1) (mseg 0.1 0.1)\n" +
 	"           (mhfseg 0.1 0.2) (mhfseg 0.2 0.1) (mseg 0.1 0)])\n" +
+	"       (mosc freq 0)))\n" +
+	" 220)",
+	// idem avec enveloppe hybride
+	"((patch (freq) [0.5 1 1.004 1.008 2]\n" +
+	"   (m* (mhybenv [0 0.1 0.1 0.2 0.1 0]\n" +
+	"         [false false true true false])\n" +
 	"       (mosc freq 0)))\n" +
 	" 220)",
 	// variable non-unique
@@ -336,6 +342,17 @@ FLSC_Interpreter().read(
 	"   (m* (hybrid [1 2 3 4]" +
 	"          [(mseg 0 0.1) (mseg 0.1 0.1)" +
 	"           (mhfseg 0.1 0.2) (mhfseg 0.2 0.1) (mseg 0.1 0)])" +
+	"       (mosc freq 0)))" +
+	" 220)"
+).evaluateAndPlay
+)
+
+// idem avec enveloppe hybride
+(
+FLSC_Interpreter().read(
+	"((patch (freq) [0.5 1 1.004 1.008 2]" +
+	"   (m* (mhybenv [0 0.1 0.1 0.2 0.1 0]" +
+	"         [false false true true false])" +
 	"       (mosc freq 0)))" +
 	" 220)"
 ).evaluateAndPlay

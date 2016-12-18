@@ -88,7 +88,7 @@
 			"             (mapcar (lambda (time start end) [time (mhfseg start end)])" +
 			"               (flop [(range 0 (- len 2)) (range 1 (- len 1))])" +
 			"               (subseq levels 0 (- len 1)) (subseq levels 1 len)))))" +
-			"    (par (elt contents 0) (elt contents 1))))"
+			"    (apply par contents)))"
 		],
 		// la composition hybride permet de faire une composition séquentielle
 		// sur des signaux de type contrôle ou audio
@@ -100,6 +100,22 @@
 			"            (lambda (sig) (if (audio? sig) sig (mk2a sig)))" +
 			"            sigs)))" +
 			"    (par segs audio)))"
+		],
+		// enveloppe hybride, composée de segments contrôle ou audio
+		['mhybenv',
+			"(lambda (levels type)" +
+			"  (let* ((len (length levels))" +
+			"         (contents" +
+			"           (flop" +
+			"             (mapcar (lambda (i start end)" +
+			"                       [[i (+ i 1)]" +
+			"                        (if (elt type i)" +
+			"                            (mhfseg start end)" +
+			"                            (mk2a (mseg start end)))])" +
+			"               (range0 (-- len))" +
+			"               (subseq levels 0 (-- len))" +
+			"               (subseq levels 1 len)))))" +
+			"    (apply par contents)))"
 		],
 	],
 ]
