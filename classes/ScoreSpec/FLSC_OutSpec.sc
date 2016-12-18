@@ -21,7 +21,7 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 	}
 
 	// méthode appelée à la racine du graphe de FLSC_ScoreSpec
-	value {|before, after|
+	value {|before = 0, after = 0|
 		// la FLSC_Score produite par la subSpec
 		var subScore;
 		// distorsion temporelle par défaut

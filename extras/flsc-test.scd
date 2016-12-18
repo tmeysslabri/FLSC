@@ -398,21 +398,6 @@ FLSC_Interpreter().read(
 ).play;
 )
 
-// exemple d'enregistrement
-(
-FLSC_Interpreter().read(
-	"((patch (num) (* 0.25 (range 1 (+ 3 num)))" +
-	"   (apply par" +
-	"     (flop" +
-	"       (mapcar" +
-	"         (lambda (i)" +
-	"           [[i (+ 3 i)]" +
-	"            (m* (subsign [1] (menv [0 0.1 0]))" +
-	"                (mosc (* 200 (** 2 (/ i 8))) 0))])" +
-	"         (range 0 (- num 1)))))) 17)"
-).recordNRT(nil, 1, 1);
-)
-
 // exemple de nowarp (distribution de signal)
 (
 FLSC_Interpreter().read(
@@ -463,6 +448,9 @@ FLSC_Interpreter().read(
 ).play;
 )
 
+// exemple de lecture de fichier
+FLSC_Interpreter().readFile("test.flsc").play;
+
 // gabarit à copier-coller
 (
 FLSC_Interpreter().read(
@@ -470,3 +458,17 @@ FLSC_Interpreter().read(
 ).play;
 )
 
+// exemple d'enregistrement
+(
+FLSC_Interpreter().read(
+	"((patch (num) (* 0.25 (range 1 (+ 3 num)))" +
+	"   (apply par" +
+	"     (flop" +
+	"       (mapcar" +
+	"         (lambda (i)" +
+	"           [[i (+ 3 i)]" +
+	"            (m* (subsign [1] (menv [0 0.1 0]))" +
+	"                (mosc (* 200 (** 2 (/ i 8))) 0))])" +
+	"         (range 0 (- num 1)))))) 17)"
+).recordNRT(nil, 1, 1);
+)

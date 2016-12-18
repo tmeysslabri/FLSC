@@ -38,13 +38,21 @@ FLSC_Interpreter {
 		^this;
 	}
 
+	readFile {|name = "test.flsc",
+		dir (Platform.userExtensionDir +/+ "FLSC/extras/examples")|
+		var file = File(dir +/+ name, "r");
+		this.read(file.readAllString);
+		file.close;
+		^this;
+	}
+
 	evaluate {
 		if(semanticTree.isKindOf(FLSC_Error))
 		{^treeValue = semanticTree.asFLSC}
 		{^treeValue = semanticTree.value(library)};
 	}
 
-	asFLSCScore {|before, after|
+	asFLSCScore {|before = 0, after = 0|
 		if(treeValue.isNil) {this.evaluate};
 		if(treeValue.isFLSCScoreSpec ||
 			(treeValue.isArray && treeValue.isString.not))
