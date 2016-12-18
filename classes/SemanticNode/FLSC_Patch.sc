@@ -59,13 +59,6 @@ FLSC_Patch : FLSC_RestFuncDef {
 					{t.isInteger} {signMerge[t]}
 					{true}        {Error("Non-integer signature index").throw}
 				}
-				/*
-				case
-				{t == 0}      {0}
-				{t == 'end'}  {sign.last}
-				{t.isInteger} {sign[t-1]}
-				{true}        {Error("Non-integer signature index").throw}
-				*/
 			}, sig);
 			FLSC_GlobalSignSpec(sig.rate, warp); };
 
