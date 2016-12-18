@@ -144,6 +144,15 @@ var programs = [
 	"               (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0]))))\n" +
 	"     (range 0 (- num 1))))\n" +
 	" 120 0.5 10)",
+	// combinaison nowarp/signsel
+	"((patch (freq dt num) (+ (repeat [0 0.2 2] num) (* dt (range 0 (- num 1))))" +
+	"   (nowarp ((freq (mseg freq (* 4 freq))))" +
+	"     (mapcar (lambda (i)" +
+	"               (signsel i" +
+	"                 (m* (mosc (m* freq (elt [1 0.75 0.5] (mod i 3))))" +
+	"                   (menv [0 0.1 0]))))" +
+	"       (range 0 (- num 1)))))" +
+	" 120 0.5 10)",
 ];
 
 Routine({
@@ -399,6 +408,20 @@ FLSC_Interpreter().read(
 	"             (signsel i" +
 	"               (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0]))))" +
 	"     (range 0 (- num 1))))" +
+	" 120 0.5 10)"
+).evaluateAndPlay;
+)
+
+// combinaison nowarp/signsel
+(
+FLSC_Interpreter().read(
+	"((patch (freq dt num) (+ (repeat [0 0.2 2] num) (* dt (range 0 (- num 1))))" +
+	"   (nowarp ((freq (mseg freq (* 4 freq))))" +
+	"     (mapcar (lambda (i)" +
+	"               (signsel i" +
+	"                 (m* (mosc (m* freq (elt [1 0.75 0.5] (mod i 3))))" +
+	"                   (menv [0 0.1 0]))))" +
+	"       (range 0 (- num 1)))))" +
 	" 120 0.5 10)"
 ).evaluateAndPlay;
 )
