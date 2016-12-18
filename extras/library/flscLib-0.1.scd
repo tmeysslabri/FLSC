@@ -1,9 +1,10 @@
 {
 	[
 		// CONSTANTES
-		// ['nil', nil], // remplacé par FLSC_Nil
 		['false', false],
 		['true', true],
+		['fl', false],
+		['tr', true],
 		['inf', inf],
 		['end', 'end'], // fin pour les signatures temporelles
 		// FONCTIONS NUMERIQUES:

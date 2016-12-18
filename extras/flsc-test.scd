@@ -116,7 +116,7 @@ var programs = [
 	// idem avec enveloppe hybride
 	"((patch (freq) [0.5 1 1.004 1.008 2]\n" +
 	"   (m* (mhybenv [0 0.1 0.1 0.2 0.1 0]\n" +
-	"         [false false true true false])\n" +
+	"         [fl fl tr tr fl])\n" +
 	"       (mosc freq 0)))\n" +
 	" 220)",
 	// variable non-unique
@@ -352,7 +352,7 @@ FLSC_Interpreter().read(
 FLSC_Interpreter().read(
 	"((patch (freq) [0.5 1 1.004 1.008 2]" +
 	"   (m* (mhybenv [0 0.1 0.1 0.2 0.1 0]" +
-	"         [false false true true false])" +
+	"         [fl fl tr tr fl])" +
 	"       (mosc freq 0)))" +
 	" 220)"
 ).evaluateAndPlay
