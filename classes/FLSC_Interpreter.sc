@@ -44,11 +44,11 @@ FLSC_Interpreter {
 		{^treeValue = semanticTree.value(library)};
 	}
 
-	asFLSCScore {
+	asFLSCScore {|before, after|
 		if(treeValue.isNil) {this.evaluate};
 		if(treeValue.isFLSCScoreSpec ||
 			(treeValue.isArray && treeValue.isString.not))
-		{^scoreValue = treeValue.asFLSCScoreSpec.asFLSCScore}
+		{^scoreValue = treeValue.asFLSCScoreSpec.asFLSCScore(before, after)}
 		{^scoreValue = treeValue};
 	}
 
@@ -59,8 +59,8 @@ FLSC_Interpreter {
 		{^scoreValue};
 	}
 
-	recordNRT {
-		if(scoreValue.isNil) {this.asFLSCScore};
+	recordNRT {|before, after|
+		if(scoreValue.isNil) {this.asFLSCScore(before, after)};
 		if(scoreValue.isKindOf(FLSC_Score))
 		{^scoreValue.recordNRT}
 		{^scoreValue};

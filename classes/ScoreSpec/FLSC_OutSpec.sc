@@ -21,14 +21,15 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 	}
 
 	// méthode appelée à la racine du graphe de FLSC_ScoreSpec
-	value {
+	value {|before, after|
 		// la FLSC_Score produite par la subSpec
 		var subScore;
 		// distorsion temporelle par défaut
 		var timeWarp = {|t|
 			if(t.isNumber.not)
 			{Error("Global time value is not a number: %".format(t)).throw}
-			{t}
+			// ajouter la marge de début
+			{t + before}
 		};
 		// varDict pour l'interprétation des FLSC_Score
 		var varDict = Dictionary();
@@ -60,7 +61,11 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		// ajouter systemOut à la fin
 		score.bundle.add(FLSC_MsgPair(systemOut.name,
 				Dictionary.newFrom(['in', score.outBus]), score.rank));
+		// ajouter la marge de fin
+		score.end = score.end + after;
+		// ajouter le bundle
 		score.pushBundle;
+
 		// incrémenter score.rank, pour créér le dernier groupe
 		score.rank = score.rank + 1;
 		// ajouter la définition de la sortie système

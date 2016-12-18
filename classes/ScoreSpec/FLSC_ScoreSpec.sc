@@ -20,8 +20,8 @@ FLSC_ScoreSpec {
 
 	// méthode appelée à la racine du graphe de FLSC_ScoreSpec
 	// encapsuler dans une FLSC_OutSpec et évaluer
-	asFLSCScore {
-		^FLSC_OutSpec(rate, varList, this).value;
+	asFLSCScore {|before = 0, after = 0|
+		^FLSC_OutSpec(rate, varList, this).value(before, after);
 	}
 
 	value {|outBus, timeWarp, varDict, noWarpDict|

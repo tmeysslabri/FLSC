@@ -410,7 +410,7 @@ FLSC_Interpreter().read(
 	"            (m* (subsign [1] (menv [0 0.1 0]))" +
 	"                (mosc (* 200 (** 2 (/ i 8))) 0))])" +
 	"         (range 0 (- num 1)))))) 17)"
-).recordNRT;
+).recordNRT(1, 1);
 )
 
 // exemple de nowarp (distribution de signal)
