@@ -22,7 +22,7 @@ FLSC_Interpreter().read(
 // exemples de synthèse sonore
 
 // création d'un module
-FLSC_Interpreter().read("(control? (m* 1 1))").evaluate;
+FLSC_Interpreter().read("(control? (mn* 1 2 3))").evaluate;
 
 // routine de test automatique
 // les exemples individuels sont donnés plus bas
@@ -70,9 +70,9 @@ var programs = [
 	// modulateur carré
 	// noter les paramètres absents (phase, largeur d'impulsion)
 	"((patch (freq modfreq) [0.5 1.5 2]\n" +
-	"   (m* (m- 1 (m* (menv [0 1 1 0]) (msqu modfreq)))\n" +
-	"     (m* (menv [0 0.1 0.1 0])\n" +
-	"       (mosc freq))))" +
+	"   (mn* (m- 1 (m* (menv [0 1 1 0]) (msqu modfreq)))\n" +
+	"     (menv [0 0.1 0.1 0])\n" +
+	"     (mosc freq)))\n" +
 	" 220 64)",
 	// générateur d'enveloppe (! à éviter)
 	"((patch (freq) [0.5 2]\n" +
@@ -269,9 +269,9 @@ FLSC_Interpreter().read(
 (
 FLSC_Interpreter().read(
 	"((patch (freq modfreq) [0.5 1.5 2]" +
-	"   (m* (m- 1 (m* (menv [0 1 1 0]) (msqu modfreq)))" +
-	"     (m* (menv [0 0.1 0.1 0])" +
-	"       (mosc freq))))" +
+	"   (mn* (m- 1 (m* (menv [0 1 1 0]) (msqu modfreq)))" +
+	"     (menv [0 0.1 0.1 0])" +
+	"     (mosc freq)))" +
 	" 220 64)"
 ).play;
 )
