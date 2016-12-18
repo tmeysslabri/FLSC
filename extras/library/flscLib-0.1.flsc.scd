@@ -1,14 +1,38 @@
 [
-	// MODULES
 	[
-		// modules arithmétiques
+		// incrémentation et décrémentation
+		['++', "(lambda (num) (+ num 1))"],
+		['--', "(lambda (num) (- num 1))"],
+		// générateurs de séquences
+		['range0', "(lambda (num) (range 0 (- num 1)))"],
+		['range1', "(lambda (num) (range 1 num))"],
+
+		// MODULES
+		// modules arithmétiques:
+		// opérateurs unaires
+		['mneg', "(module (a) (neg a))"],
+		['mabs', "(module (a) (abs a))"],
+		['msign', "(module (a) (sign a))"],
+		// opérateurs binaires
 		['m+', "(module (a b) (+ a b))"],
 		['m-', "(module (a b) (- a b))"],
 		['m*', "(module (a b) (* a b))"],
 		['m/', "(module (a b) (/ a b))"],
 		['m**', "(module (a b) (** a b))"],
+		['mmod', "(module (a b) (mod a b))"],
+		// fonctions usuelles
+		['msin', "(module (a) (sin a))"],
+		['mcos', "(module (a) (cos a))"],
+		['mtan', "(module (a) (tan a))"],
+		['mlog2', "(module (a) (log2 a))"],
+		['mfloor', "(module (a) (floor a))"],
+		['mceil', "(module (a) (ceil a))"],
+		['mround', "(module (a) (round a))"],
+		['mmin', "(module (a b) (min a b))"],
+		['mmax', "(module (a b) (max a b))"],
 
-		// modules générateurs de signaux
+		// modules générateurs de signaux:
+		// modules standard
 		['mosc', "(module (freq phi) (osc freq phi))"],
 		['mseg', "(module (start end) (seg start end))"],
 		['mlfo', "(module (freq phi) (lfo freq phi))"],
@@ -16,12 +40,10 @@
 		['msqu', "(module (freq phi width) (squ freq phi width))"],
 		['mrand', "(module (max min) (rand max min))"],
 		['mcrand', "(module (max min) (crand max min))"],
-
 		// modules HF
 		['mhfseg', "(module (start end) (hfseg start end))"],
 		['mhftri', "(module (freq phi) (hftri freq phi))"],
 		['mhfsqu', "(module (freq phi width) (hfsqu freq phi width))"],
-
 		// modules de conversion
 		['mk2a', "(module (sig) (k2a sig))"],
 
@@ -31,8 +53,15 @@
 		// mais c'est sous-optimal (un module créé par appel !)
 		['lmenv', "(lambda (levels times) ((module () (env levels times))))"],
 	],
-	// FONCTIONS SUR LES MODULES
 	[
+		// générateurs de séquence (suite)
+		['step',
+			"(lambda (num step start)" +
+			"  (+ (if (? start) start 0)" +
+			"    (* (if (? step) step 1)" +
+			"      (range0 num))))"],
+
+		// FONCTIONS SUR LES MODULES
 		// la fonction menv produit une enveloppe de taille variable
 		// en assemblant des mseg avec seq
 		// les indices sont sytématiquement les entiers successifs
@@ -65,22 +94,5 @@
 			"            sigs)))" +
 			"    (par segs audio)))"
 		],
-		/*
-		['hybrid',
-			"(lambda (breaks sigs)" +
-			"  (let* ((segs (flop [(cons 0 breaks) (add breaks end)]))" +
-			"         (contents" +
-			"           (mapcar" +
-			"             (lambda (sig i)" +
-			"               (cons (elt segs i)" +
-			"                 (if (audio? sig) [sig (mseg 0 0)] [nil sig])))" +
-			"             sigs (range 0 (- (length sigs) 1))))" +
-			"         (audio" +
-			"           (subseq (flop" +
-			"                     (select (lambda (item) (? (elt item 1))) contents)) 0 2))" +
-			"         (control (elt (flop contents) 2)))" +
-			"    (m+ (apply par audio) (seq breaks control))))"
-		],
-		*/
 	],
 ]
