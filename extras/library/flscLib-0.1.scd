@@ -312,7 +312,7 @@
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp = FLSC_WarpSpec({|t| t + dt}, sig);
 				if(sig.rate != 'audio')
-				{Error("Non-audio in delay: %").format(sig).throw};
+				{Error("Non-audio in delay: %".format(sig)).throw};
 				FLSC_GlobalSignSpec('audio', warp);
 		})],
 		// sous-signature
@@ -343,7 +343,7 @@
 				var warps = [segs, sigs].flop.collect {|item|
 					var sig = item[1];
 					if(sig.rate != 'control')
-					{Error("Non-control in seq: %").format(sig).throw};
+					{Error("Non-control in seq: %".format(sig)).throw};
 					FLSC_WarpSpec({|pair|
 						var t = pair[0];
 						[
@@ -368,7 +368,7 @@
 				warps = [subs, sigs].flop.collect {|item|
 					var sig = item[1].asFLSCScoreSpec;
 					if(sig.rate != 'audio')
-					{Error("Non-audio in par: %").format(sig).throw};
+					{Error("Non-audio in par: %".format(sig)).throw};
 					FLSC_WarpSpec({|pair|
 						var t = pair[0];
 						[
@@ -389,7 +389,7 @@
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp;
 				if(sig.rate != 'audio')
-				{Error("Non-audio in signsel: %").format(sig).throw};
+				{Error("Non-audio in signsel: %".format(sig)).throw};
 				warp = FLSC_WarpSpec({|pair|
 					var t = pair[0];
 					var i = pair[1];
