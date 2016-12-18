@@ -1,10 +1,11 @@
 // exemples de base
+FLSC_Interpreter().asFLSC;
 FLSC_Interpreter().read("(+ 1 2)").evaluate;
 FLSC_Interpreter().read("((lambda () 42))").evaluate;
 // génération aléatoire
 FLSC_Interpreter().read("(random)").evaluate;
 // erreur de syntaxe
-FLSC_Interpreter().read(")").evaluateAndPlay;
+FLSC_Interpreter().read(")").play;
 
 
 // exemple de fonction récursive (la factorielle)
@@ -173,7 +174,7 @@ Routine({
 	programs.do {|string|
 		Server.default.sync;
 		"Executing:".postln; string.postln;
-		interpreter.read(string).evaluateAndPlay;
+		interpreter.read(string).play;
 		if(interpreter.scoreValue.notNil)
 		{(interpreter.scoreValue.end + 1).wait};
 	};
@@ -187,7 +188,7 @@ FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"     (mosc freq 0))) 220)"
-).evaluateAndPlay;
+).play;
 )
 
 // dédoublement d'un patch avec let
@@ -197,7 +198,7 @@ FLSC_Interpreter().read(
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"                  (mosc freq 0)))))" +
 	"  [(delay 0 (myvar 220)) (delay 1 (myvar 330))])"
-).evaluateAndPlay;
+).play;
 )
 
 // dédoublement d'une application de patch avec let
@@ -207,7 +208,7 @@ FLSC_Interpreter().read(
 	"                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"                  (mosc freq 0))) 220)))" +
 	"  [(delay 0 myvar) (delay 1 myvar)])"
-).evaluateAndPlay;
+).play;
 )
 
 // dédoublement d'un module
@@ -220,7 +221,7 @@ FLSC_Interpreter().read(
 	"     (par [[0 3] [2 5]]" +
 	"          [(subsign [1] myvar)" +
 	"           (subsign [2] myvar)]))) 220)"
-).evaluateAndPlay;
+).play;
 )
 
 // dédoublement d'une liste
@@ -231,7 +232,7 @@ FLSC_Interpreter().read(
 	"                  (mosc freq 0))))" +
 	"       (lst [(delay 0 (synth 220)) (delay 1 (synth 330))]))" +
 	"  [lst (delay 2 lst)])"
-).evaluateAndPlay;
+).play;
 )
 
 // somme de partiels
@@ -242,7 +243,7 @@ FLSC_Interpreter().read(
 	"    (mapcar (lambda (i)" +
 	"              (m* (/ 0.1 i) (m* dyn (mosc (* i freq) 0))))" +
 	"      (range 1 8))) 110))"
-).evaluateAndPlay;
+).play;
 )
 
 // sinusoïde bruitée
@@ -251,7 +252,7 @@ FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"     (mosc (m* (m+ (m* 0.2 (mrand)) 0.9) freq) 0))) 220)"
-).evaluateAndPlay;
+).play;
 )
 
 // idem avec mrand sans paramètres (moins économique)
@@ -260,7 +261,7 @@ FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])" +
 	"     (mosc (m* (m+ (m* 0.2 (mrand)) 0.9) freq) 0))) 220)"
-).evaluateAndPlay;
+).play;
 )
 
 // modulateur carré
@@ -272,7 +273,7 @@ FLSC_Interpreter().read(
 	"     (m* (menv [0 0.1 0.1 0])" +
 	"       (mosc freq))))" +
 	" 220 64)"
-).evaluateAndPlay;
+).play;
 )
 
 // générateur d'enveloppe (! à éviter)
@@ -281,7 +282,7 @@ FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (lmenv [0 0.1 0] [1])" +
 	"     (mosc freq 0))) 220)"
-).evaluateAndPlay;
+).play;
 )
 
 // enveloppe à nombre de points variable
@@ -290,7 +291,7 @@ FLSC_Interpreter().read(
 	"((patch (freq) [0.5 2]" +
 	"   (m* (menv [0 0.1 0])" +
 	"     (mosc freq 0))) 220)"
-).evaluateAndPlay;
+).play;
 )
 
 // itération avec calcul sur le temps
@@ -305,7 +306,7 @@ FLSC_Interpreter().read(
 	"    (lambda (i) (let ((num (+ i (random))))" +
 	"                  (delay num (synth (freq num)))))" +
 	"    (range 0 8)))"
-).evaluateAndPlay;
+).play;
 )
 
 // itération, forme standard
@@ -321,7 +322,7 @@ FLSC_Interpreter().read(
 	"            (m* (subsign [1] (menv [0 0.1 0]))" +
 	"                (mosc (* 200 (** 2 (/ i 8))) 0))])" +
 	"         (range 0 (- num 1)))))) 17)"
-).evaluateAndPlay;
+).play;
 )
 
 // enveloppe HF
@@ -331,7 +332,7 @@ FLSC_Interpreter().read(
 	"   (m* (mhfenv [0 0.1 0.1 0.2 0.1 0])" +
 	"       (mosc freq 0)))" +
 	" 220)"
-).evaluateAndPlay
+).play
 )
 
 // composition hybride
@@ -344,7 +345,7 @@ FLSC_Interpreter().read(
 	"           (mhfseg 0.1 0.2) (mhfseg 0.2 0.1) (mseg 0.1 0)])" +
 	"       (mosc freq 0)))" +
 	" 220)"
-).evaluateAndPlay
+).play
 )
 
 // idem avec enveloppe hybride
@@ -355,7 +356,7 @@ FLSC_Interpreter().read(
 	"         [fl fl tr tr fl])" +
 	"       (mosc freq 0)))" +
 	" 220)"
-).evaluateAndPlay
+).play
 )
 
 // variable non-unique
@@ -366,7 +367,7 @@ FLSC_Interpreter().read(
 	"   (let ((myvar (m* (menv [0 0.1 0]) (mosc freq 0))))" +
 	"     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))" +
 	" 220)"
-).evaluateAndPlay;
+).play;
 )
 // avec signalement, plus économique
 (
@@ -375,7 +376,7 @@ FLSC_Interpreter().read(
 	"   (let ((!myvar (m* (menv [0 0.1 0]) (mosc freq 0))))" +
 	"     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))" +
 	" 220)"
-).evaluateAndPlay;
+).play;
 )
 
 // contrôle non-unique
@@ -385,7 +386,7 @@ FLSC_Interpreter().read(
 	"((patch (shape) [0.5 2]" +
 	"   ((module (shape) (* 0.1 shape (osc (* 220 (+ 1 shape)) 0))) shape))" +
 	" (menv [0 1 0]))"
-).evaluateAndPlay;
+).play;
 )
 
 (
@@ -394,7 +395,7 @@ FLSC_Interpreter().read(
 	"  ((patch (shape) [0.5 2]" +
 	"     (dual shape))" +
 	"   (menv [0 1 0])))",
-).evaluateAndPlay;
+).play;
 )
 
 // exemple d'enregistrement
@@ -409,7 +410,7 @@ FLSC_Interpreter().read(
 	"            (m* (subsign [1] (menv [0 0.1 0]))" +
 	"                (mosc (* 200 (** 2 (/ i 8))) 0))])" +
 	"         (range 0 (- num 1)))))) 17)"
-).evaluateAndRecord;
+).recordNRT;
 )
 
 // exemple de nowarp (distribution de signal)
@@ -421,7 +422,7 @@ FLSC_Interpreter().read(
 	"                    (m* (menv [0 0.1 0]) (mosc (m* pitch freq))))))" +
 	"       (par [[0 2] [1 3] [2 4]]" +
 	"         [(sound 1) (sound 0.75) (sound 0.5)])))) 220)"
-).evaluateAndPlay;
+).play;
 )
 
 // itération avec signsel
@@ -433,7 +434,7 @@ FLSC_Interpreter().read(
 	"               (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0]))))" +
 	"     (range 0 (- num 1))))" +
 	" 120 0.5 10)"
-).evaluateAndPlay;
+).play;
 )
 
 // idem avec withsigns
@@ -445,7 +446,7 @@ FLSC_Interpreter().read(
 	"                 (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0])))" +
 	"       (range0 num))))" +
 	" 120 0.5 10)"
-).evaluateAndPlay;
+).play;
 )
 
 // combinaison nowarp/signsel
@@ -459,13 +460,13 @@ FLSC_Interpreter().read(
 	"                   (menv [0 0.1 0]))))" +
 	"       (range 0 (- num 1)))))" +
 	" 120 0.5 10)"
-).evaluateAndPlay;
+).play;
 )
 
 // gabarit à copier-coller
 (
 FLSC_Interpreter().read(
 	""
-).evaluateAndPlay;
+).play;
 )
 

@@ -39,36 +39,36 @@ FLSC_Interpreter {
 	}
 
 	evaluate {
-		^treeValue = semanticTree.value(library);
+		if(semanticTree.isKindOf(FLSC_Error))
+		{^treeValue = semanticTree.asFLSC}
+		{^treeValue = semanticTree.value(library)};
 	}
 
 	asFLSCScore {
-		^scoreValue = treeValue.asFLSCScoreSpec.asFLSCScore;
+		if(treeValue.isNil) {this.evaluate};
+		if(treeValue.isFLSCScoreSpec ||
+			(treeValue.isArray && treeValue.isString.not))
+		{^scoreValue = treeValue.asFLSCScoreSpec.asFLSCScore}
+		{^scoreValue = treeValue};
 	}
 
 	play {
-		^scoreValue.play;
+		if(scoreValue.isNil) {this.asFLSCScore};
+		if(scoreValue.isKindOf(FLSC_Score))
+		{^scoreValue.play}
+		{^scoreValue};
 	}
 
-	evaluateAndPlay {
-		if(semanticTree.isKindOf(FLSC_Error)) {^semanticTree.asFLSC};
-		this.evaluate;
-		if(treeValue.isFLSCScoreSpec || treeValue.isArray)
-		{this.asFLSCScore.play}
-		{treeValue.postln};
-		^this;
-	}
-
-	evaluateAndRecord {
-		if(semanticTree.isKindOf(FLSC_Error)) {^semanticTree.asFLSC};
-		this.evaluate;
-		if(treeValue.isFLSCScoreSpec || treeValue.isArray)
-		{this.asFLSCScore.recordNRT}
-		{treeValue.postln};
-		^this;
+	recordNRT {
+		if(scoreValue.isNil) {this.asFLSCScore};
+		if(scoreValue.isKindOf(FLSC_Score))
+		{^scoreValue.recordNRT}
+		{^scoreValue};
 	}
 
 	asFLSC {
-		^semanticTree.asFLSC;
+		if(semanticTree.notNil)
+		{^semanticTree.asFLSC}
+		{^nil};
 	}
 }

@@ -180,5 +180,6 @@ FLSC_Score {
 				"Recording finished.".postln;
 			}
 		);
+		^this;
 	}
 }
