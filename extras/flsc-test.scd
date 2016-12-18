@@ -144,14 +144,21 @@ var programs = [
 	"               (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0]))))\n" +
 	"     (range 0 (- num 1))))\n" +
 	" 120 0.5 10)",
+	// idem avec withsigns
+	"((patch (freq dt num) (+ (repeat [0 0.5 2] num) (* dt (range 0 (- num 1))))\n" +
+	"   (withsigns\n" +
+	"     (mapcar (lambda (i)\n" +
+	"                 (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0])))\n" +
+	"       (range0 num))))\n" +
+	" 120 0.5 10)",
 	// combinaison nowarp/signsel
-	"((patch (freq dt num) (+ (repeat [0 0.2 2] num) (* dt (range 0 (- num 1))))" +
-	"   (nowarp ((freq (mseg freq (* 4 freq))))" +
-	"     (mapcar (lambda (i)" +
-	"               (signsel i" +
-	"                 (m* (mosc (m* freq (elt [1 0.75 0.5] (mod i 3))))" +
-	"                   (menv [0 0.1 0]))))" +
-	"       (range 0 (- num 1)))))" +
+	"((patch (freq dt num) (+ (repeat [0 0.2 2] num) (* dt (range 0 (- num 1))))\n" +
+	"   (nowarp ((freq (mseg freq (* 4 freq))))\n" +
+	"     (mapcar (lambda (i)\n" +
+	"               (signsel i\n" +
+	"                 (m* (mosc (m* freq (elt [1 0.75 0.5] (mod i 3))))\n" +
+	"                   (menv [0 0.1 0]))))\n" +
+	"       (range 0 (- num 1)))))\n" +
 	" 120 0.5 10)",
 ];
 
@@ -299,14 +306,14 @@ FLSC_Interpreter().read(
 // sur une gamme à 8 tons égaux
 (
 FLSC_Interpreter().read(
-	"((patch (num) (* 0.25 (range 1 (+ 3 num)))\n" +
-	"   (apply par\n" +
-	"     (flop\n" +
-	"       (mapcar\n" +
-	"         (lambda (i)\n" +
-	"           [[i (+ 3 i)]\n" +
-	"            (m* (subsign [1] (menv [0 0.1 0]))\n" +
-	"                (mosc (* 200 (** 2 (/ i 8))) 0))])\n" +
+	"((patch (num) (* 0.25 (range 1 (+ 3 num)))" +
+	"   (apply par" +
+	"     (flop" +
+	"       (mapcar" +
+	"         (lambda (i)" +
+	"           [[i (+ 3 i)]" +
+	"            (m* (subsign [1] (menv [0 0.1 0]))" +
+	"                (mosc (* 200 (** 2 (/ i 8))) 0))])" +
 	"         (range 0 (- num 1)))))) 17)"
 ).evaluateAndPlay;
 )
@@ -358,17 +365,17 @@ FLSC_Interpreter().read(
 // pas de bug, il est possible d'appeler plusieurs fois un même Symbol.ir
 (
 FLSC_Interpreter().read(
-	"((patch (shape1) [0.5 2]" +
-	"   ((module (shape2) (* 0.1 shape2 (osc (* 220 (+ 1 shape2)) 0))) shape1))" +
+	"((patch (shape) [0.5 2]" +
+	"   ((module (shape) (* 0.1 shape (osc (* 220 (+ 1 shape)) 0))) shape))" +
 	" (menv [0 1 0]))"
 ).evaluateAndPlay;
 )
 
 (
 FLSC_Interpreter().read(
-	"(let ((dual (module (!shape) (* 0.1 shape (osc (* 220 (+ 1 shape)) 0)))))\n" +
-	"  ((patch (shape) [0.5 2]\n" +
-	"     (dual shape))\n" +
+	"(let ((dual (module (!shape) (* 0.1 shape (osc (* 220 (+ 1 shape)) 0)))))" +
+	"  ((patch (shape) [0.5 2]" +
+	"     (dual shape))" +
 	"   (menv [0 1 0])))",
 ).evaluateAndPlay;
 )
@@ -376,14 +383,14 @@ FLSC_Interpreter().read(
 // exemple d'enregistrement
 (
 FLSC_Interpreter().read(
-	"((patch (num) (* 0.25 (range 1 (+ 3 num)))\n" +
-	"   (apply par\n" +
-	"     (flop\n" +
-	"       (mapcar\n" +
-	"         (lambda (i)\n" +
-	"           [[i (+ 3 i)]\n" +
-	"            (m* (subsign [1] (menv [0 0.1 0]))\n" +
-	"                (mosc (* 200 (** 2 (/ i 8))) 0))])\n" +
+	"((patch (num) (* 0.25 (range 1 (+ 3 num)))" +
+	"   (apply par" +
+	"     (flop" +
+	"       (mapcar" +
+	"         (lambda (i)" +
+	"           [[i (+ 3 i)]" +
+	"            (m* (subsign [1] (menv [0 0.1 0]))" +
+	"                (mosc (* 200 (** 2 (/ i 8))) 0))])" +
 	"         (range 0 (- num 1)))))) 17)"
 ).evaluateAndRecord;
 )
@@ -408,6 +415,18 @@ FLSC_Interpreter().read(
 	"             (signsel i" +
 	"               (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0]))))" +
 	"     (range 0 (- num 1))))" +
+	" 120 0.5 10)"
+).evaluateAndPlay;
+)
+
+// idem avec withsigns
+(
+FLSC_Interpreter().read(
+	"((patch (freq dt num) (+ (repeat [0 0.5 2] num) (* dt (range 0 (- num 1))))" +
+	"   (withsigns" +
+	"     (mapcar (lambda (i)" +
+	"                 (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0])))" +
+	"       (range0 num))))" +
 	" 120 0.5 10)"
 ).evaluateAndPlay;
 )
