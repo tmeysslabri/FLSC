@@ -1,5 +1,6 @@
 *~
 extras/FLSC2SC/build/
+extras/FLSC2SC/src/*.o
 recordings/*.wav
 recordings/*.WAV
 recordings/FLSC-osc

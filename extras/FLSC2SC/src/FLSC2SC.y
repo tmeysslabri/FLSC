@@ -108,21 +108,7 @@ Let:		PARL LetOp PARL LetList1 PARR Expr PARR
 			lnbrk(0, cons("],",
 			lnbrk(0, $6)))),
 			lnbrk(-1, cons(")", NULL))); }
-/*
-		| PARL LETREC PARL LetList1 PARR Expr PARR
-		{ $$ = concat(concat(cons("FLSC_LetRec([",
-			lnbrk(1, $4)),
-			lnbrk(0, cons("],",
-			lnbrk(0, $6)))),
-			lnbrk(-1, cons(")", NULL))); }
 
-		| PARL LETSTAR PARL LetList1 PARR Expr PARR
-		{ $$ = concat(concat(cons("FLSC_LetStar([",
-			lnbrk(1, $4)),
-			lnbrk(0, cons("],",
-			lnbrk(0, $6)))),
-			lnbrk(-1, cons(")", NULL))); }
-*/
 Patch:		PARL PATCH PARL IdList1 PARR Expr Expr PARR
 		{ $$ = concat(concat(concat(cons("FLSC_Patch([", $4), cons("],",
 			lnbrk(1, $6))), cons(",",
