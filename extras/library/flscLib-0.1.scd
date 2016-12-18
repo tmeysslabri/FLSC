@@ -131,6 +131,8 @@
 		['range', FLSC_Function(nil, ['a', 'b'],
 			{|ctxt| (FLSC_Var('a').value(ctxt)..FLSC_Var('b').value(ctxt))})],
 		['reverse', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).reverse})],
+		['repeat', FLSC_Function(nil, ['elt', 'num'],
+			{|ctxt| FLSC_Var('elt').value(ctxt) ! FLSC_Var('num').value(ctxt)})],
 		// accesseurs:
 		['elt', FLSC_Function(nil, ['a', 'b'],
 			{|ctxt| FLSC_Var('a').value(ctxt)[FLSC_Var('b').value(ctxt)]})],
@@ -318,12 +320,16 @@
 			{|ctxt|
 				var sign = FLSC_Var('sign').value(ctxt);
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
-				var warp = FLSC_WarpSpec({|t|
-					case
-					{t == 0}      {0}
-					{t == 'end'}  {'end'}
-					{t.isInteger} {sign[t-1]}
-					{true}        {Error("Non-integer signature index").throw}
+				var warp = FLSC_WarpSpec({|pair|
+					var t = pair[0];
+					[
+						case
+						{t == 0}      {0}
+						{t == 'end'}  {'end'}
+						{t.isInteger} {sign[t-1]}
+						{true}        {Error("Non-integer signature index").throw},
+						pair[1]
+					]
 				}, sig);
 				FLSC_LocalSignSpec(sig.rate, warp);
 		})],
@@ -338,11 +344,15 @@
 					var sig = item[1];
 					if(sig.rate != 'control')
 					{Error("Non-control in seq: %").format(sig).throw};
-					FLSC_WarpSpec({|t|
-						case
-						{t == 'end'}  {item[0][1]}
-						{t.isInteger} {item[0][0] + t}
-						{true}        {Error("Non-integer signature index").throw}
+					FLSC_WarpSpec({|pair|
+						var t = pair[0];
+						[
+							case
+							{t == 'end'}  {item[0][1]}
+							{t.isInteger} {item[0][0] + t}
+							{true}        {Error("Non-integer signature index").throw},
+							pair[1]
+						]
 					}, sig)
 				};
 				FLSC_CompSpec('control', warps);
@@ -359,14 +369,40 @@
 					var sig = item[1].asFLSCScoreSpec;
 					if(sig.rate != 'audio')
 					{Error("Non-audio in par: %").format(sig).throw};
-					FLSC_WarpSpec({|t|
-						case
-						{t == 'end'}  {item[0][1]}
-						{t.isInteger} {item[0][0] + t}
-						{true}        {Error("Non-integer signature index").throw}
+					FLSC_WarpSpec({|pair|
+						var t = pair[0];
+						[
+							case
+							{t == 'end'}  {item[0][1]}
+							{t.isInteger} {item[0][0] + t}
+							{true}        {Error("Non-integer signature index").throw},
+							pair[1]
+						]
 					}, sig)
 				};
 				FLSC_CompSpec('audio', warps);
+		})],
+		// sélection de signature
+		['signsel', FLSC_Function(nil, ['indexes', 'sig'],
+			{|ctxt|
+				var indexes = FLSC_Var('indexes').value(ctxt).asArray;
+				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
+				var warp;
+				if(sig.rate != 'audio')
+				{Error("Non-audio in signsel: %").format(sig).throw};
+				warp = FLSC_WarpSpec({|pair|
+					var t = pair[0];
+					var i = pair[1];
+					[
+						pair[0],
+						case
+						{i.isNumber}  {indexes[i]}
+						{i.isArray}   {i.collect(indexes[_])}
+						{i.isNil}     {indexes}
+						{true}        {Error("Non-compatible signature number").throw}
+					]
+				}, sig);
+				FLSC_LocalSignSpec('audio', warp);
 		})],
 	]
 }.value();

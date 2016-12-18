@@ -28,8 +28,8 @@ FLSC_CompSpec : FLSC_LocalScoreSpec {
 		// ajouter les temps de début et de fin
 		// (au cas où les subSpecs seraient sur un support temporel plus réduit)
 		// ??? est-ce nécessaire ?
-		score.start = timeWarp.value(0);
-		score.end = timeWarp.value('end');
+		score.start = timeWarp.value([0, nil]);
+		score.end = timeWarp.value(['end', nil]);
 
 		^score;
 	}

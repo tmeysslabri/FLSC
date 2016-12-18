@@ -137,6 +137,13 @@ var programs = [
 	"                    (m* (menv [0 0.1 0]) (mosc (m* pitch freq))))))\n" +
 	"       (par [[0 2] [1 3] [2 4]]\n" +
 	"         [(sound 1) (sound 0.75) (sound 0.5)])))) 220)",
+	// itération avec signsel
+	"((patch (freq dt num) (+ (repeat [0 0.5 2] num) (* dt (range 0 (- num 1))))\n" +
+	"   (mapcar (lambda (i)\n" +
+	"             (signsel i\n" +
+	"               (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0]))))\n" +
+	"     (range 0 (- num 1))))\n" +
+	" 120 0.5 10)",
 ];
 
 Routine({
@@ -384,4 +391,22 @@ FLSC_Interpreter().read(
 ).evaluateAndPlay;
 )
 
+// itération avec signsel
+(
+FLSC_Interpreter().read(
+	"((patch (freq dt num) (+ (repeat [0 0.5 2] num) (* dt (range 0 (- num 1))))" +
+	"   (mapcar (lambda (i)" +
+	"             (signsel i" +
+	"               (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0]))))" +
+	"     (range 0 (- num 1))))" +
+	" 120 0.5 10)"
+).evaluateAndPlay;
+)
+
+// gabarit à copier-coller
+(
+FLSC_Interpreter().read(
+	""
+).evaluateAndPlay;
+)
 

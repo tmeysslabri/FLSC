@@ -1,6 +1,6 @@
 FLSC_Time[slot] : Array {
 	*newFrom {|times|
-		^super.newFrom(times);
+		^super.newFrom([times, nil!times.size].flop);
 	}
 
 	value {|timeWarp|
