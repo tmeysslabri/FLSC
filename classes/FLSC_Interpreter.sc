@@ -60,19 +60,19 @@ FLSC_Interpreter {
 		{^scoreValue = treeValue};
 	}
 
-	play {
+	play {|doneAction = nil|
 		if(scoreValue.isNil) {this.asFLSCScore};
 		if(scoreValue.isKindOf(FLSC_Score))
-		{^scoreValue.play}
+		{^scoreValue.play(doneAction)}
 		{^scoreValue};
 	}
 
 	recordNRT {|outFile, before = 0, after = 0, headerFormat = "WAV", sampleRate = 44100,
-		sampleFormat = "int16", numChannels = 2|
+		sampleFormat = "int16", numChannels = 2, doneAction = nil|
 		if(scoreValue.isNil) {this.asFLSCScore(before, after)};
 		if(scoreValue.isKindOf(FLSC_Score))
 		{^scoreValue.recordNRT(outFile, headerFormat, sampleRate,
-			sampleFormat, numChannels)}
+			sampleFormat, numChannels, doneAction)}
 		{^scoreValue};
 	}
 

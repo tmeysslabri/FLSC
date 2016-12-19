@@ -132,7 +132,7 @@ FLSC_Score {
 		^[score, busses];
 	}
 
-	play {
+	play {|doneAction = nil|
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
 		var busses = scorePair[1];
@@ -153,14 +153,14 @@ FLSC_Score {
 			defDict.do {|item| SynthDef.removeAt(item.name)};
 			// supprimer les Bus
 			busses.do {|list| list.do {|bus| bus.free}};
-			// quitter
-			// server.quit;
+			// effectuer l'action demandée
+			doneAction.value;
 		}).play;
 		^this;
 	}
 
 	recordNRT {|outFile, headerFormat = "WAV", sampleRate = 44100,
-		sampleFormat = "int16", numChannels = 2|
+		sampleFormat = "int16", numChannels = 2, doneAction = nil|
 		// récupérer la partition
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
@@ -179,6 +179,7 @@ FLSC_Score {
 					"synthdefs" +/+ item.name ++ ".scsyndef")};
 				busses.do {|list| list.do {|bus| bus.free}};
 				"Recording finished.".postln;
+				doneAction.value;
 			}
 		);
 		^this;

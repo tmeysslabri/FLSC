@@ -169,17 +169,16 @@ var programs = [
 	" 120 0.5 10)",
 ];
 
-Routine({
-	Server.default.bootSync;
-	programs.do {|string|
-		Server.default.sync;
-		"Executing:".postln; string.postln;
-		interpreter.read(string).play;
-		if(interpreter.scoreValue.notNil)
-		{(interpreter.scoreValue.end + 1).wait};
-	};
-	"DONE".postln;
-}).play;
+var play = {
+	var next = programs.first;
+	"Executing:\n%".format(next).postln;
+	interpreter.read(next).play({
+		programs = programs[1..];
+		if(programs.notEmpty) {play.value} {"Done.".postln};
+	})
+};
+
+play.value;
 )
 
 // application de patch
