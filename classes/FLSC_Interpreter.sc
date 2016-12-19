@@ -12,7 +12,8 @@ FLSC_Interpreter {
 
 	*getTree {|string|
 		var cmd = "echo '" ++ string ++ "' | " ++
-		Platform.userExtensionDir +/+ "FLSC/extras/FLSC2SC/build/flsc2sc";
+		Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "FLSC2SC" +/+
+		"build" +/+ "flsc2sc";
 		^cmd.unixCmdGetStdOut.interpret;
 	}
 
@@ -39,7 +40,7 @@ FLSC_Interpreter {
 	}
 
 	readFile {|name = "test.flsc",
-		dir (Platform.userExtensionDir +/+ "FLSC/extras/examples")|
+		dir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples")|
 		var file = File(dir +/+ name, "r");
 		this.read(file.readAllString);
 		file.close;
@@ -74,6 +75,25 @@ FLSC_Interpreter {
 		{^scoreValue.recordNRT(outFile, headerFormat, sampleRate,
 			sampleFormat, numChannels, doneAction)}
 		{^scoreValue};
+	}
+
+	getFileList {|dir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples")|
+		var list = ("find" + dir + "-name *.flsc").unixCmdGetStdOut.split($\n);
+		^list.[..list.size-2];
+	}
+
+	playDir {|dir|
+		var list = this.getFileList(dir).postln;
+		var rec = {|list|
+			var next = list.first;
+			var rest = list[1..];
+			"Executing: %".format(next.split.last).postln;
+			this.readFile(next, "");
+			this.inputString.postln;
+			this.play({
+				if(rest.notEmpty) {rec.value(rest)} {"Done.".postln};
+			})
+		}.value(list);
 	}
 
 	asFLSC {

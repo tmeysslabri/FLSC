@@ -450,6 +450,9 @@ FLSC_Interpreter().read(
 // exemple de lecture de fichier
 FLSC_Interpreter().readFile("test.flsc").play;
 
+// exemple de lecture de répertoire
+FLSC_Interpreter().playDir;
+
 // gabarit à copier-coller
 (
 FLSC_Interpreter().read(
