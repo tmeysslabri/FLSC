@@ -165,9 +165,12 @@ FLSC_Score {
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
 		var busses = scorePair[1];
-		var baseDir = Platform.userExtensionDir +/+ "FLSC/recordings";
-		var fileName = if(outFile.notNil) {outFile}
-		{baseDir +/+ "FLSC" ++ Date.getDate.stamp ++ "." ++ headerFormat};
+		var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
+		var fileName = (if(outFile.notNil) {outFile}
+			{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
+		// créer les répertoires, si ils n'existent pas
+		baseDir.mkdir;
+		fileName.dirname.mkdir;
 		// créér les définitions
 		defDict.do {|item| item.writeDefFile };
 		score.recordNRT(baseDir +/+ "FLSC-osc", fileName, nil,

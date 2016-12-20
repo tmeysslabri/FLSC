@@ -27,6 +27,9 @@ FLSC_Interpreter().readFile("tests/024-nowarp-withsigns.flsc").play;
 // exemple de lecture de répertoire
 FLSC_Interpreter().playDir;
 
+// créer le catalogue dans recordings
+FLSC_Interpreter().recordDir;
+
 // création d'un module
 FLSC_Interpreter().read("(control? (mn* 1 2 3))").evaluate;
 

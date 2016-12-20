@@ -88,20 +88,41 @@ FLSC_Interpreter {
 		^list.[..list.size-2];
 	}
 
-	playDir {|subDir = "tests"|
+	performDir {|selector, subDir = "tests", args = #[], addFileName = false|
 		var list = this.getFileList(subDir).postln;
 		var rec = {|list|
 			var next = list.first;
 			var rest = list[1..];
 			"Executing: %".format(next.split.last).postln;
-			this.readFile(next, "");
+			this.readFile(next);
 			this.inputString.postln;
-			this.play({
+			this.performList(selector, (if(addFileName)
+				{
+					var fileName = Platform.userExtensionDir +/+ "FLSC" +/+
+					"recordings" +/+ next;
+					fileName.dirname.mkdir;
+					[fileName] ++ args;
+				}
+				{args}) ++
+				[{
 				if(rest.notEmpty) {rec.value(rest)} {"Done.".postln};
-			})
+				}]
+			)
 		};
 
 		rec.value(list);
+	}
+
+	playDir {|subDir = "tests"|
+		this.performDir(\play, subDir, []);
+	}
+
+	recordDir{|subDir = "catalog", before = 1, after = 1,
+		headerFormat = "WAV", sampleRate = 44100, sampleFormat = "int16",
+		numChannels = 2|
+		this.performDir(\recordNRT, subDir, [before, after,
+		headerFormat, sampleRate, sampleFormat,
+		numChannels], true);
 	}
 
 	asFLSC {
