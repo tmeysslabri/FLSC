@@ -8,7 +8,7 @@ FLSC_Context : Dictionary {
 
 	*library {|version = "0.1", libName = "flscLib"|
 		var path = Platform.userExtensionDir +/+
-		"FLSC/extras/library" +/+ libName ++ "-" ++ version;
+		"FLSC" +/+ "extras" +/+ "library" +/+ libName ++ "-" ++ version;
 		var scLib = path ++ ".scd";
 		var flscLib = path ++ ".flsc.scd";
 		var content;
