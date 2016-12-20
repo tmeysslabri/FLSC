@@ -9,6 +9,8 @@ FLSC_Interpreter {
 	var <treeValue;
 	// la FLSC_Score résultante
 	var <scoreValue;
+	// le répertoire de base pour l'accès à des fichiers
+	var <>baseDir;
 
 	*getTree {|string|
 		var escapeString = string.escapeChar($").escapeChar($$).escapeChar($`).escapeChar($\\);
@@ -28,6 +30,7 @@ FLSC_Interpreter {
 
 	interpreterInit{
 		library = FLSC_Context.library;
+		baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples";
 		^this;
 	}
 
@@ -40,9 +43,8 @@ FLSC_Interpreter {
 		^this;
 	}
 
-	readFile {|name = "test.flsc",
-		dir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples")|
-		var file = File(dir +/+ name, "r");
+	readFile {|fileName = "test.flsc"|
+		var file = File(baseDir +/+ fileName, "r");
 		this.read(file.readAllString);
 		file.close;
 		^this;
@@ -78,15 +80,16 @@ FLSC_Interpreter {
 		{^scoreValue};
 	}
 
-	getFileList {|subDir ("."),
-		baseDir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples")|
+	getFileList {|subDir (".")|
 		var list = ("find" + baseDir +/+ subDir +
-			"-name *.flsc | sort").unixCmdGetStdOut.split($\n);
+			"-name *.flsc | sort |" +
+			"sed -e 's/^" ++ baseDir.escapeChar($/) ++
+			"\\/\\(.*\\)/\\1/'").unixCmdGetStdOut.split($\n);
 		^list.[..list.size-2];
 	}
 
-	playDir {|subDir = "tests", baseDir|
-		var list = this.getFileList(subDir, baseDir).postln;
+	playDir {|subDir = "tests"|
+		var list = this.getFileList(subDir).postln;
 		var rec = {|list|
 			var next = list.first;
 			var rest = list[1..];
