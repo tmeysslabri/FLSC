@@ -1,0 +1,8 @@
+;;;; itération avec signsel
+((patch (freq dt num) (+ (repeat [0 0.5 2] num) (* dt (range 0 (- num 1))))
+   (mapcar (lambda (i)
+             (signsel i
+               (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0]))))
+     (range 0 (- num 1))))
+ 120 0.5 10)
+

@@ -1,0 +1,6 @@
+;;;; dédoublement d'un patch avec let
+(let ((myvar (patch (freq) [0.5 2]
+                (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])
+                  (mosc freq 0)))))
+  [(delay 0 (myvar 220)) (delay 1 (myvar 330))])
+

@@ -1,0 +1,7 @@
+;;;; contrôle non-unique
+;;;; pas de bug si non-déclaré, il est possible d'appeler plusieurs fois un même Symbol.ir
+(let ((dual (module (!shape) (* 0.1 shape (osc (* 220 (+ 1 shape)) 0)))))
+  ((patch (shape) [0.5 2]
+     (dual shape))
+ (menv [0 1 0])))
+

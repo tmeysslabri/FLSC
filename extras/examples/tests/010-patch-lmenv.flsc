@@ -1,0 +1,5 @@
+;;;; générateur d'enveloppe (! à éviter)
+((patch (freq) [0.5 2]
+   (m* (lmenv [0 0.1 0] [1])
+     (mosc freq 0))) 220)
+

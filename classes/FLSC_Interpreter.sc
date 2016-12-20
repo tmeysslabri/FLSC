@@ -11,7 +11,8 @@ FLSC_Interpreter {
 	var <scoreValue;
 
 	*getTree {|string|
-		var cmd = "echo '" ++ string ++ "' | " ++
+		var escapeString = string.escapeChar($").escapeChar($$).escapeChar($`).escapeChar($\\);
+		var cmd = "echo \"" ++ escapeString ++ "\" | " ++
 		Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "FLSC2SC" +/+
 		"build" +/+ "flsc2sc";
 		^cmd.unixCmdGetStdOut.interpret;
@@ -79,11 +80,12 @@ FLSC_Interpreter {
 
 	getFileList {|subDir ("."),
 		baseDir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples")|
-		var list = ("find" + baseDir +/+ subDir + "-name *.flsc").unixCmdGetStdOut.split($\n);
+		var list = ("find" + baseDir +/+ subDir +
+			"-name *.flsc | sort").unixCmdGetStdOut.split($\n);
 		^list.[..list.size-2];
 	}
 
-	playDir {|subDir, baseDir|
+	playDir {|subDir = "tests", baseDir|
 		var list = this.getFileList(subDir, baseDir).postln;
 		var rec = {|list|
 			var next = list.first;
@@ -94,7 +96,9 @@ FLSC_Interpreter {
 			this.play({
 				if(rest.notEmpty) {rec.value(rest)} {"Done.".postln};
 			})
-		}.value(list);
+		};
+
+		rec.value(list);
 	}
 
 	asFLSC {

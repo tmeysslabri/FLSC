@@ -21,6 +21,12 @@ FLSC_Interpreter().read(
 
 // exemples de synthèse sonore
 
+// exemple de lecture de fichier
+FLSC_Interpreter().readFile("tests/024-nowarp-withsigns.flsc").play;
+
+// exemple de lecture de répertoire
+FLSC_Interpreter().playDir;
+
 // création d'un module
 FLSC_Interpreter().read("(control? (mn* 1 2 3))").evaluate;
 
@@ -446,12 +452,6 @@ FLSC_Interpreter().read(
 	" 120 0.5 10)"
 ).play;
 )
-
-// exemple de lecture de fichier
-FLSC_Interpreter().readFile("test.flsc").play;
-
-// exemple de lecture de répertoire
-FLSC_Interpreter().playDir;
 
 // gabarit à copier-coller
 (

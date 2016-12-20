@@ -1,0 +1,7 @@
+;;;; variable non-unique
+;;;; avec signalement, plus économique
+((patch (freq) [0.5 2]
+   (let ((!myvar (m* (menv [0 0.1 0]) (mosc freq 0))))
+     [myvar (m* (menv [0 0.1 0]) (mosc (m* (m+ 1 (m* 40 myvar)) freq) 0))]))
+ 220)
+

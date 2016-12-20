@@ -1,0 +1,8 @@
+;;;; modulateur carré
+;;;; noter les paramètres absents (phase, largeur d'impulsion)
+((patch (freq modfreq) [0.5 1.5 2]
+   (mn* (m- 1 (m* (menv [0 1 1 0]) (msqu modfreq)))
+     (menv [0 0.1 0.1 0])
+     (mosc freq)))
+ 220 64)
+
