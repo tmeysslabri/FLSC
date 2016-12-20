@@ -77,13 +77,14 @@ FLSC_Interpreter {
 		{^scoreValue};
 	}
 
-	getFileList {|dir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples")|
-		var list = ("find" + dir + "-name *.flsc").unixCmdGetStdOut.split($\n);
+	getFileList {|subDir ("."),
+		baseDir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples")|
+		var list = ("find" + baseDir +/+ subDir + "-name *.flsc").unixCmdGetStdOut.split($\n);
 		^list.[..list.size-2];
 	}
 
-	playDir {|dir|
-		var list = this.getFileList(dir).postln;
+	playDir {|subDir, baseDir|
+		var list = this.getFileList(subDir, baseDir).postln;
 		var rec = {|list|
 			var next = list.first;
 			var rest = list[1..];
