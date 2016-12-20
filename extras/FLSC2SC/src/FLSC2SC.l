@@ -6,6 +6,7 @@
 
 %option noyywrap
 
+comment ;+.*\n
 blanks	[ \t\n]+
 parl	\(
 parr	\)
@@ -35,6 +36,7 @@ other	.
 
 %%
 
+{comment}	{ /* ignore */ }
 {blanks}	{ /* ignore */ }
 
 {parl}		{ return(PARL); }
