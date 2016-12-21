@@ -94,18 +94,17 @@ FLSC_Interpreter {
 	}
 
 	performDir {|selector, subDir = "tests", args = #[],
-		recursive = false, addFileName = false|
-		var list = this.getFileList(subDir, recursive).postln;
+		recursive = false, recordDir = nil|
+		var list = this.getFileList(subDir, recursive);
 		var rec = {|list|
 			var next = list.first;
 			var rest = list[1..];
 			"Executing: %".format(next.split.last).postln;
 			this.readFile(next);
 			this.inputString.postln;
-			this.performList(selector, (if(addFileName)
+			this.performList(selector, (if(recordDir.notNil)
 				{
-					var fileName = Platform.userExtensionDir +/+ "FLSC" +/+
-					"recordings" +/+ next;
+					var fileName = recordDir +/+ next;
 					fileName.dirname.mkdir;
 					[fileName] ++ args;
 				}
@@ -125,10 +124,11 @@ FLSC_Interpreter {
 
 	recordDir{|subDir = "catalog", before = 1, after = 1,
 		headerFormat = "WAV", sampleRate = 44100, sampleFormat = "int16",
-		numChannels = 2, recursive = true|
+		numChannels = 2, recursive = true,
+		recordDir = (Platform.userExtensionDir +/+ "FLSC" +/+ "recordings")|
 		this.performDir(\recordNRT, subDir, [before, after,
 		headerFormat, sampleRate, sampleFormat,
-		numChannels], recursive, true);
+		numChannels], recursive, recordDir);
 	}
 
 	asFLSC {
