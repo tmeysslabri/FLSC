@@ -64,8 +64,8 @@ FLSC_Interpreter {
 		{^scoreValue = treeValue};
 	}
 
-	play {|doneAction = nil|
-		if(scoreValue.isNil) {this.asFLSCScore};
+	play {|before = 0, after = 0, doneAction = nil|
+		if(scoreValue.isNil) {this.asFLSCScore(before, after)};
 		if(scoreValue.isKindOf(FLSC_Score))
 		{^scoreValue.play(doneAction)}
 		{^scoreValue};
@@ -80,16 +80,22 @@ FLSC_Interpreter {
 		{^scoreValue};
 	}
 
-	getFileList {|subDir (".")|
-		var list = ("find" + baseDir +/+ subDir +
-			"-name *.flsc | sort |" +
-			"sed -e 's/^" ++ baseDir.escapeChar($/) ++
-			"\\/\\(.*\\)/\\1/'").unixCmdGetStdOut.split($\n);
+	getFileList {|subDir ("."), recursive = false|
+		var cmd = if(recursive)
+		{
+			"find" + baseDir +/+ subDir + "-name *.flsc | sort |" +
+			"sed -e 's/^" ++ baseDir.escapeChar($/) ++ "\\/\\(.*\\)/\\1/'"
+		} {
+			"ls" + baseDir +/+ subDir +/+ "*.flsc |" +
+			"sed -e 's/^" ++ baseDir.escapeChar($/) ++ "\\/\\(.*\\)/\\1/'"
+		};
+		var list = cmd.unixCmdGetStdOut.split($\n);
 		^list.[..list.size-2];
 	}
 
-	performDir {|selector, subDir = "tests", args = #[], addFileName = false|
-		var list = this.getFileList(subDir).postln;
+	performDir {|selector, subDir = "tests", args = #[],
+		recursive = false, addFileName = false|
+		var list = this.getFileList(subDir, recursive).postln;
 		var rec = {|list|
 			var next = list.first;
 			var rest = list[1..];
@@ -113,16 +119,16 @@ FLSC_Interpreter {
 		rec.value(list);
 	}
 
-	playDir {|subDir = "tests"|
-		this.performDir(\play, subDir, []);
+	playDir {|subDir = "tests", before = 0.5, after = 0.5, recursive = false|
+		this.performDir(\play, subDir, [before, after], recursive);
 	}
 
 	recordDir{|subDir = "catalog", before = 1, after = 1,
 		headerFormat = "WAV", sampleRate = 44100, sampleFormat = "int16",
-		numChannels = 2|
+		numChannels = 2, recursive = true|
 		this.performDir(\recordNRT, subDir, [before, after,
 		headerFormat, sampleRate, sampleFormat,
-		numChannels], true);
+		numChannels], recursive, true);
 	}
 
 	asFLSC {
