@@ -1,6 +1,6 @@
-;;;; idem avec withsigns
+;;;; idem avec smap
 ((patch (freq dt num) (+ (repeat [0 0.5 2] num) (* dt (range 0 (- num 1))))
-   (withsigns
+   (smap
      (mapcar (lambda (i)
                  (m* (mosc (* freq (+ 1 (* 0.3333 i)))) (menv [0 0.1 0])))
        (range0 num))))

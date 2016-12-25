@@ -62,9 +62,9 @@
 			"      (range0 num))))"],
 
 		// fonctions sur la signature temporelle
-		['withsigns',
+		['smap',
 			"(lambda (sigs)" +
-			"  (mapcar (lambda (i sig) (signsel i sig))" +
+			"  (mapcar (lambda (i sig) (ssel i sig))" +
 			"    (range0 (length sigs)) sigs))"
 		],
 
@@ -75,7 +75,7 @@
 		// la fonction menv produit une enveloppe de taille variable
 		// en assemblant des mseg avec seq
 		// les indices sont sytématiquement les entiers successifs
-		// (utiliser subsign pour sélectionner les points souhaités)
+		// (utiliser ssub pour sélectionner les points souhaités)
 		['menv',
 			"(lambda (levels)" +
 			"  (let ((len (length levels)))" +

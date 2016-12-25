@@ -1,7 +1,7 @@
-;;;; combinaison nowarp/withsigns
+;;;; combinaison nowarp/smap
 ((patch (freq dt num) (+ (repeat [0 0.2 2] num) (* dt (range 0 (- num 1))))
    (nowarp ((freq (mseg freq (* 4 freq))))
-     (withsigns
+     (smap
        (mapcar (lambda (i)
                  (m* (mosc (m* freq (elt [1 0.75 0.5] (mod i 3))))
                    (menv [0 0.1 0])))

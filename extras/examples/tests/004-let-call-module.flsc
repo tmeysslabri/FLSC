@@ -4,6 +4,6 @@
            (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])
              (mosc freq 0))))
      (par [[0 3] [2 5]]
-          [(subsign [1] myvar)
-           (subsign [2] myvar)]))) 220)
+          [(ssub [1] myvar)
+           (ssub [2] myvar)]))) 220)
 

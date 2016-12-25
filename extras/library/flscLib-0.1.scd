@@ -317,7 +317,7 @@
 				FLSC_GlobalSignSpec('audio', warp);
 		})],
 		// sous-signature
-		['subsign', FLSC_Function(nil, ['sign', 'sig'],
+		['ssub', FLSC_Function(nil, ['sign', 'sig'],
 			{|ctxt|
 				var sign = FLSC_Var('sign').value(ctxt);
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
@@ -335,13 +335,13 @@
 				FLSC_LocalSignSpec(sig.rate, warp);
 		})],
 		// sélection de signature
-		['signsel', FLSC_Function(nil, ['indexes', 'sig'],
+		['ssel', FLSC_Function(nil, ['indexes', 'sig'],
 			{|ctxt|
 				var indexes = FLSC_Var('indexes').value(ctxt).asArray;
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp;
 				if(sig.rate != 'audio')
-				{Error("Non-audio in signsel: %".format(sig)).throw};
+				{Error("Non-audio in ssel: %".format(sig)).throw};
 				warp = FLSC_WarpSpec({|pair|
 					var i = pair[1];
 					[
@@ -356,7 +356,7 @@
 				FLSC_LocalSignSpec('audio', warp);
 		})],
 		// combinaison de sous-signature et de sélection
-		['subsignsel', FLSC_Function(nil, ['specs', 'sig'],
+		['ssubsel', FLSC_Function(nil, ['specs', 'sig'],
 			{|ctxt|
 				var specs = FLSC_Var('specs').value(ctxt).asArray;
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
