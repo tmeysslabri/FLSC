@@ -73,7 +73,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 19 "FLSC2SC.y" /* yacc.c:1909  */
+#line 24 "FLSC2SC.y" /* yacc.c:1909  */
 
 	char *str;
 	wptr *ptr;

@@ -2,12 +2,15 @@
 #include <string.h>
 #include "flsc_types.h"
 #include "flsc2sc.h"
+
+int linenum = 1;
 %}
 
 %option noyywrap
 
-comment ;+.*\n
-blanks	[ \t\n]+
+newline \n
+comment ;+[^\n]*
+blanks	[ \t]+
 parl	\(
 parr	\)
 brl	\[
@@ -36,6 +39,7 @@ other	.
 
 %%
 
+{newline}	{ linenum++; }
 {comment}	{ /* ignore */ }
 {blanks}	{ /* ignore */ }
 

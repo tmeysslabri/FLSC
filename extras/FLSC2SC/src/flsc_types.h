@@ -9,3 +9,5 @@ typedef struct {
 	words **end;
 } wptr;
 
+int linenum;
+

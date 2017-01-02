@@ -11,8 +11,13 @@ void printwords(words *text);
 
 int yyparse();
 int yylex();
-int yyerror(char *s);
+int yyerror(const char *s);
 %}
+
+// gestion plus explicite des erreurs de syntaxe
+
+%define parse.lac full
+%define parse.error verbose
 
 // symboles terminaux
 
@@ -46,6 +51,8 @@ int yyerror(char *s);
 
 %token <str> SYMB
 %token <str> NUM
+
+// symboles non-terminaux
 
 %type <ptr> Expr
 
@@ -281,8 +288,8 @@ void printwords(words *text) {
 	};
 }
 
-int yyerror(char *s) {
-	printf("FLSC_Error(\"%s\")\n",s);
+int yyerror(const char *s) {
+	printf("FLSC_Error(\"Line %d: %s\")\n", linenum, s);
 	return 0;
 }
 
