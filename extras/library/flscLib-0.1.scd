@@ -373,33 +373,42 @@
 			{|ctxt|
 				var specs = FLSC_Var('specs').value(ctxt).asArray;
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
-				var all = if(sig.rate == 'audio')
+				var warp = if(sig.rate == 'audio')
 				{
-					specs.inject([])
-					{|acc, it|
-						var set = it[1];
-						if(set.isFLSCNil || acc.isNil) {nil}
-						{ acc.union(set.asArray) }
-					}
-				} { nil };
-				var warp;
-				warp = FLSC_WarpSpec({|pair|
-					var t = pair[0];
-					var i = pair[1];
-					case
-					{t == 0}      {[0, all]}
-					{t == 'end'}  {['end', all]}
-					{t.isInteger}
-					{[
-						specs[t-1][0],
+					FLSC_WarpSpec({|pair|
+						var t = pair[0];
+						var i = pair[1];
+						if(t == 'end')  { t = specs.size - 1 };
+						if(t.isInteger)
+						{[
+							specs[t][0],
+							case
+							{i.isNumber}  {specs[t][1][i]}
+							{i.isArray}   {i.collect(specs[t][1][_])}
+							{i.isNil}     {specs[t][1]}
+							{true}        {Error("Non-compatible signature number").throw}
+						]}
+						{Error("Non-integer signature index").throw}
+					}, sig)
+				} {
+					FLSC_WarpSpec({|pair|
+						var t = pair[0];
+						var i = pair[1];
 						case
-						{i.isNumber}  {specs[t-1][1][i]}
-						{i.isArray}   {i.collect(specs[t-1][1][_])}
-						{i.isNil}     {specs[t-1][1]}
-						{true}        {Error("Non-compatible signature number").throw}
-					]}
-					{true}        {Error("Non-integer signature index").throw}
-				}, sig);
+						{t == 0}      {[0, nil]}
+						{t == 'end'}  {['end', nil]}
+						{t.isInteger}
+						{[
+							specs[t-1][0],
+							case
+							{i.isNumber}  {specs[t-1][1][i]}
+							{i.isArray}   {i.collect(specs[t-1][1][_])}
+							{i.isNil}     {specs[t-1][1]}
+							{true}        {Error("Non-compatible signature number").throw}
+						]}
+						{true}        {Error("Non-integer signature index").throw}
+					}, sig)
+				};
 				FLSC_LocalSignSpec(sig.rate, warp);
 		})],
 		// compositions:

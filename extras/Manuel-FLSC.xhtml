@@ -395,7 +395,7 @@ ssub, ssel, ssubsel</h4>
 (ssubsel <em>indexes</em> <em>signal</em>) applique à <em>signal</em> une signature temporelle composée d'indices de signature sélectionnés, dans des signatures choisies parmi des sous-ensembles indépendants de l'ensemble de signatures temporelles englobant. La liste <em>indexes</em> est constituée de couples, dont le premier élément est un indice de signature, et le deuxième soit un entier (pour sélectionner une signature parmi l'ensemble), soit une liste d'entiers (pour sélectionner un sous-ensemble de signatures), soit nil (pour sélectionner la totalité des signatures).</div>
 
 <div class="standard"><a id='magicparlabel-5040' />
-De façon implicite le début et la fin de la signature appliquée sont: le début et la fin du support temporel englobant si <em>signal</em> est un signal de contrôle, ou le début et la fin du support temporel défini par l'union des ensembles de signatures sélectionnées si <em>signal</em> est un signal audio.</div>
+De façon implicite le début et la fin de la signature appliquée sont le début et la fin du support temporel englobant si <em>signal</em> est un signal de contrôle. Si <em>signal</em> est un signal audio, ce sont simplement le premier et le dernier point sélectionnés (car dans ce cas il est acceptable de réduire le support temporel).</div>
 <h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-375' />
 Fonctions de la bibliothèque FLSC</h2>
 <h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-432' />
