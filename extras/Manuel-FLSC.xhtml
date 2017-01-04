@@ -1,0 +1,1268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/TR/2001/REC-MathML2-20010221/dtd/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.8.1" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>Manuel de référence FLSC</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+<style type="text/css">
+table { border: 1px solid black; display: inline-block; }
+td { border: 1px solid black; padding: 0.5ex; }
+</style>
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+div.author {
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.date {
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: center;
+
+}
+div.standard {
+margin-bottom: 2ex;
+}
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+h4.subsubsection {
+font-weight: bold;
+font-size: medium;
+margin-top: 0.7ex;
+margin-bottom: 0.4ex;
+text-align: left;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+</style>
+</head>
+<body>
+<h1 class="title"><a id='magicparlabel-350' />
+Manuel de référence FLSC</h1>
+<div class="author"><a id='magicparlabel-351' />
+Thomas Meyssonnier
+<br />
+
+<em>thomas.meyssonnier@u-bordeaux.fr</em></div>
+<div class="date"><a id='magicparlabel-352' />
+</div>
+<div class="standard"><a id='magicparlabel-1452' />
+</div>
+<div class='toc'><div class='tochead part'>Table des matières</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-360' class='tocentry'>1 Eléments standard des langages fonctionnels</a> <a href='#magicparlabel-360' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-361' class='tocentry'>1.1 Syntaxe générale</a> <a href='#magicparlabel-361' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-362' class='tocentry'>1.2 Formes spéciales</a> <a href='#magicparlabel-362' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-363' class='tocentry'>1.2.1 lambda</a> <a href='#magicparlabel-363' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-1519' class='tocentry'>1.2.2 let, let*, letrec</a> <a href='#magicparlabel-1519' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-365' class='tocentry'>1.2.3 if, cond</a> <a href='#magicparlabel-365' class='tocarrow'>&gt;</a></div>
+</div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-366' class='tocentry'>2 Eléments spécifiques à la synthèse sonore</a> <a href='#magicparlabel-366' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-367' class='tocentry'>2.1 Formes spéciales</a> <a href='#magicparlabel-367' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-368' class='tocentry'>2.1.1 patch</a> <a href='#magicparlabel-368' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-369' class='tocentry'>2.1.2 module</a> <a href='#magicparlabel-369' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-370' class='tocentry'>2.1.3 nowarp</a> <a href='#magicparlabel-370' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-3773' class='tocentry'>2.2 Listes de signaux audio</a> <a href='#magicparlabel-3773' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-3768' class='tocentry'>2.3 Altérations de signature temporelle</a> <a href='#magicparlabel-3768' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-3769' class='tocentry'>2.3.1 delay</a> <a href='#magicparlabel-3769' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-3770' class='tocentry'>2.3.2 par, seq, hybrid</a> <a href='#magicparlabel-3770' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-3771' class='tocentry'>2.3.3 ssub, ssel, ssubsel</a> <a href='#magicparlabel-3771' class='tocarrow'>&gt;</a></div>
+</div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-375' class='tocentry'>3 Fonctions de la bibliothèque FLSC</a> <a href='#magicparlabel-375' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-432' class='tocentry'>3.1 Fonctions numériques</a> <a href='#magicparlabel-432' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-11368' class='tocentry'>3.1.1 Constantes</a> <a href='#magicparlabel-11368' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-11399' class='tocentry'>3.1.2 Opérateurs de signe</a> <a href='#magicparlabel-11399' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-8929' class='tocentry'>3.1.3 Opérateurs arithméthiques</a> <a href='#magicparlabel-8929' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-9544' class='tocentry'>3.1.4 Fonctions usuelles</a> <a href='#magicparlabel-9544' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-437' class='tocentry'>3.2 Fonctions booléennes</a> <a href='#magicparlabel-437' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-11205' class='tocentry'>3.2.1 Constantes</a> <a href='#magicparlabel-11205' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-452' class='tocentry'>3.2.2 Opérateurs booléens</a> <a href='#magicparlabel-452' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-444' class='tocentry'>3.2.3 Comparaisons</a> <a href='#magicparlabel-444' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-448' class='tocentry'>3.2.4 Tests</a> <a href='#magicparlabel-448' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-457' class='tocentry'>3.3 Listes</a> <a href='#magicparlabel-457' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-462' class='tocentry'>3.3.1 Constructeurs</a> <a href='#magicparlabel-462' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-466' class='tocentry'>3.3.2 Accesseurs</a> <a href='#magicparlabel-466' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-475' class='tocentry'>3.3.3 Opérations sur les listes</a> <a href='#magicparlabel-475' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-471' class='tocentry'>3.3.4 Itérations</a> <a href='#magicparlabel-471' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-485' class='tocentry'>3.4 Primitives pour la synthèse sonore</a> <a href='#magicparlabel-485' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-492' class='tocentry'>3.4.1 Oscillateur</a> <a href='#magicparlabel-492' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-527' class='tocentry'>3.4.2 Enveloppes</a> <a href='#magicparlabel-527' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-531' class='tocentry'>3.4.3 Modulateurs</a> <a href='#magicparlabel-531' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-536' class='tocentry'>3.4.4 Générateurs pseudo-aléatoires</a> <a href='#magicparlabel-536' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-5701' class='tocentry'>3.4.5 Autres</a> <a href='#magicparlabel-5701' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-376' class='tocentry'>3.5 Modules prédéfinis</a> <a href='#magicparlabel-376' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-543' class='tocentry'>3.5.1 Modules correspondant aux primitives</a> <a href='#magicparlabel-543' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-571' class='tocentry'>3.5.2 Modules arithmétiques</a> <a href='#magicparlabel-571' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-578' class='tocentry'>3.6 Fonctions génératrices d'enveloppes</a> <a href='#magicparlabel-578' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-5847' class='tocentry'>3.7 Fonctions diverses</a> <a href='#magicparlabel-5847' class='tocarrow'>&gt;</a></div>
+</div>
+</div>
+
+
+<div class="standard"><a id='magicparlabel-357' />
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-360' />
+Eléments standard des langages fonctionnels</h2>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-361' />
+Syntaxe générale</h3>
+<div class="standard"><a id='magicparlabel-717' />
+Les expressions fonctionnelles sont données entre parenthèses. Elles peuvent contenir:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-761' />
+des <em>mots-clef</em> introduisant une forme spéciale</li>
+<li class="itemize_item"><a id='magicparlabel-769' />
+des <em>identificateurs</em> qui désignent soit une variable, soit le nom d'une nouvelle variable (dans les formes spéciales introduisant une fonction)</li>
+<li class="itemize_item"><a id='magicparlabel-785' />
+des <em>constantes numériques</em> dont l'expression régulière est la suivante:
+<br />
+
+(-)?[0-9]+(\.[0-9]+)?(e[0-9]+)?(pi)?</li>
+<li class="itemize_item"><a id='magicparlabel-843' />
+le mot-clef nil qui désigne la valeur nulle</li>
+<li class="itemize_item"><a id='magicparlabel-854' />
+des <em>listes</em> entre crochets qui contiennent une séquence de sous-expressions</li>
+</ul>
+<div class="standard"><a id='magicparlabel-860' />
+Mis à part dans le cas des formes spéciales, une expression entre parenthèses a le sens d'un appel de fonction, son premier élément est la fonction elle-même et les éléments suivants sont les arguments de l'appel. Les fonctions sont des objets du langage au même titre que les autres et sont donc représentées dans le même espace de variables (tout comme en SCHEME et contrairement à LISP).</div>
+<h3 class="subsection"><span class="subsection_label">1.2</span> <a id='magicparlabel-362' />
+Formes spéciales</h3>
+<h4 class="subsubsection"><span class="subsubsection_label">1.2.1</span> <a id='magicparlabel-363' />
+lambda</h4>
+<div class="standard"><a id='magicparlabel-936' />
+(lambda (<em>name</em> ...) <em>body</em>) retourne une fonction anonyme dont les paramètres sont les <em>name</em> ...; ceux-ci peuvent être soit de simples identificateurs, soit des identificateurs précédés de !, ce qui signifie que la variable introduite peut apparaître plusieurs fois dans le corps de la fonction et qu'en conséquence, si il s'agit d'un élément de synthèse sonore (générateur ou signal), des mesures spécifiques seront mises en place afin d'éviter d'en effectuer des copies identiques lorsqu'il apparaît plusieurs fois dans le même contexte.</div>
+
+<div class="standard"><a id='magicparlabel-1042' />
+En outre le dernier identificateur peut être précédé de &amp;, ce qui signifie que la fonction admet un nombre variable d'arguments; si N est le nombre de paramètres de la fonction, les N-1 premiers arguments seront liés aux N-1 premiers identificateurs, et tous les arguments restants seront regroupés dans une liste qui sera liée au dernier identificateur.</div>
+
+<div class="standard"><a id='magicparlabel-1146' />
+<em>body</em> est le corps de la fonction, qui sera évalué lorsque celle-ci est appelée.</div>
+
+<div class="standard"><a id='magicparlabel-1140' />
+D'une façon générale, les différents types de fonctions engendrent une clôture lexicale qui mémorise les variables définies dans le contexte dans lequel la fonction est déclarée. Le comportement de la fonction ne dépend donc que de celles-ci, et des paramètres qui sont liés lors de l'appel. Encore une fois, FLSC s'apparente en cela à SCHEME et non à LISP.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">1.2.2</span> <a id='magicparlabel-1519' />
+let, let*, letrec</h4>
+<div class="standard"><a id='magicparlabel-1521' />
+(let ((<em>name</em> <em>val</em>) ...) <em>body</em>) est un équivalent sémantique de ((lambda (<em>name</em> ...) <em>body</em>) <em>val</em> ...); sa réalisation concrète est probablement légèrement plus efficace. Les name peuvent être précédés de !, par contre le &amp; n'a aucun sens dans ce cas.</div>
+
+<div class="standard"><a id='magicparlabel-1689' />
+Tout comme en SCHEME, let* effectue la même opération, mis à part que la i<sup class="script_superscript">ème</sup> <em>val</em> peut se référer au j<sup class="script_superscript">ème</sup> <em>name</em>, si <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow><mi>j</mi><mo>&lt;</mo><mi>i</mi>
+  </mrow>
+ </mrow></math>.</div>
+
+<div class="standard"><a id='magicparlabel-1908' />
+La forme letrec permet de définir des fonctions récursives dans la mesure où les <em>name</em> sont ajoutés a posteriori dans la clôture lexicale des <em>val</em>, si celles-ci sont des fonctions. Ils ne sont par contre pas présents lorsque celles-ci sont évaluées, on ne peut donc pas définir des valeurs ordinaires de façon récursive (ce qui serait une faute sémantique conduisant à une boucle infinie).</div>
+<h4 class="subsubsection"><span class="subsubsection_label">1.2.3</span> <a id='magicparlabel-365' />
+if, cond</h4>
+<div class="standard"><a id='magicparlabel-2057' />
+(if <em>clause</em> <em>then</em> <em>else</em>) évalue clause; si celle-ci vaut true, alors <em>then</em> est évalué et sa valeur retournée; si <em>clause</em> vaut false, alors de même avec <em>else</em>. Toute autre valeur constitue une faute sémantique (attention, sur ce point le comportement de FLSC est différent de celui de SCHEME). Parmi <em>then</em> et <em>else</em>, seul celui qui est choisi est évalué; l'autre a simplement besoin d'être syntaxiquement correct.</div>
+
+<div class="standard"><a id='magicparlabel-2217' />
+(cond (<em>clause</em> <em>consequence</em>) ...) effectue le même type d'opération, mis à part que les <em>clause</em> sont évaluées dans l'ordre, et que lorsque l'une d'elles vaut true, la <em>consequence</em> associée est évaluée et sa valeur retournée. Les autres <em>consequence</em> ne sont pas évaluées. La dernière <em>clause</em> peut être le mot-clef else, ce qui signifie qu'il s'agit de la condition par défaut; si aucune autre <em>clause</em> n'est true, alors la valeur est celle de la dernière <em>consequence</em>. Comme pour if, les <em>clause</em> doivent avoir soit true soit false pour valeur.</div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-366' />
+Eléments spécifiques à la synthèse sonore</h2>
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-367' />
+Formes spéciales</h3>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.1</span> <a id='magicparlabel-368' />
+patch</h4>
+<div class="standard"><a id='magicparlabel-2697' />
+La forme spéciale patch définit un instrument virtuel modulaire; il s'agit d'un type spécifique de fonction. Sa syntaxe est la suivante:</div>
+
+<div class="standard"><a id='magicparlabel-2720' />
+(patch (<em>parm</em> ...) <em>sign</em> <em>signal</em>)</div>
+
+<div class="standard"><a id='magicparlabel-2724' />
+<em>parm</em> ... : une séquence d'identificateurs</div>
+
+<div class="standard"><a id='magicparlabel-2729' />
+<em>sign</em> : une liste de nombres, ou une liste de listes de nombres</div>
+
+<div class="standard"><a id='magicparlabel-2795' />
+<em>signal</em> : un signal</div>
+
+<div class="standard"><a id='magicparlabel-2869' />
+Lors de l'appel à l'instrument virtuel, les paramètres <em>parm</em> ... sont substitués, la signature temporelle ou l'ensemble de signatures temporelles <em>sign</em> est évalué, puis le signal <em>signal</em> est évalué dans ce contexte.</div>
+
+<div class="standard"><a id='magicparlabel-2934' />
+Les paramètres peuvent être précédés de ! et le dernier paramètre peut être précédé de &amp;, tout comme pour lambda.</div>
+
+<div class="standard"><a id='magicparlabel-3023' />
+Si la signature est une liste simple, et si elle ne commence pas par 0, un 0 est ajouté implicitement au début; si c'est une liste de listes, son premier élément est traité de la même façon.</div>
+
+<div class="standard"><a id='magicparlabel-3036' />
+D'une manière générale, une signature devrait être rangée en ordre croissant et un ensemble de signatures devrait être rangé par ordre croissant de leur premier élément; ne pas le faire ne constitue pas directement une faute sémantique mais risque de susciter des comportements imprévus.</div>
+
+<div class="standard"><a id='magicparlabel-3059' />
+Le signal produit devrait être de type audio, puisqu'il est destiné à être situé comme un fragment audionumérique dans l'espace global de la partition.</div>
+
+<div class="standard"><a id='magicparlabel-3133' />
+Les formes spéciales patch ne doivent pas être imbriquées. Si tel est le cas, le comportement est non-spécifié.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.2</span> <a id='magicparlabel-369' />
+module</h4>
+<div class="standard"><a id='magicparlabel-3213' />
+La forme spéciale module produit un module de synthèse sonore, qui est un type spécifique de fonction.</div>
+
+<div class="standard"><a id='magicparlabel-3235' />
+Sa syntaxe est identique à celle de lambda, mis à part quelques restrictions importantes en raison de l'impératif d'invariance algorithmique:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-3251' />
+le nombre d'arguments est nécessairement fixe (la syntaxe &amp; n'est pas définie)</li>
+<li class="itemize_item"><a id='magicparlabel-3264' />
+les arguments sont nécéssairement soit des nombres, soit d'autres modules, soit nil</li>
+<li class="itemize_item"><a id='magicparlabel-3286' />
+mis à part les générateurs de signaux (primitives et opérations arithmétiques sur les signaux), le corps du module est évalué lors de sa déclaration (et non lors de l'appel); notamment les structures de contrôle sont résolues, elles ne peuvent donc pas dépendre des paramètres du module (cela constitue une faute sémantique). Cette évaluation doit produire un graphe de générateurs de signaux.</li>
+</ul>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.3</span> <a id='magicparlabel-370' />
+nowarp</h4>
+<div class="standard"><a id='magicparlabel-3399' />
+La forme spéciale nowarp permet d'introduire des variables, tout comme let; sa syntaxe est la même.</div>
+
+<div class="standard"><a id='magicparlabel-3495' />
+La différence réside dans le fait que le contexte temporel (la signature effective) qui sera appliqué aux valeurs liées est celui du nowarp (et non celui dans lequel elles apparaissent finalement, qui peut contenir des distorsions subséquentes); ceci permet aux expressions contenues dans son corps de se référer à des signaux définis sur un support temporel plus général.</div>
+<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-3773' />
+Listes de signaux audio</h3>
+<div class="standard"><a id='magicparlabel-3779' />
+Dans les contextes où un signal audio est attendu (dans le contexte global, à la racine d'un patch, dans une composition parallèle), ce signal peut être donné sous la forme d'une liste (éventuellement récursive) dont les éléments terminaux sont des signaux audio, ce qui prend le sens d'une somme de signaux.</div>
+
+<div class="standard"><a id='magicparlabel-3876' />
+Cette règle s'applique également aux arguments de modules, qui ne peuvent pas être autrement des listes; néanmoins elle ne s'applique qu'aux signaux audio (la présence de tout autre type d'élément constitue une erreur).</div>
+<h3 class="subsection"><span class="subsection_label">2.3</span> <a id='magicparlabel-3768' />
+Altérations de signature temporelle</h3>
+<h4 class="subsubsection"><span class="subsubsection_label">2.3.1</span> <a id='magicparlabel-3769' />
+delay</h4>
+<div class="standard"><a id='magicparlabel-3972' />
+La fonction (delay <em>theta</em> <em>signal</em>) opère un retard <em>theta</em> (en secondes) sur un fragment audionumérique <em>signal</em> au niveau global. Ceci permet de situer les fragments dans la temporalité globale de la partition.</div>
+
+<div class="standard"><a id='magicparlabel-4049' />
+Etant donné que les fragments peuvent être structurés en listes récursives, il est possible d'organiser la partition en parties et en sous-parties au moyen de plusieurs retards successifs.</div>
+
+<div class="standard"><a id='magicparlabel-4139' />
+Les retards ne peuvent pas apparaître à l'intérieur d'un instrument virtuel.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.3.2</span> <a id='magicparlabel-3770' />
+par, seq, hybrid</h4>
+<div class="standard"><a id='magicparlabel-4152' />
+Les opérateurs de composition sont par (composition parallèle, pour les signaux audio), seq (composition séquentielle, pour les signaux de contrôle) et hybrid (composition hybride, pour les mélanges).</div>
+
+<div class="standard"><a id='magicparlabel-4174' />
+(seq <em>breaks</em> <em>signals</em>) produit la succession des <em>signals</em> sur le support temporel dans lequel elle est appellée, en introduisant des césures aux indices (entiers) de signature désignés par <em>breaks</em>. Le résultat de la composition étant nécessairement défini sur le même support temporel, <em>breaks</em> doit avoir exactement un élément de moins que <em>signals</em>.</div>
+
+<div class="plain_layout"><a id='magicparlabel-5878' />
+hybrid a la même syntaxe que seq et effectue la même opération, sauf que certains signaux peuvent être de type audio. Le résultat est de type audio.</div>
+
+<div class="standard"><a id='magicparlabel-4336' />
+(par <em>segs</em> <em>signals</em>) produit la somme des <em>signals</em>, chacun resitué dans la sous-signature définie par l'élément correspondant de <em>segs</em>. Ces éléments sont des couples [<em>start</em> <em>end</em>], qui délimitent une sous-partie de la signature temporelle englobante.</div>
+
+<div class="standard"><a id='magicparlabel-4570' />
+Les opérateurs de composition ne peuvent apparaître qu'à l'intérieur d'un instrument virtuel.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.3.3</span> <a id='magicparlabel-3771' />
+ssub, ssel, ssubsel</h4>
+<div class="standard"><a id='magicparlabel-4588' />
+(ssub <em>indexes</em> <em>signal</em>) applique à <em>signal</em> une signature temporelle qui ne retient que le début, la fin, et les indices de la liste <em>indexes</em> parmi la signature temporelle englobante. <em>indexes</em> devrait être donnée en ordre croissant. Le type de <em>signal</em> est indifférent.</div>
+
+<div class="standard"><a id='magicparlabel-4653' />
+(ssel <em>signs</em> <em>signal</em>) applique à <em>signal</em> un ensemble de signatures temporelles qui ne retient que les indices présents dans la liste <em>signs</em> parmi l'ensemble englobant. Lorsqu'on ne souhaite retenir qu'un seul indice, <em>signs</em> peut être un entier plutôt qu'une liste. Si c'est une liste, elle devrait être donnée en ordre croissant. Le support temporel peut se trouver réduit, et donc <em>signal</em> doit être de type audio.</div>
+
+<div class="standard"><a id='magicparlabel-4795' />
+(ssubsel <em>indexes</em> <em>signal</em>) applique à <em>signal</em> une signature temporelle composée d'indices de signature sélectionnés, dans des signatures choisies parmi des sous-ensembles indépendants de l'ensemble de signatures temporelles englobant. La liste <em>indexes</em> est constituée de couples, dont le premier élément est un indice de signature, et le deuxième soit un entier (pour sélectionner une signature parmi l'ensemble), soit une liste d'entiers (pour sélectionner un sous-ensemble de signatures), soit nil (pour sélectionner la totalité des signatures).</div>
+
+<div class="standard"><a id='magicparlabel-5040' />
+De façon implicite le début et la fin de la signature appliquée sont: le début et la fin du support temporel englobant si <em>signal</em> est un signal de contrôle, ou le début et la fin du support temporel défini par l'union des ensembles de signatures sélectionnées si <em>signal</em> est un signal audio.</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-375' />
+Fonctions de la bibliothèque FLSC</h2>
+<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-432' />
+Fonctions numériques</h3>
+<h4 class="subsubsection"><span class="subsubsection_label">3.1.1</span> <a id='magicparlabel-11368' />
+Constantes</h4>
+<div class="standard"><a id='magicparlabel-11373' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11379' />
+inf</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11380' />
+l'infini</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.1.2</span> <a id='magicparlabel-11399' />
+Opérateurs de signe</h4>
+<div class="standard"><a id='magicparlabel-9232' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9216' />
+(sign x)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9217' />
+signum de x (vaut 1 si x&gt;0, -1 si x&lt;0, 0 si x=0)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9218' />
+(neg x)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9219' />
+opposé de x</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9220' />
+(abs x)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9221' />
+valeur absolue de x</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.1.3</span> <a id='magicparlabel-8929' />
+Opérateurs arithméthiques</h4>
+<div class="standard"><a id='magicparlabel-11414' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9522' />
+(+ &amp;a), (* &amp;a)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9523' />
+somme et produit des a</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9524' />
+(- a &amp;b), (/ a &amp;b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9525' />
+différence et quotient de a par les b</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9526' />
+(** a b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9527' />
+a puissance b; si <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow><mi>a</mi><mo>&lt;</mo><mn>0</mn><mo>,</mo><mspace width="6px" /><mi>b</mi>
+   <mrow>
+    <mrow><mo> &ssetmn; </mo>
+    </mrow><mo> &isin; </mo>
+   </mrow>
+   <mstyle mathvariant='bold'><mi>N</mi>
+   </mstyle>
+  </mrow>
+ </mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow><mo>-</mo><mo form='prefix' fence='true' stretchy='true' symmetric='true'>(</mo>
+   <mrow><mo>-</mo>
+    <msup>
+     <mrow><mi>a</mi>
+     </mrow>
+     <mrow><mi>b</mi>
+     </mrow>
+    </msup>
+   </mrow><mo form='postfix' fence='true' stretchy='true' symmetric='true'>)</mo>
+  </mrow>
+ </mrow></math></div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9528' />
+(mod a b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9529' />
+a modulo b</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9530' />
+(++ a), (&ndash; a)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-9531' />
+incrémentation et décrémentation de a</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.1.4</span> <a id='magicparlabel-9544' />
+Fonctions usuelles</h4>
+<div class="standard"><a id='magicparlabel-11434' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10408' />
+(cos x), (sin x),
+<br />
+
+(tan x)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10409' />
+fonctions trigonométriques</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10410' />
+(log2 x)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10411' />
+logarithme en base 2</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10412' />
+(floor x),
+<br />
+
+(ceil x)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10413' />
+entier immédiatement inférieur ou supérieur</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10414' />
+(round x y)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10415' />
+multiple de y le plus proche de x; par défaut y=1</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10416' />
+(min &amp;a), (max &amp;a)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10417' />
+minimum et maximum des a</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10448' />
+(random x)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10407' />
+valeur pseudo-aléatoire entre 0 et x (non-inclus); si x est entier, alors la valeur est entière; par défaut x=1.0</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-437' />
+Fonctions booléennes</h3>
+<h4 class="subsubsection"><span class="subsubsection_label">3.2.1</span> <a id='magicparlabel-11205' />
+Constantes</h4>
+<div class="standard"><a id='magicparlabel-11197' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11213' />
+false, fl</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11214' />
+faux</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11215' />
+true, tr</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11216' />
+vrai</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.2.2</span> <a id='magicparlabel-452' />
+Opérateurs booléens</h4>
+<div class="standard"><a id='magicparlabel-10874' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10882' />
+(not p)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10883' />
+négation de p</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10884' />
+(and &amp;p), (or &amp;p)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10885' />
+conjonction et disjonction des p</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10942' />
+(xor &amp;p)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-10925' />
+non-parité des p (vrai si un nombre impair de p sont vrais)</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.2.3</span> <a id='magicparlabel-444' />
+Comparaisons</h4>
+<div class="standard"><a id='magicparlabel-11700' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11798' />
+(eq? a &amp;b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11799' />
+égalité (vrai si a est égal à tous les b)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11807' />
+(neq? a b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11797' />
+inégalité (vrai si a est différent de b)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11800' />
+(gt? a &amp;b),
+<br />
+
+(lt? a &amp;b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11801' />
+supériorité et infériorité stricte (vrai si les arguments sont strictement décroissants ou croissants)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-11802' />
+(gte? a &amp;b),
+<br />
+
+(lte? a &amp;b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12013' />
+supériorité et infériorité non-stricte (vrai si les arguments sont non-strictement décroissants ou croissants)</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.2.4</span> <a id='magicparlabel-448' />
+Tests</h4>
+<div class="standard"><a id='magicparlabel-12135' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12174' />
+(? o), (nil? o)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12175' />
+non-nullité et nullité de o</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12176' />
+(boolean? o)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12177' />
+vrai si o est booléen</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12178' />
+(number? o)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12417' />
+vrai si o est un nombre</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12180' />
+(function? o)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12434' />
+vrai si o est une fonction</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12172' />
+(list? o),
+<br />
+
+(empty? o)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12439' />
+vrai si o est une liste, une liste vide</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12197' />
+(sig? o),
+<br />
+
+(control? o),
+<br />
+
+(audio? o)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-12451' />
+vrai si o est un signal, un signal de contrôle, un signal audio; control? et audio? déclenchent une erreur si l'objet n'est pas du type signal</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h3 class="subsection"><span class="subsection_label">3.3</span> <a id='magicparlabel-457' />
+Listes</h3>
+<div class="standard"><a id='magicparlabel-13114' />
+Remarque: dans de nombreux cas, lorsqu'une liste est demandée et que l'argument n'en est pas une, il est remplacé par une liste à un élément. Notamment dans le cas de cons, cela signifie qu'il n'y a pas de paire pointées en FLSC.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.1</span> <a id='magicparlabel-462' />
+Constructeurs</h4>
+<div class="standard"><a id='magicparlabel-13112' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13511' />
+(list &amp;e)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13512' />
+liste composée des e</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13513' />
+(cons e l),
+<br />
+
+(add l e) </div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13515' />
+ajout de e au début ou à la fin de l</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13841' />
+(insert l e i)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13842' />
+ajout de e à l'indice i dans l</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13839' />
+(range a b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13840' />
+liste des entiers consécutifs entre a et b (inclus)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13837' />
+(range0 n),
+<br />
+
+(range1 n)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13838' />
+liste de n entiers consécutifs à partir de 0 ou 1</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13835' />
+(step n dn n0)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13836' />
+liste de n nombres d'incrément dn à partir de n0</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13831' />
+(repeat e n)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-13832' />
+liste de n occurences de e</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.2</span> <a id='magicparlabel-466' />
+Accesseurs</h4>
+<div class="standard"><a id='magicparlabel-14468' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14484' />
+(elt l i)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14485' />
+élément d'indice i dans l</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14486' />
+(subseq l i j)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14487' />
+sous-séquence de l, entre les indices i et j (non-inclus)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14488' />
+(length l)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14489' />
+nombre d'éléments de l</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14490' />
+(position l e)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14491' />
+position de la première occurence de e dans l</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.3</span> <a id='magicparlabel-475' />
+Opérations sur les listes</h4>
+<div class="standard"><a id='magicparlabel-14922' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14960' />
+(append &amp;l)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14961' />
+concaténation des l</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14962' />
+(reverse l)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14963' />
+retournement de l</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14964' />
+(flop l)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14965' />
+transposition de la liste de listes l (inversion de l'ordre des indices)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14966' />
+(select f l)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14967' />
+liste des éléments de l qui vérifient la fonction booléenne unaire f</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14958' />
+(apply f l)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-14959' />
+appel à la fonction f avec les éléments de l pour arguments</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.4</span> <a id='magicparlabel-471' />
+Itérations</h4>
+<div class="standard"><a id='magicparlabel-15378' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-15390' />
+(mapcar f &amp;l)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-15391' />
+liste résultant des applications de f aux i-èmes éléments des listes l; si celles-ci ne sont pas de la même longueur, elles sont répétées cycliquement jusqu'à la longueur la plus grande</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-15392' />
+(reduce f l a)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-15393' />
+application incrémentale de la fonction binaire f au résultat précédent et aux éléments successifs de l; si a est défini, alors c'est la valeur initiale; sinon la valeur initiale est le premier élément de l</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h3 class="subsection"><span class="subsection_label">3.4</span> <a id='magicparlabel-485' />
+Primitives pour la synthèse sonore</h3>
+<div class="standard"><a id='magicparlabel-17546' />
+Les primitives peuvent apparaître dans les modules, et en sont les éléments fondamentaux. Elles engendrent des signaux (audio ou de contrôle) dont la valeur peut varier au cours du temps.</div>
+
+<div class="standard"><a id='magicparlabel-17794' />
+Les fonctions numériques peuvent s'appliquer à des signaux; dans ce cas leur valeur est un signal dont la valeur instantanée est le résultat de l'application de cette fonction aux valeurs instantanées des signaux passés en argument. Dans ce contexte, une constante numérique prend le sens d'un signal constant.</div>
+
+<div class="standard"><a id='magicparlabel-17801' />
+Le type d'un signal est soit fixé par la primitive employée, soit déterminé par les types en entrée; le plus souvent il s'agit dans ce cas du type minimal qui évite un sous-échantillonnage. Ainsi beaucoup de primitives proposent une variante préfixée par 'hf', qui impose un type de sortie audio. Ceci permet essentiellement de modéliser des phénomènes transitoires dans lesquels l'échantillonnage à fréquence audio des paramètres est nécessaire.</div>
+
+<div class="standard"><a id='magicparlabel-18291' />
+Dans la plupart des cas les paramètres des primitives possèdent des valeurs par défaut et peuvent donc être omis lors de l'appel.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.4.1</span> <a id='magicparlabel-492' />
+Oscillateur</h4>
+<div class="standard"><a id='magicparlabel-18162' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-18177' />
+(osc freq phi)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-18178' />
+oscillateur sinusoïdal (audio) de fréquence freq et de phase initiale phi; par défaut freq=440 et phi=0</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.4.2</span> <a id='magicparlabel-527' />
+Enveloppes</h4>
+<div class="standard"><a id='magicparlabel-18221' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-18585' />
+(seg a b),
+<br />
+
+(hfseg a b)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-18586' />
+segment linéaire d'enveloppe, variant entre a et b entre le début et la fin du support temporel local; par défaut a=0 et b=1</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-18609' />
+(env lvls times),
+<br />
+
+(hfenv lvls times)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-18584' />
+enveloppe linéaire à nombre de points fixe, qui traverse les valeurs de lvls selon les points de césure times, entre le début et la fin du support temporel local; times est une liste d'indices de signature temporelle et ne peut dépendre des paramètres du module</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.4.3</span> <a id='magicparlabel-531' />
+Modulateurs</h4>
+<div class="standard"><a id='magicparlabel-18231' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-19164' />
+(lfo freq phi)
+<br />
+
+(tri freq phi)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-19165' />
+modulateurs sinusoïdal et triangulaire; analogues à osc, mais pour tri la phase est donnée entre 0 et 4</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-19166' />
+(squ freq phi pw)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-19167' />
+modulateur carré; le paramètre supplémentaire est la largeur d'impulsion sur [0,1], par défaut 0.5; la phase est donnée entre 0 et 1</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-19162' />
+(hftri freq phi)
+<br />
+
+(hfsqu freq
+<br />
+
+&nbsp;&nbsp;phi pw)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-19163' />
+équivalents haute-fréquence de tri et squ; l'équivalent de lfo est osc</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.4.4</span> <a id='magicparlabel-536' />
+Générateurs pseudo-aléatoires</h4>
+<div class="standard"><a id='magicparlabel-18241' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-20009' />
+(rand max min
+<br />
+
+&nbsp;&nbsp;freq)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-20010' />
+génère des paliers pseudo-aléatoires entre min et max, à la fréquence freq; par défaut max=1, min=0, freq=500</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-20007' />
+(crand max min
+<br />
+
+&nbsp;&nbsp;freq)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-20008' />
+idem avec une ligne brisée (signal continu)</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.4.5</span> <a id='magicparlabel-5701' />
+Autres</h4>
+<div class="standard"><a id='magicparlabel-18251' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-18249' />
+(k2a sig)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-18250' />
+convertisseur de contrôle en audio (sous-échantillonné)</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h3 class="subsection"><span class="subsection_label">3.5</span> <a id='magicparlabel-376' />
+Modules prédéfinis</h3>
+<div class="standard"><a id='magicparlabel-21051' />
+La bibliothèque contient des modules prédéfinis qui correspondent à l'application élémentaire d'une primitive ou d'une fonction numérique; pour ces derniers, le nombre de paramètres des modules étant fixe, les opérateurs sont strictement binaires.</div>
+
+<div class="standard"><a id='magicparlabel-21070' />
+On ne donne ici que les correspondances, les paramètres étant les mêmes. Les noms des modules sont les noms des primitives, précédés de 'm'.</div>
+
+<div class="standard"><a id='magicparlabel-23120' />
+Remarque: env ne peut pas être trivialement converti en module, menv désigne en fait une fonction que l'on verra plus bas. Il en va de même en ce qui concerne hfenv.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.5.1</span> <a id='magicparlabel-543' />
+Modules correspondant aux primitives</h4>
+<div class="standard"><a id='magicparlabel-21331' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21574' />
+Modules</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21575' />
+Primitives</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21587' />
+mosc mlfo mtri mhftri msqu mhfsqu</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21588' />
+osc lfo tri hftri squ hfsqu</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21532' />
+mseg mhfseg</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21533' />
+seg hfseg</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21530' />
+mrand mcrand</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21531' />
+rand crand</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21526' />
+mk2a</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-21527' />
+k2a</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.5.2</span> <a id='magicparlabel-571' />
+Modules arithmétiques</h4>
+<div class="standard"><a id='magicparlabel-22869' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23047' />
+Modules</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23048' />
+Primitives</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23049' />
+m+ m* m- m/ m** mmod (binaires)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23050' />
++ * - / ** mod</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23051' />
+msign mneg mabs</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23052' />
+sign neg abs</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23053' />
+msin mcos mtan mlog2</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23054' />
+sin cos tan log2</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23055' />
+mfloor mceil mround</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23057' />
+floor ceil round</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23103' />
+mmin mmax</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23046' />
+min max</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h3 class="subsection"><span class="subsection_label">3.6</span> <a id='magicparlabel-578' />
+Fonctions génératrices d'enveloppes</h3>
+<div class="standard"><a id='magicparlabel-23415' />
+Les fonctions génératrices d'enveloppe permettent d'exploiter la structure modulaire pour produire des enveloppes à nombre de points variables à partir de modules mseg et mhfseg.</div>
+
+<div class="standard"><a id='magicparlabel-23508' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23545' />
+(menv levels)
+<br />
+
+(mhfenv levels)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23546' />
+modules parcourant les niveaux levels entre le début et la fin du support temporel local, avec des césures sur les indices de signature consécutifs à partir de 1</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23547' />
+(mhybenv levels
+<br />
+
+&nbsp;&nbsp;type)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23548' />
+idem avec une composition hybride; le i-ème segment est de type audio si l'indice i de type est vrai, et de type contrôle si il est faux (noter que le nombre de segments est la longueur de levels moins 1)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23543' />
+(lmenv levels
+<br />
+
+&nbsp;&nbsp;times)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-23544' />
+fonction engendrant un appel à un module ad-hoc; les paramètres sont les mêmes que ceux de env; noter que dans ce cas chaque appel produit un nouveau module (ce qui est peu économique)</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h3 class="subsection"><span class="subsection_label">3.7</span> <a id='magicparlabel-5847' />
+Fonctions diverses</h3>
+<div class="standard"><a id='magicparlabel-24504' />
+
+
+
+<table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-24575' />
+(mn+ &amp;a), (mn* &amp;a)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-24513' />
+fonctions engendrant une chaîne de longueur arbitraire de modules m+ ou m*, ce qui permet d'obtenir un assemblage n-aire</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-24597' />
+(smap sigs)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-24515' />
+fonction permettant d'appliquer à chaque élément de la liste de signaux sigs la signature temporelle d'indice correspondant</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+</body>
+</html>
