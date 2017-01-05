@@ -33,12 +33,12 @@ FLSC_NoWarpSpec : FLSC_ScoreSpec {
 			^FLSC_Score(outBus, Dictionary.newFrom([pipe.name, pipe]), List(), List(),
 				[FLSC_Bundle(start, end, [FLSC_MsgPair(pipe.name,
 					Dictionary.newFrom(['in', sub.outBus, 'out', outBus]),
-					sub.rank)])], start, end, sub.rank + 1).checkTimes;
+					sub.rank)])], start, end, sub.rank + 1);
 		} {
 			// toutes les informations ont déjà été ajoutées,
 			// seul le bus de sortie nous intéresse
 			^FLSC_Score(sub.outBus, Dictionary(), List(), List(), List(),
-				start, end, sub.rank).checkTimes;
+				start, end, sub.rank);
 		};
 	}
 

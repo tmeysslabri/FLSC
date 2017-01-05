@@ -22,7 +22,7 @@ FLSC_WarpSpec {
 		var varDict = Dictionary();
 		// création du varDict par itération sur la varList
 		subSpec.varList.do {|item|
-			var subScore = item.value(nil, newTimeWarp, varDict, noWarpDict);
+			var subScore = item.value(nil, newTimeWarp, varDict, noWarpDict).checkTimes;
 			// il faut également récupérer les définitions, les bus, les messages, les bundles
 			score.add(subScore);
 			varDict.put(item, subScore);

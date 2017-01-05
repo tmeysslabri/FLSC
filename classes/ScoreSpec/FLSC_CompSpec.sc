@@ -28,9 +28,11 @@ FLSC_CompSpec : FLSC_LocalScoreSpec {
 		// ajouter les temps de début et de fin
 		// (au cas où les subSpecs seraient sur un support temporel plus réduit)
 		// ??? est-ce nécessaire ?
+		// [si la composition apparaît dans une liste, cela garantit
+		// que son bus existe sur le support temporel requis]
 		score.start = timeWarp.value([0, nil]);
 		score.end = timeWarp.value(['end', nil]);
 
-		^score.checkTimes;
+		^score;
 	}
 }

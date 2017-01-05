@@ -46,6 +46,6 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 		score.end = timeWarp.value(['end', nil]);
 		score.rank = score.rank + 1;
 
-		^score.checkTimes;
+		^score;
 	}
 }

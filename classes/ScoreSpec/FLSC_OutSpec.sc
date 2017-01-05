@@ -41,14 +41,16 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		// (il est possible que des variables ne soient pas encore évaluées,
 		// si elles sont en dehors des GlobalSignSpec)
 		varList.do {|item|
-			var subScore = item.value(nil, timeWarp, varDict, noWarpDict);
+			var subScore = item.value(nil, timeWarp, varDict, noWarpDict).checkTimes;
 			score.add(subScore);
 			varDict.put(item, subScore);
 		};
 		// evaluer la ScoreSpec référencée dans le contexte global
-		subScore = subSpec.value(nil, timeWarp, varDict, noWarpDict);
+		subScore = subSpec.value(nil, timeWarp, varDict, noWarpDict).checkTimes;
 		// récupérer le outBus et le contenu
 		score.outBus = subScore.outBus;
+		// si la partition est vide, produire une partition vide
+		if(score.outBus.isNil) {^Score()};
 		score.add(subScore);
 
 		// vérifier qu'il ne reste plus de messages en attente
@@ -72,6 +74,6 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		score.defDict.put(systemOut.name, systemOut);
 
 		// retourner le résultat
-		^score.checkTimes;
+		^score;
 	}
 }

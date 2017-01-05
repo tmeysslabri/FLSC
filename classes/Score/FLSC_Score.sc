@@ -54,7 +54,8 @@ FLSC_Score {
 		case
 		{start < end}  {^this}
 		{start == end} {^FLSC_Score(nil, t0: start, tf: end)}
-		{start > end}  {Error("Anachronism in Score: % > %".format(start, end)).throw}
+		{start > end}
+		{Error("Anachronism in Score: start(%) > end(%)".format(start, end)).throw}
 	}
 
 	asScorePair {

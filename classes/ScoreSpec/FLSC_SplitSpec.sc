@@ -35,6 +35,6 @@ FLSC_SplitSpec : FLSC_LocalScoreSpec {
 		// récupérer les valeurs de la subScore
 		score.add(subScore);
 
-		^score.checkTimes;
+		^score;
 	}
 }
