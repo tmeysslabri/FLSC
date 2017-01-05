@@ -371,7 +371,8 @@
 		// combinaison de sous-signature et de sélection
 		['ssubsel', FLSC_Function(nil, ['specs', 'sig'],
 			{|ctxt|
-				var specs = FLSC_Var('specs').value(ctxt).asArray;
+				var specs = FLSC_Var('specs').value(ctxt).collect
+				{|item| [item[0], item[1].asArray]};
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp = if(sig.rate == 'audio')
 				{
