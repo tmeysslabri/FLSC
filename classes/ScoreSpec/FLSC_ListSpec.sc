@@ -36,6 +36,6 @@ FLSC_ListSpec : FLSC_GlobalScoreSpec {
 			score.outBus.end = score.end;
 		};
 
-		^score;
+		^score.checkTimes;
 	}
 }

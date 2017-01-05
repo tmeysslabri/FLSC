@@ -31,13 +31,12 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 			^FLSC_Score(outBus, Dictionary.newFrom([pipe.name, pipe]), List(), List(),
 				[FLSC_Bundle(sub.start, sub.end, [FLSC_MsgPair(pipe.name,
 					Dictionary.newFrom(['in', sub.outBus, 'out', outBus]),
-					sub.rank)])], sub.start, sub.end, sub.rank + 1
-			);
+					sub.rank)])], sub.start, sub.end, sub.rank + 1).checkTimes;
 		} {
 			// toutes les informations ont déjà été ajoutées,
 			// seul le bus de sortie nous intéresse
 			^FLSC_Score(sub.outBus, Dictionary(), List(), List(), List(),
-				sub.start, sub.end, sub.rank);
+				sub.start, sub.end, sub.rank).checkTimes;
 		};
 	}
 

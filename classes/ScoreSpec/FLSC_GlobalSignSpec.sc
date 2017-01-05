@@ -31,6 +31,6 @@ FLSC_GlobalSignSpec : FLSC_GlobalScoreSpec {
 			score.outBus.end = subScore.end;
 		};
 
-		^score;
+		^score.checkTimes;
 	}
 }

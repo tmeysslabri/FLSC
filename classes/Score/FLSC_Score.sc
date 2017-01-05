@@ -50,6 +50,13 @@ FLSC_Score {
 		};
 	}
 
+	checkTimes {
+		case
+		{start < end}  {^this}
+		{start == end} {^FLSC_Score(nil, t0: start, tf: end)}
+		{start > end}  {Error("Anachronism in Score: % > %".format(start, end)).throw}
+	}
+
 	asScorePair {
 		// listes permettant l'allocation de Bus
 		var startTimes, endTimes;

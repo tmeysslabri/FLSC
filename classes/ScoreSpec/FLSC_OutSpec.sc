@@ -72,6 +72,6 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		score.defDict.put(systemOut.name, systemOut);
 
 		// retourner le résultat
-		^score;
+		^score.checkTimes;
 	}
 }

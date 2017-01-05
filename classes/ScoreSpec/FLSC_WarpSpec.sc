@@ -35,6 +35,6 @@ FLSC_WarpSpec {
 		// ajouter les messages courants à la bundleList, si il y en a
 		score.pushBundle;
 
-		^score;
+		^score.checkTimes;
 	}
 }
