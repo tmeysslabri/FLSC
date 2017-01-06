@@ -46,10 +46,15 @@ FLSC_Interpreter {
 		^this;
 	}
 
-	readFile {|fileName = "test.flsc"|
-		var file = File(baseDir +/+ fileName, "r");
-		this.read(file.readAllString);
-		file.close;
+	readFile {|fileName ("examples" +/+ "test.flsc")|
+		var path = baseDir +/+ fileName;
+		var file = File(path, "r");
+		if(file.isOpen) {
+			this.read(file.readAllString);
+			file.close;
+		} {
+			Error("Cannot open file: %".format(path)).throw;
+		}
 		^this;
 	}
 
