@@ -1,8 +1,4 @@
 FLSC_Package : FLSC_SemanticNode {
-	new {|bindList|
-		^super.new(bindList);
-	}
-
 	value {|context|
 		var bindings = nodeVal.inject([])
 		{|res, item| res ++ [[item[0], item[1].value(FLSC_Context(context, res))]]};
