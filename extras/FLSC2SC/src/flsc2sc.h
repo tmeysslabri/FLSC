@@ -54,18 +54,20 @@ extern int yydebug;
     BRR = 264,
     NIL = 265,
     PACKAGE = 266,
-    LAMBDA = 267,
-    LET = 268,
-    LETREC = 269,
-    LETSTAR = 270,
-    NOWARP = 271,
-    PATCH = 272,
-    MODULE = 273,
-    IF = 274,
-    COND = 275,
-    ELSE = 276,
-    SYMB = 277,
-    NUM = 278
+    REQUIRE = 267,
+    LAMBDA = 268,
+    LET = 269,
+    LETREC = 270,
+    LETSTAR = 271,
+    NOWARP = 272,
+    PATCH = 273,
+    MODULE = 274,
+    IF = 275,
+    COND = 276,
+    ELSE = 277,
+    SYMB = 278,
+    NUM = 279,
+    STRING = 280
   };
 #endif
 
@@ -79,7 +81,7 @@ union YYSTYPE
 	char *str;
 	wptr *ptr;
 
-#line 83 "flsc2sc.h" /* yacc.c:1909  */
+#line 85 "flsc2sc.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

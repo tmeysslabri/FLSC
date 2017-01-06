@@ -21,6 +21,7 @@ nunq	!
 nil	nil
 
 package	package
+require require
 
 lambda	lambda
 patch	patch
@@ -37,6 +38,7 @@ else	else
 
 symbol	[\+\-\*\/\?]+([a-z_][a-z0-9_\+\-\*\/\?]*)?|[a-z][a-z0-9_\+\-\*\/\?]*
 number	\-?[0-9]+(\.[0-9]+)?(e\-?[0-9]+)?(pi)?
+string	\"(\\.|[^"])*\"
 
 other	.
 
@@ -56,6 +58,7 @@ other	.
 {nil}		{ return(NIL); }
 
 {package}	{ return(PACKAGE); }
+{require}	{ return(REQUIRE); }
 
 {lambda}	{ return(LAMBDA); }
 {patch}		{ return(PATCH); }
@@ -72,5 +75,6 @@ other	.
 
 {symbol}	{ yylval.str = strdup(yytext); return(SYMB); }
 {number}	{ yylval.str = strdup(yytext); return(NUM); }
+{string}	{ yylval.str = strdup(yytext); return(STRING); }
 
 {other}		{ return(ERROR); }

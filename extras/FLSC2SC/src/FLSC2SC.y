@@ -38,6 +38,7 @@ int yyerror(const char *s);
 %token <str> NIL
 
 %token <str> PACKAGE
+%token <str> REQUIRE
 
 %token <str> LAMBDA
 %token <str> LET
@@ -53,6 +54,7 @@ int yyerror(const char *s);
 
 %token <str> SYMB
 %token <str> NUM
+%token <str> STRING
 
 // symboles non-terminaux
 
@@ -99,7 +101,10 @@ Top:	Program		{ printwords(concat($1, cons("\n", NULL))->start); }
 	| Package	{ printwords(concat($1, cons("\n", NULL))->start); }
 
 Program:	Expr
-		// ajouter les REQUIRE ici
+		| PARL REQUIRE STRING PARR Program
+		{ $$ = concat(cons("FLSC_Require(", cons($3, cons(", ",
+			lnbrk(1, $5)))),
+			lnbrk(-1, cons(")", NULL))); }
 
 Package:	PARL PACKAGE LetList1 PARR	{ $$ = concat(cons("FLSC_Package([", lnbrk(1, $3)), lnbrk(-1, cons("])", NULL))); }
 

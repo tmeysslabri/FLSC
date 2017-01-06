@@ -13,12 +13,14 @@ FLSC_Interpreter {
 	var <scoreValue;
 	// le répertoire de base pour l'accès à des fichiers
 	var <>baseDir;
+	// le répertoire dans lequel se trouve le fichier courant
+	var workingDir;
 
 	*getTree {|string|
-		var escapeString = string.escapeChar($").escapeChar($$).escapeChar($`).escapeChar($\\);
-		var cmd = "echo \"" ++ escapeString ++ "\" | " ++
+		var escapeString = string.escapeChar($\\).escapeChar($").escapeChar($$).escapeChar($`);
+		var cmd = ("echo \"" ++ escapeString ++ "\" | " ++
 		Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "FLSC2SC" +/+
-		"build" +/+ "flsc2sc";
+			"build" +/+ "flsc2sc");
 		^cmd.unixCmdGetStdOut.interpret;
 	}
 
@@ -34,12 +36,16 @@ FLSC_Interpreter {
 		library = FLSC_Context.library;
 		curContext = library;
 		baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "extras";
+		workingDir = baseDir;
 		^this;
 	}
 
 	read {|string|
 		inputString = string;
 		semanticTree = this.class.getTree(string);
+		// réinitialiser le répertoire de travail,
+		// dans le cas où on lit une chaîne directement
+		workingDir = baseDir;
 		// réinitialiser les valeurs éventuellement calculées
 		treeValue = nil;
 		scoreValue = nil;
@@ -47,11 +53,14 @@ FLSC_Interpreter {
 	}
 
 	readFile {|fileName ("examples" +/+ "test.flsc")|
-		var path = baseDir +/+ fileName;
+		var path = if(fileName[0] == $/)
+		{ fileName }
+		{ baseDir +/+ fileName };
 		var file = File(path, "r");
 		if(file.isOpen) {
 			this.read(file.readAllString);
 			file.close;
+			workingDir = path.dirname;
 		} {
 			Error("Cannot open file: %".format(path)).throw;
 		}
@@ -61,7 +70,7 @@ FLSC_Interpreter {
 	evaluate {
 		if(semanticTree.isKindOf(FLSC_Error))
 		{^treeValue = semanticTree.asFLSC}
-		{^treeValue = semanticTree.value(curContext)};
+		{^treeValue = semanticTree.value(curContext, workingDir)};
 	}
 
 	loadPackage {|fileName|

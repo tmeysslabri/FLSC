@@ -21,7 +21,8 @@ FLSC_Interpreter().read(
 
 // exemples de synthèse sonore
 
-// exemple de lecture de fichier
+// exemples de lecture de fichier
+FLSC_Interpreter().readFile.evaluate;
 FLSC_Interpreter().readFile("examples/tests/024-nowarp-smap.flsc").play;
 
 // exemple de lecture de répertoire (extras/examples/tests)
