@@ -33,7 +33,7 @@ FLSC_Interpreter {
 	interpreterInit{
 		library = FLSC_Context.library;
 		curContext = library;
-		baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "extras"; // +/+ "examples";
+		baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "extras";
 		^this;
 	}
 
