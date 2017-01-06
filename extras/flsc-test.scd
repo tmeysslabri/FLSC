@@ -30,6 +30,9 @@ FLSC_Interpreter().playDir;
 // créer le catalogue (extras/examples/catalog) dans recordings (recordings/catalog)
 FLSC_Interpreter().recordDir;
 
+// exemple de lecture d'un paquetage
+FLSC_Interpreter().loadPackage("packages/testpkg.flsc").read("???").evaluate;
+
 // création d'un module
 FLSC_Interpreter().read("(control? (mn* 1 2 3))").evaluate;
 

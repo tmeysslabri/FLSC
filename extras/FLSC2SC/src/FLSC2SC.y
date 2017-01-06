@@ -37,6 +37,8 @@ int yyerror(const char *s);
 
 %token <str> NIL
 
+%token <str> PACKAGE
+
 %token <str> LAMBDA
 %token <str> LET
 %token <str> LETREC
@@ -54,6 +56,8 @@ int yyerror(const char *s);
 
 // symboles non-terminaux
 
+%type <ptr> Program
+%type <ptr> Package
 %type <ptr> Expr
 
 %type <ptr> SpecForm
@@ -91,7 +95,13 @@ int yyerror(const char *s);
 
 %%
 
-Top:	Expr	{ printwords(concat($1, cons("\n", NULL))->start); }
+Top:	Program		{ printwords(concat($1, cons("\n", NULL))->start); }
+	| Package	{ printwords(concat($1, cons("\n", NULL))->start); }
+
+Program:	Expr
+		// ajouter les REQUIRE ici
+
+Package:	PARL PACKAGE LetList1 PARR	{ $$ = concat(cons("FLSC_Package([", lnbrk(1, $3)), lnbrk(-1, cons("])", NULL))); }
 
 Expr:	SpecForm | Call | Var | Num | List
 	| NIL	{ $$ = cons("FLSC_Nil()", NULL); }

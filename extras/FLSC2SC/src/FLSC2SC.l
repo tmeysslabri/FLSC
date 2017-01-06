@@ -20,13 +20,16 @@ nunq	!
 
 nil	nil
 
+package	package
+
 lambda	lambda
+patch	patch
+module	module
+
 let	let
 letrec	letrec
 letstar	let\*
 nowarp  nowarp
-patch	patch
-module	module
 
 if	if
 cond	cond
@@ -51,6 +54,8 @@ other	.
 {nunq}		{ return(NUNQ); }
 
 {nil}		{ return(NIL); }
+
+{package}	{ return(PACKAGE); }
 
 {lambda}	{ return(LAMBDA); }
 {patch}		{ return(PATCH); }

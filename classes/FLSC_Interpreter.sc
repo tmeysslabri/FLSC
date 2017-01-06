@@ -1,6 +1,8 @@
 FLSC_Interpreter {
 	// la bibliothèque: un FLSC_Context
 	var library;
+	// le contexte d'évaluation courant
+	var curContext;
 	// la chaîne de caractères en entrée
 	var <inputString;
 	// l'arbre sémantique associé
@@ -30,7 +32,8 @@ FLSC_Interpreter {
 
 	interpreterInit{
 		library = FLSC_Context.library;
-		baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "extras" +/+ "examples";
+		curContext = library;
+		baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "extras"; // +/+ "examples";
 		^this;
 	}
 
@@ -53,8 +56,19 @@ FLSC_Interpreter {
 	evaluate {
 		if(semanticTree.isKindOf(FLSC_Error))
 		{^treeValue = semanticTree.asFLSC}
-		{^treeValue = semanticTree.value(library)};
+		{^treeValue = semanticTree.value(curContext)};
 	}
+
+	loadPackage {|fileName|
+		this.readFile(fileName);
+		this.evaluate;
+		if(treeValue.isKindOf(FLSC_Context))
+		{ curContext = treeValue }
+		{ Error("Not a valid package file: %".format(fileName)).throw }
+		^this;
+	}
+
+	reset { curContext = library }
 
 	asFLSCScore {|before = 0, after = 0|
 		if(treeValue.isNil) {this.evaluate};
@@ -93,7 +107,7 @@ FLSC_Interpreter {
 		^list.[..list.size-2];
 	}
 
-	performDir {|selector, subDir = "tests", args = #[],
+	performDir {|selector, subDir ("examples" +/+ "tests"), args = #[],
 		recursive = false, recordDir = nil|
 		var list = this.getFileList(subDir, recursive);
 		var rec = {|list|
@@ -118,11 +132,11 @@ FLSC_Interpreter {
 		rec.value(list);
 	}
 
-	playDir {|subDir = "tests", before = 0.5, after = 0.5, recursive = false|
+	playDir {|subDir ("examples" +/+ "tests"), before = 0.5, after = 0.5, recursive = false|
 		this.performDir(\play, subDir, [before, after], recursive);
 	}
 
-	recordDir{|subDir = "catalog", before = 1, after = 1,
+	recordDir{|subDir = ("examples" +/+ "catalog"), before = 1, after = 1,
 		headerFormat = "WAV", sampleRate = 44100, sampleFormat = "int16",
 		numChannels = 2, recursive = true,
 		recordDir = (Platform.userExtensionDir +/+ "FLSC" +/+ "recordings")|
