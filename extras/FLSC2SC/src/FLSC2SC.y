@@ -37,7 +37,7 @@ int yyerror(const char *s);
 
 %token <str> NIL
 
-%token <str> PACKAGE
+%token <str> DEFINE
 %token <str> REQUIRE
 
 %token <str> LAMBDA
@@ -59,7 +59,7 @@ int yyerror(const char *s);
 // symboles non-terminaux
 
 %type <ptr> Program
-%type <ptr> Package
+%type <ptr> Defines
 %type <ptr> Expr
 
 %type <ptr> SpecForm
@@ -98,15 +98,22 @@ int yyerror(const char *s);
 %%
 
 Top:	Program		{ printwords(concat($1, cons("\n", NULL))->start); }
-	| Package	{ printwords(concat($1, cons("\n", NULL))->start); }
+//	| Define	{ printwords(concat($1, cons("\n", NULL))->start); }
 
-Program:	Expr
+Program:	Defines
 		| PARL REQUIRE STRING PARR Program
 		{ $$ = concat(cons("FLSC_Require(", cons($3, cons(", ",
 			lnbrk(1, $5)))),
 			lnbrk(-1, cons(")", NULL))); }
 
-Package:	PARL PACKAGE LetList1 PARR	{ $$ = concat(cons("FLSC_Package([", lnbrk(1, $3)), lnbrk(-1, cons("])", NULL))); }
+Defines:	Expr
+		| %empty	{ $$ = cons("nil", NULL); }
+		| PARL DEFINE LetList1 PARR Defines
+		{ $$ = concat(concat(cons("FLSC_Define([",
+			lnbrk(1, $3)),
+			lnbrk(0, cons("],",
+			lnbrk(0, $5)))),
+			lnbrk(-1, cons(")", NULL))); }
 
 Expr:	SpecForm | Call | Var | Num | List
 	| NIL	{ $$ = cons("FLSC_Nil()", NULL); }

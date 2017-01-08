@@ -24,7 +24,7 @@ FLSC_Require : FLSC_SemanticNode {
 		};
 		if(package.isKindOf(FLSC_Error))
 		{ Error("Error in file %: %".format(path, package.asFLSC)).throw };
-		newContext = package.value(context);
+		newContext = package.value(context, path.dirname);
 		if(newContext.isKindOf(FLSC_Context).not)
 		{ Error("Not a valid package file: %:".format(path)).throw };
 		^nodeVal.value(newContext, baseDir);

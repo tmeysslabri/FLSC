@@ -53,7 +53,7 @@ extern int yydebug;
     BRL = 263,
     BRR = 264,
     NIL = 265,
-    PACKAGE = 266,
+    DEFINE = 266,
     REQUIRE = 267,
     LAMBDA = 268,
     LET = 269,

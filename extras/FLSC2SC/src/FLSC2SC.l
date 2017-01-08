@@ -20,7 +20,7 @@ nunq	!
 
 nil	nil
 
-package	package
+define	define
 require require
 
 lambda	lambda
@@ -57,7 +57,7 @@ other	.
 
 {nil}		{ return(NIL); }
 
-{package}	{ return(PACKAGE); }
+{define}	{ return(DEFINE); }
 {require}	{ return(REQUIRE); }
 
 {lambda}	{ return(LAMBDA); }
