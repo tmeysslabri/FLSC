@@ -12,7 +12,7 @@
 		// opérateurs unaires
 		['mneg', "(module (a) (neg a))"],
 		['mabs', "(module (a) (abs a))"],
-		['msign', "(module (a) (sign a))"],
+		['msgn', "(module (a) (sgn a))"],
 		// opérateurs binaires
 		['m+', "(module (a b) (+ a b))"],
 		['m-', "(module (a b) (- a b))"],
@@ -51,7 +51,7 @@
 		// parce que levels et times sont des tableaux de taille indéfinie
 		// on peut utiliser une fonction qui génère un module
 		// mais c'est sous-optimal (un module créé par appel !)
-		['lmenv', "(lambda (levels times) ((module () (env levels times))))"],
+		// ['lmenv', "(lambda (levels times) ((module () (env levels times))))"],
 	],
 	[
 		// générateurs de séquence (suite)
@@ -60,18 +60,19 @@
 			"  (+ (if (? start) start 0)" +
 			"    (* (if (? step) step 1)" +
 			"      (range0 num))))"],
-
+		/*
 		// fonctions sur la signature temporelle
 		['smap',
 			"(lambda (sigs)" +
 			"  (mapcar (lambda (i sig) (ssel i sig))" +
 			"    (range0 (length sigs)) sigs))"
 		],
-
+		*/
 		// FONCTIONS SUR LES MODULES
 		// somme et produit itérés
 		['mn+', "(lambda (& terms) (reduce m+ terms))"],
 		['mn*', "(lambda (& terms) (reduce m* terms))"],
+		/*
 		// la fonction menv produit une enveloppe de taille variable
 		// en assemblant des mseg avec seq
 		// les indices sont sytématiquement les entiers successifs
@@ -120,5 +121,6 @@
 			"               (subseq levels 1 len)))))" +
 			"    (apply par contents)))"
 		],
+		*/
 	],
 ]

@@ -22,8 +22,8 @@ FLSC_NoWarpSpec : FLSC_ScoreSpec {
 		// on va chercher la référence dans le noWarpDict
 		var sub = noWarpDict[subSpec];
 		// les dates de début et de fin doivent correspondre à l'appelant
-		var start = timeWarp.value([0, nil]);
-		var end = timeWarp.value(['end', nil]);
+		var start = timeWarp.value(0);
+		var end = timeWarp.value({|t|t});
 		// si outBus n'est pas nil, créer un raccord
 		if(outBus.notNil)
 		{

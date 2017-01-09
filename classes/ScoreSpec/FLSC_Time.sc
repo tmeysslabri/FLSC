@@ -1,17 +1,26 @@
-FLSC_Time[slot] : Array {
-	*newFrom {|times|
-		^super.newFrom([times, nil!times.size].flop);
+FLSC_Time {
+	// le nombre de segments
+	var <nbSeg;
+
+	*new {|nbSeg|
+		^super.new.timeInit(nbSeg);
+	}
+
+	timeInit {|num|
+		nbSeg = num;
 	}
 
 	value {|timeWarp|
-		var times = this.collect(timeWarp);
-		^[times[1..], times[..(times.size-2)]].flop.collect
-		{|item|
-			var res = item[0] - item[1];
+		var times = [
+			(([_,{|t|t}]) ! (nbSeg - 1)) ++ [{|t|t}],
+			[0] ++ ({|i|[i+1,0]} ! (nbSeg - 1))
+		].flop;
+		^times.collect {|item|
+			var res = timeWarp.(item[0]) - timeWarp.(item[1]);
 			if(res < 0)
 			{Error("Anachronism in Time: duration(%) < 0".format(res)).throw};
 			res;
-		};
+		}
 	}
 
 	isFLSCTime { ^true }

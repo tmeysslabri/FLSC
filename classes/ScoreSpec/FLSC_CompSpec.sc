@@ -30,8 +30,8 @@ FLSC_CompSpec : FLSC_LocalScoreSpec {
 		// ??? est-ce nécessaire ?
 		// [si la composition apparaît dans une liste, cela garantit
 		// que son bus existe sur le support temporel requis]
-		score.start = timeWarp.value([0, nil]);
-		score.end = timeWarp.value(['end', nil]);
+		score.start = timeWarp.value(0);
+		score.end = timeWarp.value({|t|t});
 
 		^score;
 	}

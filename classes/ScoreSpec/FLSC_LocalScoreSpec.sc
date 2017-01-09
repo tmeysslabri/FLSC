@@ -5,7 +5,7 @@ FLSC_LocalScoreSpec : FLSC_ScoreSpec {
 		// suivant le timeWarp local
 		if(outBus.notNil) {^outBus}
 		{
-			var bus = FLSC_Bus(rate, timeWarp.value([0, nil]), timeWarp.value(['end', nil]));
+			var bus = FLSC_Bus(rate, timeWarp.value(0), timeWarp.value({|t|t}));
 			score.busList.add(bus);
 			^bus;
 		}

@@ -1,19 +1,25 @@
 FLSC_Patch : FLSC_RestFuncDef {
+	/*
 	// la signature temporelle: un SemanticNode
 	var signature;
+	*/
+	// la durée: un SemanticNode
+	var duration;
 
-	*new {|parms, sign, body, rest = false|
-		^super.new(parms, body, rest).patchInit(sign);
+	*new {|parms, duration, body, rest = false|
+		^super.new(parms, body, rest).patchInit(duration);
 	}
 
-	patchInit {|sign|
-		signature = sign;
+	patchInit {|dur|
+		duration = dur;
 		^this;
 	}
 
 	value {|context|
 		var warpFunc = {|callContext|
 			var sig = nodeVal.value(callContext).asFLSCScoreSpec;
+			var dur = duration.value(callContext);
+			/*
 			var signValue = signature.value(callContext);
 			var sign = switch(signValue.rank,
 				1, {
@@ -28,6 +34,8 @@ FLSC_Patch : FLSC_RestFuncDef {
 				},
 				{Error("Patch signature not compliant: %".format(signValue)).throw}
 			);
+			*/
+			/*
 			var warp = FLSC_WarpSpec({|pair|
 				var t = pair[0];
 				var i = pair[1];
@@ -57,7 +65,9 @@ FLSC_Patch : FLSC_RestFuncDef {
 				}
 				{true} {Error("Non-compatible signature selection").throw}
 			}, sig);
-			FLSC_GlobalSignSpec(sig.rate, warp);
+			*/
+			var warp = FLSC_WarpSpec({|t| t.(dur)}, sig);
+			FLSC_GlobalTimeSpec(sig.rate, warp);
 		};
 
 		if(hasRest)
@@ -70,6 +80,6 @@ FLSC_Patch : FLSC_RestFuncDef {
 
 	asFLSC {
 		var text = super.asFLSC;
-		^("(patch " ++ text[0] ++ " " ++ signature.asFLSC ++ " " ++ text[1] ++ ")");
+		^("(patch " ++ text[0] ++ " " ++ duration.asFLSC ++ " " ++ text[1] ++ ")");
 	}
 }

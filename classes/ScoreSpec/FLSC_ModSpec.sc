@@ -42,8 +42,8 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 
 		// ajouter les temps de début et de fin, et le rang
 		// (obligatoire car il n'y a pas nécessairement de subScore)
-		score.start = timeWarp.value([0, nil]);
-		score.end = timeWarp.value(['end', nil]);
+		score.start = timeWarp.value(0);
+		score.end = timeWarp.value({|t|t});
 		score.rank = score.rank + 1;
 
 		^score;

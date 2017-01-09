@@ -6,7 +6,7 @@
 		['fl', false],
 		['tr', true],
 		['inf', inf],
-		['end', 'end'], // fin pour les signatures temporelles
+		['dur', {|t|t}], // durée du support temporel courant
 		// FONCTIONS NUMERIQUES:
 		// generateur aléatoire
 		// attention, si l'argument est un entier, random produira des entiers
@@ -18,7 +18,7 @@
 		// opérateurs unaires:
 		['neg', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).neg})],
 		['abs', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).abs})],
-		['sign', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).sign})],
+		['sgn', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).sign})],
 		// opérateurs arithmétiques:
 		['+', FLSC_RestUGenFunc(nil, ['terms'],
 			{|ctxt| FLSC_Var('terms').value(ctxt).inject(0, _+_)})],
@@ -192,13 +192,15 @@
 		['seg', FLSC_Function(nil, ['start', 'end'],
 			{|ctxt|
 				FLSC_UGen.newFromClass([FLSC_Var('start').value(ctxt),
-					FLSC_Var('end').value(ctxt), FLSC_TimeControl([0, 'end'])],
+					FLSC_Var('end').value(ctxt), FLSC_TimeControl(1)],
 					Line, ['start', 'end', 'dur'],
 					minRate: 'control')})],
 		// enveloppe à nombre de points fixe
-		['env', FLSC_Function(nil, ['levels', 'times'],
-			{|ctxt| FLSC_UGen([FLSC_Var('levels').value(ctxt),
-				FLSC_TimeControl([0] ++ FLSC_Var('times').value(ctxt) ++ ['end'])],
+		['env', FLSC_Function(nil, ['levels'],
+			{|ctxt|
+				var levels = FLSC_Var('levels').value(ctxt);
+				FLSC_UGen([levels,
+				FLSC_TimeControl(levels.size - 1)],
 				{|subs|
 					EnvGen.kr(Env(subs[0], subs[1]));
 				})
@@ -232,13 +234,15 @@
 		['hfseg', FLSC_Function(nil, ['start', 'end'],
 			{|ctxt|
 				FLSC_UGen.newFromClass([FLSC_Var('start').value(ctxt),
-					FLSC_Var('end').value(ctxt), FLSC_TimeControl([0, 'end'])],
+					FLSC_Var('end').value(ctxt), FLSC_TimeControl(1)],
 					Line, ['start', 'end', 'dur'],
 					minRate: 'audio')})],
 		// enveloppe à nombre de points fixe
-		['hfenv', FLSC_Function(nil, ['levels', 'times'],
-			{|ctxt| FLSC_UGen([FLSC_Var('levels').value(ctxt),
-				FLSC_TimeControl([0] ++ FLSC_Var('times').value(ctxt) ++ ['end'])],
+		['hfenv', FLSC_Function(nil, ['levels'],
+			{|ctxt|
+				var levels = FLSC_Var('levels').value(ctxt);
+				FLSC_UGen([levels,
+				FLSC_TimeControl(levels.size - 1)],
 				{|subs|
 					EnvGen.ar(Env(subs[0], subs[1]));
 				})
@@ -327,8 +331,39 @@
 				var warp = FLSC_WarpSpec({|t| t + dt}, sig);
 				if(sig.rate != 'audio')
 				{Error("Non-audio in delay: %".format(sig)).throw};
-				FLSC_GlobalSignSpec('audio', warp);
+				FLSC_GlobalTimeSpec('audio', warp);
 		})],
+		// definition de support
+		['base', FLSC_Function(nil, ['start', 'end', 'sig'],
+			{|ctxt|
+				var start = FLSC_Var('start').value(ctxt);
+				var end = FLSC_Var('end').value(ctxt);
+				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
+				var warp = FLSC_WarpSpec({|t|
+					start + t.(end - start);
+				}, sig);
+				if(sig.rate != 'audio')
+				{Error("Non-audio in base: %".format(sig)).throw};
+				FLSC_LocalTimeSpec('audio', warp);
+		})],
+		// definition de signature
+		['sign', FLSC_Function(nil, ['times', 'sig'],
+			{|ctxt|
+				var times = [0] ++ FLSC_Var('times').value(ctxt) ++ [{|t|t}];
+				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
+				var warp = FLSC_WarpSpec({|t|
+					t;
+					if(t.isArray) {
+						var index = t[0];
+						var start = times[index];
+						(start + t[1].(times[index+1] - start))
+					} {
+						t
+					}
+				}, sig);
+				FLSC_LocalTimeSpec(sig.rate, warp);
+		})],
+		/*
 		// sous-signature
 		['ssub', FLSC_Function(nil, ['sign', 'sig'],
 			{|ctxt|
@@ -412,7 +447,22 @@
 				};
 				FLSC_LocalSignSpec(sig.rate, warp);
 		})],
+		*/
 		// compositions:
+		// sequentielle
+		['seq', FLSC_Function(nil, ['sigs'],
+			{|ctxt|
+				var sigs = FLSC_Var('sigs').value(ctxt);
+				var warps = sigs.collect {|sig, i|
+					if(sig.rate != 'control')
+					{Error("Non-control in seq: %".format(sig)).throw};
+					FLSC_WarpSpec({|t|
+						[i, t]
+					}, sig)
+				};
+				FLSC_CompSpec('control', warps);
+		})],
+		/*
 		// sequentielle
 		['seq', FLSC_Function(nil, ['breaks', 'sigs'],
 			{|ctxt|
@@ -461,5 +511,6 @@
 				};
 				FLSC_CompSpec('audio', warps);
 		})],
+		*/
 	]
 }.value();

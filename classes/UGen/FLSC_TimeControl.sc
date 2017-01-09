@@ -1,16 +1,16 @@
 FLSC_TimeControl : FLSC_Control {
-	*new {|times|
-		^super.new(FLSC_UID.next.asSymbol).timeControlInit(times);
+	*new {|nbSeg = 1|
+		^super.new(FLSC_UID.next.asSymbol).timeControlInit(nbSeg);
 	}
 
-	timeControlInit {|times|
-		timeControls.add([controlName, FLSC_Time.newFrom(times)]);
+	timeControlInit {|nbSeg|
+		timeControls.add([controlName, FLSC_Time(nbSeg)]);
 		^this;
 	}
 
 	value {|varDict|
 		var times = varDict[controlName];
-		^controlName.ir(0!(times.size - 1));
+		^controlName.ir(0!times.nbSeg);
 	}
 
 }

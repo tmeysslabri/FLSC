@@ -1,4 +1,4 @@
-FLSC_LocalSignSpec : FLSC_LocalScoreSpec {
+FLSC_GlobalTimeSpec : FLSC_GlobalScoreSpec {
 	// la FLSC_WarpSpec à laquelle on se réfère
 	var subSpec;
 
@@ -22,9 +22,15 @@ FLSC_LocalSignSpec : FLSC_LocalScoreSpec {
 		// le varDict n'est pas nécessaire,
 		// puisque les variables sont uniquement celles du sous-graphe
 		subScore = subSpec.value(score.outBus, timeWarp, noWarpDict);
+
 		// récupérer les valeurs de la subScore
 		score.add(subScore);
+		// eventuellement affecter le début et la fin du Bus créé
+		if(outBus.isNil) {
+			score.outBus.start = subScore.start;
+			score.outBus.end = subScore.end;
+		};
 
-		^score;
+		^score.checkTimes;
 	}
 }
