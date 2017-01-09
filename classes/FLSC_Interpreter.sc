@@ -70,14 +70,14 @@ FLSC_Interpreter {
 	evaluate {
 		if(semanticTree.isKindOf(FLSC_Error))
 		{^treeValue = semanticTree.asFLSC}
-		{^treeValue = semanticTree.value(curContext, workingDir)};
+		{^treeValue = semanticTree.value(curContext, library, workingDir)};
 	}
 
 	loadPackage {|fileName|
 		this.readFile(fileName);
 		this.evaluate;
 		if(treeValue.isKindOf(FLSC_Context))
-		{ curContext = treeValue }
+		{ curContext = treeValue.refContext_(curContext) }
 		{ Error("Not a valid package file: %".format(fileName)).throw }
 		^this;
 	}

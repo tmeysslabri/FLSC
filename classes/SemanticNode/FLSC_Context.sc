@@ -1,6 +1,6 @@
 FLSC_Context : Dictionary {
 	// contexte de référence: un FLSC_Context
-	var refContext;
+	var >refContext;
 
 	*new {|context, keysValues|
 		^super.new.contextInit(context, keysValues);

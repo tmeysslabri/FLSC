@@ -1,2 +1,3 @@
-(define (??? 42))
+(require "testpkg2.flsc")
+(define (??? luae))
 

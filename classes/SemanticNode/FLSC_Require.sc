@@ -10,7 +10,7 @@ FLSC_Require : FLSC_SemanticNode {
 		^this;
 	}
 
-	value {|context, baseDir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras")|
+	value {|context, library, baseDir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras")|
 		var path = if(fileName[0] == $/)
 		{ fileName }
 		{ baseDir +/+ fileName };
@@ -24,10 +24,16 @@ FLSC_Require : FLSC_SemanticNode {
 		};
 		if(package.isKindOf(FLSC_Error))
 		{ Error("Error in file %: %".format(path, package.asFLSC)).throw };
-		newContext = package.value(context, path.dirname);
+		// on évalue les paquetages dans le contexte de la bibliothèque uniquement
+		// les paquetages ne doivent pas interférer (sauf quand c'est explicite)
+		newContext = package.value(library, library, path.dirname);
 		if(newContext.isKindOf(FLSC_Context).not)
 		{ Error("Not a valid package file: %:".format(path)).throw };
-		^nodeVal.value(newContext, baseDir);
+		// on effectue le chaînage du paquetage sur le contexte courant
+		newContext.refContext = context;
+		// on évalue l'expression en passant les paramètres supplémentaires
+		// pour un require suivant éventuel
+		^nodeVal.value(newContext, library, baseDir);
 	}
 
 	asFLSC {
