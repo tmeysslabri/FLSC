@@ -1,4 +1,4 @@
-FLSC_ListSpec : FLSC_GlobalScoreSpec {
+FLSC_LocalListSpec : FLSC_LocalScoreSpec {
 	// la liste de ListSpec/ScoreSpec/VarSpec à laquelle on se réfère
 	var subSpecs;
 
@@ -30,12 +30,6 @@ FLSC_ListSpec : FLSC_GlobalScoreSpec {
 			score.add(subScore);
 		};
 
-		// si aucun Bus de sortie n'est demandé, ajouter le début et la fin au Bus créé
-		if(outBus.isNil) {
-			score.outBus.start = score.start;
-			score.outBus.end = score.end;
-		};
-
-		^score.checkTimes;
+		^score;
 	}
 }

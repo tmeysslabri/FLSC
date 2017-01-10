@@ -33,5 +33,4 @@ FLSC_ScoreSpec {
 	// méthodes génériques
 	isFLSCScoreSpec { ^true; }
 	encapsulate { ^FLSC_VarSpec(this) }
-	asFLSCScoreSpec { ^this; }
 }

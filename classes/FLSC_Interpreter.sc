@@ -88,7 +88,7 @@ FLSC_Interpreter {
 		if(treeValue.isNil) {this.evaluate};
 		if(treeValue.isFLSCScoreSpec ||
 			(treeValue.isArray && treeValue.isString.not))
-		{^scoreValue = treeValue.asFLSCScoreSpec.asFLSCScore(before, after)}
+		{^scoreValue = treeValue.asFLSCScoreSpec(true).asFLSCScore(before, after)}
 		{^scoreValue = treeValue};
 	}
 

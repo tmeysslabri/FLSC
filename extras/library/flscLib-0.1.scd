@@ -327,7 +327,7 @@
 		['delay', FLSC_Function(nil, ['theta', 'sig'],
 			{|ctxt|
 				var dt = FLSC_Var('theta').value(ctxt);
-				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
+				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec(true);
 				var warp = FLSC_WarpSpec({|t| t + dt}, sig);
 				if(sig.rate != 'audio')
 				{Error("Non-audio in delay: %".format(sig)).throw};

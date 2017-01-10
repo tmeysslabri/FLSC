@@ -1,7 +1,13 @@
 + Array {
-	asFLSCScoreSpec {
-		^FLSC_ListSpec(this);
+	asFLSCScoreSpec {|global = false|
+		if(global)
+		{^FLSC_GlobalListSpec(this)}
+		{^FLSC_LocalListSpec(this)};
 	}
+}
+
++ FLSC_ScoreSpec {
+	asFLSCScoreSpec { ^this; }
 }
 
 + Object {
