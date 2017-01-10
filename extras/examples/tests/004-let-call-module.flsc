@@ -1,9 +1,0 @@
-;;;; dédoublement d'un module
-((patch (freq) [0.5 1 2 2.5 3]
-   (let ((myvar 
-           (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])
-             (mosc freq 0))))
-     (par [[0 3] [2 5]]
-          [(ssub [1] myvar)
-           (ssub [2] myvar)]))) 220)
-

@@ -1,5 +1,0 @@
-;;;; idem avec mrand sans paramètres (moins économique)
-((patch (freq) [0.5 2]
-   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])
-     (mosc (m* (m+ (m* 0.2 (mrand)) 0.9) freq) 0))) 220)
-

@@ -1,9 +1,0 @@
-;;;; combinaison nowarp/ssubsel
-((patch (freq dt num) (+ (repeat [0 0.2 2] num) (* dt (range0 num)))
-   (nowarp ((freq (ssubsel [[1 (floor (/ num 2))]] (menv [freq (* 4 freq) freq]))))
-     (smap
-       (mapcar (lambda (i)
-                 (m* (mosc (m* freq (elt [1 0.75 0.5] (mod i 3))))
-                   (menv [0 0.1 0])))
-         (range0 num)))))
- 120 0.5 10)

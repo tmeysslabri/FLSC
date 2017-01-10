@@ -1,5 +1,0 @@
-;;;; application de patch
-((patch (freq) [0.5 2]
-   (m* (seq [1] [(mseg 0 0.1) (mseg 0.1 0)])
-     (mosc freq 0))) 220)
-

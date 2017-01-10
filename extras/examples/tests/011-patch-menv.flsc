@@ -1,5 +1,0 @@
-;;;; enveloppe à nombre de points variable
-((patch (freq) [0.5 2]
-   (m* (menv [0 0.1 0])
-     (mosc freq 0))) 220)
-

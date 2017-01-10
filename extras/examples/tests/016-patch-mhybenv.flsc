@@ -1,7 +1,0 @@
-;;;; idem avec enveloppe hybride
-((patch (freq) [0.5 1 1.004 1.008 2]
-   (m* (mhybenv [0 0.1 0.1 0.2 0.1 0]
-         [fl fl tr tr fl])
-       (mosc freq 0)))
- 220)
-
