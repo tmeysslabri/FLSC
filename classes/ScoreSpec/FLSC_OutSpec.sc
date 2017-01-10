@@ -50,7 +50,7 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		// récupérer le outBus et le contenu
 		score.outBus = subScore.outBus;
 		// si la partition est vide, produire une partition vide
-		if(score.outBus.isNil) {^Score()};
+		if(score.outBus.isNil) {^FLSC_Score()};
 		score.add(subScore);
 
 		// vérifier qu'il ne reste plus de messages en attente
