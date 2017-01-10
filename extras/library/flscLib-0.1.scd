@@ -342,8 +342,13 @@
 				var warp = FLSC_WarpSpec({|t|
 					start + t.(end - start);
 				}, sig, {|new, old|
-						if((new.(0) < old.(0)) || (new.({|t|t}) > old.({|t|t})))
-						{Error("Timebase out of bounds").throw}
+						var newStart = new.(0);
+						var oldStart = old.(0);
+						var newEnd = new.({|t|t});
+						var oldEnd = old.({|t|t});
+						if((newStart < oldStart) || (newEnd > oldEnd))
+						{Error("Timebase out of bounds: % not in %".format(
+							[newStart, newEnd], [oldStart, oldEnd])).throw}
 					}
 				);
 				if(sig.rate != 'audio')
@@ -365,8 +370,9 @@
 						t
 					}
 				}, sig, {|new, old|
-						if(times.collect(old).differentiate.minItem < 0)
-						{Error("Signature not sorted").throw}
+						var timeVals = times.collect(old);
+						if(timeVals.differentiate.minItem < 0)
+						{Error("Signature not sorted: %".format(timeVals)).throw}
 					}
 				);
 				FLSC_LocalTimeSpec(sig.rate, warp);
@@ -386,6 +392,5 @@
 				};
 				FLSC_CompSpec(rate, warps);
 		})],
-
 	]
 }.value();
