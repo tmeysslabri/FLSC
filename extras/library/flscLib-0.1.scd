@@ -21,9 +21,9 @@
 		['sgn', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).sign})],
 		// opérateurs arithmétiques:
 		['+', FLSC_RestUGenFunc(nil, ['terms'],
-			{|ctxt| FLSC_Var('terms').value(ctxt).inject(0, _+_)})],
+			{|ctxt| FLSC_Var('terms').value(ctxt).reduce('+')})],
 		['*', FLSC_RestUGenFunc(nil, ['terms'],
-			{|ctxt| FLSC_Var('terms').value(ctxt).inject(1, _*_)})],
+			{|ctxt| FLSC_Var('terms').value(ctxt).reduce('*')})],
 		['-', FLSC_RestUGenFunc(nil, ['base', 'terms'],
 			{|ctxt| FLSC_Var('terms').value(ctxt).inject(FLSC_Var('base').value(ctxt), _-_)})],
 		['/', FLSC_RestUGenFunc(nil, ['base', 'terms'],
