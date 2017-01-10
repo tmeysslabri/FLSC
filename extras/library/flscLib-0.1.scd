@@ -461,14 +461,15 @@
 		['seq', FLSC_Function(nil, ['sigs'],
 			{|ctxt|
 				var sigs = FLSC_Var('sigs').value(ctxt);
+				var rate = sigs[0].rate;
 				var warps = sigs.collect {|sig, i|
-					if(sig.rate != 'control')
-					{Error("Non-control in seq: %".format(sig)).throw};
+					if(sig.rate != rate)
+					{Error("Non-homogenous rate in seq: %".format(sig.rate)).throw};
 					FLSC_WarpSpec({|t|
 						[i, t]
 					}, sig)
 				};
-				FLSC_CompSpec('control', warps);
+				FLSC_CompSpec(rate, warps);
 		})],
 		/*
 		// sequentielle
