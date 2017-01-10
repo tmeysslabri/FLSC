@@ -3,9 +3,20 @@
 		// incrémentation et décrémentation
 		['++', "(lambda (num) (+ num 1))"],
 		['--', "(lambda (num) (- num 1))"],
+		// inverse
+		['//', "(lambda (num) (/ 1 num))"],
 		// générateurs de séquences
 		['range0', "(lambda (num) (range 0 (- num 1)))"],
 		['range1', "(lambda (num) (range 1 num))"],
+		// fonctions de base sur les listes
+		['car', "(lambda (list) (elt list 0))"],
+		['cdr', "(lambda (list) (subseq list 1 (length list)))"],
+		// accès au n-ième élément
+		['e0', "(lambda (list) (elt list 0))"],
+		['e1', "(lambda (list) (elt list 1))"],
+		['e2', "(lambda (list) (elt list 2))"],
+		['e3', "(lambda (list) (elt list 3))"],
+		['e4', "(lambda (list) (elt list 4))"],
 
 		// MODULES
 		// modules arithmétiques:
@@ -51,28 +62,26 @@
 		// parce que levels et times sont des tableaux de taille indéfinie
 		// on peut utiliser une fonction qui génère un module
 		// mais c'est sous-optimal (un module créé par appel !)
-		// ['lmenv', "(lambda (levels times) ((module () (env levels times))))"],
-	],
-	[
+		['lmenv', "(lambda (levels) ((module () (env levels))))"],
+	], [
 		// générateurs de séquence (suite)
 		['step',
 			"(lambda (num step start)" +
 			"  (+ (if (? start) start 0)" +
 			"    (* (if (? step) step 1)" +
-			"      (range0 num))))"],
-		/*
-		// fonctions sur la signature temporelle
-		['smap',
-			"(lambda (sigs)" +
-			"  (mapcar (lambda (i sig) (ssel i sig))" +
-			"    (range0 (length sigs)) sigs))"
+			"      (range0 num))))"
 		],
-		*/
+		// fonctions sur le support / la signature
+		['basemap',
+			"(lambda (bases sigs)" +
+			"  (let* ((times (flop bases)) (starts (e0 times)) (ends (e1 times)))" +
+			"    (mapcar (lambda (start end sig) (base start end sig))" +
+			"      starts ends sigs)))"
+		],
 		// FONCTIONS SUR LES MODULES
 		// somme et produit itérés
 		['mn+', "(lambda (& terms) (reduce m+ terms))"],
 		['mn*', "(lambda (& terms) (reduce m* terms))"],
-		/*
 		// la fonction menv produit une enveloppe de taille variable
 		// en assemblant des mseg avec seq
 		// les indices sont sytématiquement les entiers successifs
@@ -80,47 +89,38 @@
 		['menv',
 			"(lambda (levels)" +
 			"  (let ((len (length levels)))" +
-			"    (seq (range 1 (- len 2))" +
+			"    (seq" +
 			"      (mapcar (lambda (start end) (mseg start end))" +
-			"        (subseq levels 0 (- len 1)) (subseq levels 1 len)))))"],
+			"        (subseq levels 0 (- len 1)) (subseq levels 1 len)))))"
+		],
 		// idem avec des segments HF
 		['mhfenv',
 			"(lambda (levels)" +
-			"  (let* ((len (length levels))" +
-			"         (contents" +
-			"           (flop" +
-			"             (mapcar (lambda (time start end) [time (mhfseg start end)])" +
-			"               (flop [(range 0 (- len 2)) (range 1 (- len 1))])" +
-			"               (subseq levels 0 (- len 1)) (subseq levels 1 len)))))" +
-			"    (apply par contents)))"
+			"  (let ((len (length levels)))" +
+			"    (seq" +
+			"      (mapcar (lambda (start end) (mhfseg start end))" +
+			"        (subseq levels 0 (- len 1)) (subseq levels 1 len)))))"
 		],
 		// la composition hybride permet de faire une composition séquentielle
 		// sur des signaux de type contrôle ou audio
 		['hybrid',
-			"(lambda (breaks sigs)" +
-			"  (let ((segs (flop [(cons 0 breaks) (add breaks end)]))" +
-			"        (audio" +
-			"          (mapcar" +
-			"            (lambda (sig) (if (audio? sig) sig (mk2a sig)))" +
-			"            sigs)))" +
-			"    (par segs audio)))"
+			"(lambda (sigs)" +
+			"  (seq (mapcar" +
+			"         (lambda (sig) (if (audio? sig) sig (mk2a sig)))" +
+			"            sigs)))"
 		],
+	], [
 		// enveloppe hybride, composée de segments contrôle ou audio
 		['mhybenv',
-			"(lambda (levels type)" +
-			"  (let* ((len (length levels))" +
-			"         (contents" +
-			"           (flop" +
-			"             (mapcar (lambda (i start end)" +
-			"                       [[i (+ i 1)]" +
-			"                        (if (elt type i)" +
-			"                            (mhfseg start end)" +
-			"                            (mk2a (mseg start end)))])" +
-			"               (range0 (-- len))" +
-			"               (subseq levels 0 (-- len))" +
-			"               (subseq levels 1 len)))))" +
-			"    (apply par contents)))"
+			"(lambda (levels types)" +
+			"  (let ((len (length levels)))" +
+			"    (hybrid" +
+			"      (mapcar (lambda (start end type)" +
+			"        (if type (mhfseg start end)" +
+			"                 (mseg start end)))" +
+			"        (subseq levels 0 (- len 1))" +
+			"        (subseq levels 1 len)" +
+			"        types))))"
 		],
-		*/
 	],
 ]
