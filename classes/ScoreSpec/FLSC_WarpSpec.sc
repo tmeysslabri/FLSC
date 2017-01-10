@@ -1,16 +1,19 @@
 FLSC_WarpSpec {
 	// la distorsion temporelle à laquelle on fait référence
 	var timeWarp;
+	// la fonction de vérification
+	var checkFunc;
 	// la spécification à laquelle on fait référence
 	var subSpec;
 
-	*new {|warp, spec|
-		^super.new.warpSpecInit(warp, spec);
+	*new {|warp, spec, checkFunc|
+		^super.new.warpSpecInit(warp, spec, checkFunc);
 	}
 
-	warpSpecInit {|warp, spec|
+	warpSpecInit {|warp, spec, func|
 		timeWarp = warp;
 		subSpec = spec;
+		checkFunc = func;
 		^this;
 	}
 
@@ -20,6 +23,8 @@ FLSC_WarpSpec {
 		// création de la distorsion locale
 		var newTimeWarp = superTimeWarp <> timeWarp;
 		var varDict = Dictionary();
+		// vérifier l'intégrité temporelle
+		if(checkFunc.notNil) {checkFunc.(newTimeWarp, superTimeWarp)};
 		// création du varDict par itération sur la varList
 		subSpec.varList.do {|item|
 			var subScore = item.value(nil, newTimeWarp, varDict, noWarpDict).checkTimes;

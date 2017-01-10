@@ -341,7 +341,11 @@
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp = FLSC_WarpSpec({|t|
 					start + t.(end - start);
-				}, sig);
+				}, sig, {|new, old|
+						if((new.(0) < old.(0)) || (new.({|t|t}) > old.({|t|t})))
+						{Error("Timebase out of bounds").throw}
+					}
+				);
 				if(sig.rate != 'audio')
 				{Error("Non-audio in base: %".format(sig)).throw};
 				FLSC_LocalTimeSpec('audio', warp);
@@ -360,7 +364,11 @@
 					} {
 						t
 					}
-				}, sig);
+				}, sig, {|new, old|
+						if(times.collect(old).differentiate.minItem < 0)
+						{Error("Signature not sorted").throw}
+					}
+				);
 				FLSC_LocalTimeSpec(sig.rate, warp);
 		})],
 		/*
