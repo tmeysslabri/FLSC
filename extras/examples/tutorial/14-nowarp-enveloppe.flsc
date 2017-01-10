@@ -1,0 +1,21 @@
+;;;; exemple de nowarp
+;;;; la même chose que 13 avec une enveloppe
+
+((patch (amp basefreq time dt num)
+   ;; on calcule la durée totale
+   (let ((end (+ (* (-- num) dt) time))
+         ;; et également un tableau de hauteurs
+         (scale [1 0.75 1.25]))
+     [end
+      ;; on définit une fonction globale de fréquence
+      (nowarp ((freq (m* basefreq (m** 2 (sign [(* 0.5 dur)] (menv [-1 1 -1])) ))))
+        (mapcar (lambda (i)
+                  (let ((start (* i dt)))
+                    (base start (+ start time)
+                      ;; on module la fréquence globale cycliquement
+                      (m* (mosc (m* freq (elt scale (mod i 3))))
+                        (sign [0.1 0.2 (- time 0.5)]
+                          (menv [0 (* 2 amp) amp amp 0]))))))
+          ;; on itère sur les entiers consécutifs à partir de 0
+          (range0 num)))]))
+ 0.1 330 2 0.5 13)

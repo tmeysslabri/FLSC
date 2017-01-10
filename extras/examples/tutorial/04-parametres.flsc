@@ -1,0 +1,12 @@
+;;;; exemple de patch avec parametres
+;;;; la même chose que 03 avec une fréquence,
+;;;; une amplitude et une durée parametrables
+
+;; on déclare des paramètres
+((patch (amp freq time)
+   [time ; time est la durée
+   (m* (mosc freq) ; freq est la fréquence
+     (sign [(/ time 4)] ; on réutilise time pour la césure
+       (menv [0 amp 0])))]) ; amp est l'amplitude max
+ ;; on appelle avec les mêmes paramètres
+ 0.1 220 2)

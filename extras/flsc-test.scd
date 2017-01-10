@@ -23,16 +23,16 @@ FLSC_Interpreter().read(
 
 // exemples de lecture de fichier
 FLSC_Interpreter().readFile.evaluate;
-FLSC_Interpreter().readFile("examples/tests/024-nowarp-smap.flsc").play;
+FLSC_Interpreter().readFile("examples/tutorial/07-sous-signature.flsc").play;
 
-// exemple de lecture de répertoire (extras/examples/tests)
+// exemple de lecture de répertoire (extras/examples/tutorial)
 FLSC_Interpreter().playDir;
 
 // créer le catalogue (extras/examples/catalog) dans recordings (recordings/catalog)
 FLSC_Interpreter().recordDir;
 
 // exemple de lecture d'un paquetage
-FLSC_Interpreter().loadPackage("packages/testpkg.flsc").read("???").evaluate;
+FLSC_Interpreter().loadPackage("packages/testpkg.flsc").read("(???)").evaluate;
 
 // création d'un module
 FLSC_Interpreter().read("(control? (mn* 1 2 3))").evaluate;

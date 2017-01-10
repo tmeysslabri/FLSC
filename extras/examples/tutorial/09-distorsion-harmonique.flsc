@@ -1,0 +1,16 @@
+;;;; exemple de liste de signaux (2)
+;;;; la même chose que 08 avec une distorsion harmonique
+
+;; on introduit la fonction de distorsion
+(let ((warp (lambda (i) (** i 0.5)))) ; fonction racine
+;; le paramètre dist est la fonction de distorsion
+  ((patch (amp freq time num dist)
+     [time
+      (mapcar (lambda (i)
+                ;; la fréquence varie suivant l'indice
+                ;; modifié par la distorsion
+                (m* (mosc (* (dist i) freq))
+                  (sign [(/ time 4)]
+                    (menv [0 (/ amp i) 0]))))
+        (range1 num))])
+   0.1 220 2 16 warp))

@@ -11,6 +11,8 @@
 		// fonctions de base sur les listes
 		['car', "(lambda (list) (elt list 0))"],
 		['cdr', "(lambda (list) (subseq list 1 (length list)))"],
+		['last', "(lambda (list) (elt list (- (length list) 1)))"],
+		['start', "(lambda (list) (subseq list 0 (- (length list) 1)))"],
 		// accès au n-ième élément
 		['e0', "(lambda (list) (elt list 0))"],
 		['e1', "(lambda (list) (elt list 1))"],

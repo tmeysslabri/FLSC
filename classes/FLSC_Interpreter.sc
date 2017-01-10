@@ -96,7 +96,9 @@ FLSC_Interpreter {
 		if(scoreValue.isNil) {this.asFLSCScore(before, after)};
 		if(scoreValue.isKindOf(FLSC_Score))
 		{^scoreValue.play(doneAction)}
-		{^scoreValue};
+		{if(doneAction.notNil)
+			{scoreValue.postln; doneAction.value}
+			{^scoreValue}};
 	}
 
 	recordNRT {|outFile, before = 0, after = 0, headerFormat = "WAV", sampleRate = 44100,
@@ -105,7 +107,9 @@ FLSC_Interpreter {
 		if(scoreValue.isKindOf(FLSC_Score))
 		{^scoreValue.recordNRT(outFile, headerFormat, sampleRate,
 			sampleFormat, numChannels, doneAction)}
-		{^scoreValue};
+		{if(doneAction.notNil)
+			{scoreValue.postln; doneAction.value}
+			{^scoreValue}};
 	}
 
 	getFileList {|subDir ("."), recursive = false|
@@ -121,7 +125,7 @@ FLSC_Interpreter {
 		^list.[..list.size-2];
 	}
 
-	performDir {|selector, subDir ("examples" +/+ "tests"), args = #[],
+	performDir {|selector, subDir ("examples" +/+ "tutorial"), args = #[],
 		recursive = false, recordDir = nil|
 		var list = this.getFileList(subDir, recursive);
 		var rec = {|list|
@@ -146,7 +150,7 @@ FLSC_Interpreter {
 		rec.value(list);
 	}
 
-	playDir {|subDir ("examples" +/+ "tests"), before = 0.5, after = 0.5, recursive = false|
+	playDir {|subDir ("examples" +/+ "tutorial"), before = 0.5, after = 0.5, recursive = false|
 		this.performDir(\play, subDir, [before, after], recursive);
 	}
 

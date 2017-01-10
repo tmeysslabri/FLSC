@@ -1,0 +1,22 @@
+;;;; exemple de liste de signaux
+;;;; la même chose que 04 avec une liste d'oscillateurs
+
+;;; note: les listes ne sont acceptées
+;;; que pour les signaux audio
+
+;; le paramètre num est le nombre de composantes
+((patch (amp freq time num)
+   [time
+    ;; la liste est produite par itération
+    (mapcar (lambda (i)
+              ;; la fréquence varie suivant l'indice
+              ;; on utilise * et non m*
+              ;; car les arguments sont des nombres
+              (m* (mosc (* i freq))
+                (sign [(/ time 4)]
+                  ;; l'amplitude est l'inverse de l'indice
+                  ;; on obtient donc un dents-de-scie
+                  (menv [0 (/ amp i) 0]))))
+      ;; les valeurs sont les entiers consécutifs à partir de 1
+      (range1 num))])
+ 0.1 220 2 16)

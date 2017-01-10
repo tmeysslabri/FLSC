@@ -1,0 +1,25 @@
+;;;; exemple de supports temporels donnés par une fonction
+;;;; le patch est donc une fonction d'ordre supérieur
+
+;; déclaration de la fonction support
+(let ((makebase (lambda (i) [(* 0.5 i) (+ 1 i)])))
+  ;; patch et application
+  ;; ce patch prend en argument une fonction basefunc
+  ;; qui lui donne sa temporalité
+  ((patch (amp freq num basefunc)
+     ;; la liste des indices
+     (let* ((indexes (range0 num))
+            ;; la séquence de supports temporel
+            (bases (mapcar basefunc indexes)))
+       ;; durée totale
+       [(last (last bases))
+        ;; application des supports à un ensemble de signaux
+        (basemap bases
+          (mapcar (lambda (i)
+                    (m* (mosc (* (** 2 (/ i 5)) freq))
+                      ;; la signature est contenue dans le support
+                      (sign (mapcar (lambda (t) (* dur t)) [0.1 0.2 0.75])
+                        (menv [0 (* 2 amp) amp amp 0]))))
+            ;; on itère sur la liste d'indices
+            indexes))]))
+     0.1 220 11 makebase))

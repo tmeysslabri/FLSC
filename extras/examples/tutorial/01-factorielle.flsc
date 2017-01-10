@@ -1,0 +1,16 @@
+;;;; exemple de calcul simple: la factorielle
+
+;;; on utilise l'arithmétique, une comparaison,
+;;; une conditionnelle, une fonction, et un letrec
+
+;; on définit une fonction récursive avec letrec
+(letrec ((fact (lambda (n)
+                 ;; on compare la valeur avec 1
+                 (if (gt? n 1)
+                     ;; cas récursif: fact(n) = n * fact(n-1)
+                     (* n (fact (- n 1)))
+                     ;; cas de base: fact(1) = 1
+                     1)))) ; fin des variables
+  ;; on calcule fact(6)
+  (fact 6))
+
