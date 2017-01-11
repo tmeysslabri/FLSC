@@ -76,9 +76,8 @@
 		// fonctions sur le support / la signature
 		['basemap',
 			"(lambda (bases sigs)" +
-			"  (let* ((times (flop bases)) (starts (e0 times)) (ends (e1 times)))" +
-			"    (mapcar (lambda (start end sig) (base start end sig))" +
-			"      starts ends sigs)))"
+			"    (mapcar (lambda (sub sig) (base sub sig))" +
+			"      bases sigs))"
 		],
 		// FONCTIONS SUR LES MODULES
 		// somme et produit itérés

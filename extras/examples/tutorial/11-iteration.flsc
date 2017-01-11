@@ -10,7 +10,7 @@
               ;; chaque composante est dans un support différent
               ;; on calcule le début du support
               (let ((start (* i dt)))
-                (base start (+ start time)
+                (base [start (+ start time)]
                   ;; on joue sur une gamme à 9 tons
                   (m* (mosc (* (** 2 (/ i 9)) freq))
                     ;; on emploie une enveloppe adsr

@@ -334,10 +334,10 @@
 				FLSC_GlobalTimeSpec('audio', warp);
 		})],
 		// definition de support
-		['base', FLSC_Function(nil, ['start', 'end', 'sig'],
+		['base', FLSC_Function(nil, ['base', 'sig'],
 			{|ctxt|
-				var start = FLSC_Var('start').value(ctxt);
-				var end = FLSC_Var('end').value(ctxt);
+				var base = FLSC_Var('base').value(ctxt);
+				var start = base[0], end = base[1];
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp = FLSC_WarpSpec({|t|
 					// vérifier que la valeur n'est pas signée

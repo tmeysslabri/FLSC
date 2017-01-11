@@ -11,7 +11,7 @@
       (nowarp ((freq (m* basefreq (m** 2 (mlfo (/ 2 end) 1pi)))))
         (mapcar (lambda (i)
                   (let ((start (* i dt)))
-                    (base start (+ start time)
+                    (base [start (+ start time)]
                       ;; on module la fréquence globale cycliquement
                       (m* (mosc (m* freq (elt scale (mod i 3))))
                         (sign [0.1 0.2 (- time 0.5)]
