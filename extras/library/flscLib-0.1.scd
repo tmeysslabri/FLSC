@@ -340,8 +340,14 @@
 				var end = FLSC_Var('end').value(ctxt);
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp = FLSC_WarpSpec({|t|
+					// vérifier que la valeur n'est pas signée
+					if(t.isArray)
+					{Error("Signed time value in unsigned base: %".format(t)).throw};
+					// situer la valeur dans le support temporel courant
 					start + t.(end - start);
 				}, sig, {|new, old|
+						// vérifier l'inclusion du support temporel
+						// dans le support englobant
 						var newStart = new.(0);
 						var oldStart = old.(0);
 						var newEnd = new.({|t|t});
@@ -367,9 +373,13 @@
 						var start = times[index];
 						(start + t[1].(times[index+1] - start))
 					} {
+						// la valeur peut provenir d'un module, d'une durée non-signée
+						// ou d'une signature de remplacement
+						// dans ce cas, ne rien faire
 						t
 					}
 				}, sig, {|new, old|
+						// vérifier l'ordre de la signature
 						var timeVals = times.collect(old);
 						if(timeVals.differentiate.minItem < 0)
 						{Error("Signature not sorted: %".format(timeVals)).throw}

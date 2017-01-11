@@ -26,10 +26,14 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		var subScore;
 		// distorsion temporelle par défaut
 		var timeWarp = {|t|
+			// vérifier que la valeur est un nombre
 			if(t.isNumber.not)
-			{Error("Global time value is not a number: %".format(t)).throw}
+			{Error("Global time value is not a number: %".format(t)).throw};
+			// vérifier que la valeur est positive
+			if(t < 0)
+			{Error("Global time value is negative: %".format(t)).throw};
 			// ajouter la marge de début
-			{t + before}
+			t + before;
 		};
 		// varDict pour l'interprétation des FLSC_Score
 		var varDict = Dictionary();
