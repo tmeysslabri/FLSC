@@ -61,7 +61,7 @@
 		['mk2a', "(module (sig) (k2a sig))"],
 
 		// env ne peut pas être directement transformé en module
-		// parce que levels et times sont des tableaux de taille indéfinie
+		// parce que levels est tableau de taille indéfinie
 		// on peut utiliser une fonction qui génère un module
 		// mais c'est sous-optimal (un module créé par appel !)
 		['lmenv', "(lambda (levels) ((module () (env levels))))"],
@@ -86,8 +86,6 @@
 		['mn*', "(lambda (& terms) (reduce m* terms))"],
 		// la fonction menv produit une enveloppe de taille variable
 		// en assemblant des mseg avec seq
-		// les indices sont sytématiquement les entiers successifs
-		// (utiliser ssub pour sélectionner les points souhaités)
 		['menv',
 			"(lambda (levels)" +
 			"  (let ((len (length levels)))" +
