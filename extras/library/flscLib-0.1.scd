@@ -397,6 +397,9 @@
 					if(sig.rate != rate)
 					{Error("Non-homogenous rate in seq: %".format(sig.rate)).throw};
 					FLSC_WarpSpec({|t|
+						// vérifier que la valeur n'est pas signée
+						if(t.isArray)
+						{Error("Signed time value in unsigned base: %".format(t)).throw};
 						[i, t]
 					}, sig)
 				};
