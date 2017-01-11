@@ -1,0 +1,1528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2017-01-11"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Manuel de référence FLSC</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="title">
+Manuel de référence FLSC
+</h1>
+<h2 class="author">
+Thomas Meyssonnier<br/>
+<i>tmeyssonnier@u-bordeaux.fr</i>
+</h2>
+<div class="fulltoc">
+<div class="tocheader">
+Table des matières
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Section-1">1 Introduction aux concepts fondamentaux de FLSC</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-1.1">1.1 Types spécifiques FLSC</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-1.2">1.2 Structure générale des programmes</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-1.3">1.3 Valeurs temporelles</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-1.3.1">1.3.1 Temporalité globale</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-1.3.2">1.3.2 Supports temporels</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-1.3.3">1.3.3 Signatures temporelles</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-1.3.4">1.3.4 Découpage suivant une signature</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-1.3.5">1.3.5 Distribution de support</a>
+</div>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-2">2 Eléments standard des langages fonctionnels</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.1">2.1 Syntaxe générale</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.2">2.2 Formes spéciales</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-2.2.1">2.2.1 <tt>lambda</tt></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-2.2.2">2.2.2 <tt>let, let*, letrec</tt></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-2.2.3">2.2.3 <tt>if, cond</tt></a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.3">2.3 Listes</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-3">3 Eléments spécifiques à la synthèse sonore</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.1">3.1 Formes spéciales</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-3.1.1">3.1.1 <tt>patch</tt></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-3.1.2">3.1.2 <tt>module</tt></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-3.1.3">3.1.3 <tt>nowarp</tt></a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.2">3.2 Primitives des générateurs de signaux</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.3">3.3 Listes de signaux audio</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.4">3.4 Altérations de signature temporelle</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-3.4.1">3.4.1 <tt>delay</tt></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-3.4.2">3.4.2 <tt>par</tt>, <tt>seq, hybrid</tt></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-3.4.3">3.4.3 <tt>ssub, ssel, ssubsel</tt></a>
+</div>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-4">4 Fonctions de la bibliothèque FLSC</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.1">4.1 Fonctions numériques</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.1.1">4.1.1 Constantes</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.1.2">4.1.2 Opérateurs de signe</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.1.3">4.1.3 Opérateurs arithméthiques</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.1.4">4.1.4 Fonctions usuelles</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.2">4.2 Fonctions booléennes</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.2.1">4.2.1 Constantes</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.2.2">4.2.2 Opérateurs booléens</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.2.3">4.2.3 Comparaisons</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.2.4">4.2.4 Tests</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.3">4.3 Listes</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.3.1">4.3.1 Constructeurs</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.3.2">4.3.2 Accesseurs</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.3.3">4.3.3 Opérations sur les listes</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.3.4">4.3.4 Itérations</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.4">4.4 Primitives pour la synthèse sonore</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.4.1">4.4.1 Oscillateur</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.4.2">4.4.2 Enveloppes</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.4.3">4.4.3 Modulateurs</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.4.4">4.4.4 Générateurs pseudo-aléatoires</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.4.5">4.4.5 Autres</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.5">4.5 Modules prédéfinis</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.5.1">4.5.1 Modules correspondant aux primitives</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.5.2">4.5.2 Modules arithmétiques</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.6">4.6 Fonctions génératrices d’enveloppes</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.7">4.7 Fonctions diverses</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="Standard">
+
+</div>
+<div class="Standard">
+FLSC (pour <i>Functional Language for Sound Composition</i>) est un langage de type fonctionnel (comme LISP ou SCHEME); il est implémenté sous la forme d’une extension de SuperCollider, ce qui permet de réaliser des processus de synthèse sonore avec une grande efficacité.
+</div>
+<div class="Standard">
+Le principe général est de spécifier une partition virtuelle (incluant des descriptions d’instruments virtuels) au moyen d’une expression fonctionnelle, puis d’en effectuer de façon automatique la transcription en couple partition-instruments SuperCollider; après quoi il est possible d’effectuer un rendu, soit en temps réel, soit dans un fichier audio, de la façon usuelle dans ce langage.
+</div>
+<div class="Standard">
+Puisque FLSC répond à un problème purement descriptif, c’est un langage sans effet de bord (mis a part bien évidemment la production des artefacts audionumériques résultant des calculs); ainsi le sens des expressions ne dépend que des variables libres qui y figurent, ce qui simplifie grandement l’interprétation et la réutilisation du code.
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-1">1</a> <a class="Label" name="sec:Introduction-aux-concepts"> </a>Introduction aux concepts fondamentaux de FLSC
+</h1>
+<div class="Standard">
+On effectue ici un rapide tour d’horizon des principes de fonctionnement du langage. Un ensemble d’exemples est disponible dans le dépôt Git qui hébèrge l’extension SuperCollider associée.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-1.1">1.1</a> Types spécifiques FLSC
+</h2>
+<div class="Standard">
+Outre les valeurs numériques, booléennes, et les fonctions standard, FLSC propose un ensemble de types spécifiques pour la synthèse sonore:
+</div>
+<div class="Description">
+<span class="Description-entry">Fragment:</span> la représentation d’un objet audionumérique, qui est produite par un appel à un <i>instrument</i> <i>virtuel</i> ou par une combinaison de fragments. Le programme tout entier résulte (en règle générale) en un fragment.
+</div>
+<div class="Description">
+<span class="Description-entry">Instrument:</span> un type spécifique de fonction, qui lors de l’appel produit un fragment par combinaison de <i>signaux</i>.
+</div>
+<div class="Description">
+<span class="Description-entry">Signal:</span> un objet dont la valeur varie au cours du temps, sur un intervalle de temps donné. Les signaux sont produits par appel à des <i>modules</i>, et peuvent suivant leur fréquence d’échantillonnage être de type <i>audio</i> (si ils sont destinés à être audibles) ou <i>contrôle</i> (si ils sont destinés à être passés en argument à des modules).
+</div>
+<div class="Description">
+<span class="Description-entry">Module:</span> un type spécifique de fonction, dont le but est de produire des signaux. Ceci est accompli par la combinaison des paramètres (nombres ou signaux) au moyens d’un graphe de <i>primitives</i> et d’opérations numériques sur celles-ci
+</div>
+<div class="Description">
+<span class="Description-entry">Primitive:</span> une fonction qui retourne un objet dont la valeur varie au cours du temps, suivant les paramètres d’instance (qui sont soit des constantes, soit des paramètres de module, soit d’autres primitives, soit le résultat d’opérations numériques sur l’un de ces types d’objet)
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-1.2">1.2</a> Structure générale des programmes
+</h2>
+<div class="Standard">
+Un programme FLSC a pour but principal de spécifier une partition virtuelle (même si il est possible d’effectuer de simples calculs numériques).
+</div>
+<div class="Standard">
+En conséquence, la structure générale des programmes est relativement standardisée:
+</div>
+<ol>
+<li>
+L’expression toute entière représente un ensemble de <i>fragments</i> qui peuvent être situés dans la temporalité globale par des retards (<tt>delay</tt>) et assemblés dans des listes récursives (c’est à dire des arbres)
+</li>
+<li>
+Les fragments sont produits par appel à des <i>instruments virtuels</i> (<tt>patch</tt>); ceux-ci ne peuvent être imbriqués, donc toute branche de l’expression contient une et une seule forme <tt>patch</tt>
+</li>
+<li>
+Les instruments sont définis à partir d’appels à des <i>modules</i> (<tt>module</tt>) qui produisent des <i>signaux</i> (de type <i>audio</i> ou <i>contrôle</i>); à l’intérieur d’un instrument, il est possible de les combiner par des moyens que nous verrons ci-dessous (<a class="Reference" href="#sub:Listes-de-signaux">3.3↓</a>, <a class="Reference" href="#sub:Altérations-de-signature">3.4↓</a>)
+</li>
+<li>
+Les modules sont construits à partir de <i>primitives</i> (qui représentent des fonctions temporelles), que l’on peut combiner par des opérations numériques
+</li>
+
+</ol>
+<div class="Standard">
+Bien entendu, il est possible d’employer dans ces expressions les structures standard des langages fonctionnels; par exemple en donnant tout d’abord des définitions (<tt>let</tt>) ou en effectuant des appels à des fonctions arbitraires.
+</div>
+<div class="Standard">
+A l’intérieur des définitions de modules, néanmoins, ces usages sont restreints en conséquence de l’<i>impératif d’invariance algorithmique</i> (en effet ceux-ci doivent être précompilés pour des raisons d’efficacité, et donc leur comportement ne peut se transformer dynamiquement). Dans ce contexte les opérateurs fonctionnels sont appliqués immédiatement (à la différence des fonctions standard) dans le but de produire un graphe de calcul à partir d’un ensemble de fonctions temporelles (dont les paramètres du module). Leur application ne peut donc pas dépendre de la valeur d’appel des paramètres (ce sont des paramètres formels qui seront subsitués lors des appels).
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-1.3">1.3</a> Valeurs temporelles
+</h2>
+<div class="Standard">
+Une instance de module (un signal) a nécessairement un début et une fin, qui définissent ce qu’on nomme son <i>support temporel</i>. En outre certains signaux (ceux qui sont définis par des enveloppes) se réfèrent également à des valeurs temporelles internes au support, que l’on nomme <i>points-clef</i>; une succession de points-clef dans un support est nommée <i>signature temporelle</i>.
+</div>
+<div class="Standard">
+De façon à assurer la cohérence des valeurs temporelles, celles-ci ne sont pas spécifiées directement à l’intérieur des modules, mais produites au moyen de fonctions spécifiques (cf. <a class="Reference" href="#sub:Altérations-de-signature">3.4↓</a>) qui effectuent des transformations cumulatives à partir du référentiel temporel global de la partition; ainsi toute expression est située dans ce que l’on nomme un <i>contexte temporel</i>.
+</div>
+<div class="Standard">
+Le comportement temporel des objets FLSC est déterminé (sauf exception) par le contexte temporel dans lequel ils apparaissent, et non celui dans lequel ils sont définis; leur sens fait abstraction du contexte temporel. Ainsi un même objet peut être réutilisé dans différents contextes, et aura dans ce cas des morphologies potentiellement différentes.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-1.3.1">1.3.1</a> Temporalité globale
+</h3>
+<div class="Standard">
+Le contexte temporel initial est celui de la partition toute entière; on parle de temps global et non absolu, puisqu’il est relatif à la date de début du rendu. Le contexte global s’ajuste automatiquement à la temporalité des objets qu’il contient; c’est le plus petit segment de temps qui suffit à contenir l’ensemble des objets de la partition. En outre, un mécanisme permet lors du rendu d’ajouter des marges de silence au début et à la fin.
+</div>
+<div class="Standard">
+A l’intérieur du contexte global, une opération permet de définir un contexte affecté d’un retard; de cette façon il est possible de situer les objets dans le temps global, et donc ceux-ci peuvent être exprimés dans leur contexte local, en faisant abstraction de leur situation dans la partition. Les retards sont cumulatifs, il est donc possible de situer les objets dans une organisation hiérarchique, à l’intérieur de sous-parties elles-mêmes situées dans des parties d’ordre supérieur, et ainsi de suite jusqu’à la racine de la partition.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-1.3.2">1.3.2</a> Supports temporels
+</h3>
+<div class="Standard">
+Un support temporel est un contexte temporel local, défini par un début et une fin. L’appel à un instrument virtuel produit un support temporel, dont on peut ensuite dériver des sous-supports inclus. L’hypothèse comme quoi les sous-supports sont inclus dans le support englobant est indispensable à la cohérence temporelle de l’ensemble (et toute exception constitue une erreur).
+</div>
+<div class="Standard">
+Un signal audio est toujours défini à l’intérieur d’un support (c’est son domaine de définition), et les signaux de contrôle qu’il prend en arguments doivent être définis sur un support au moins aussi grand. Ainsi on ne peut pas appliquer un sous-support extrait à un signal de contrôle; l’opération qui le permet doit nécessairement s’appliquer à un signal audio.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-1.3.3">1.3.3</a> Signatures temporelles
+</h3>
+<div class="Standard">
+Une signature temporelle est une séquence croissante de points-clef à l’intérieur d’un support. Un même support peut donner lieu à une ou plusieurs signatures, ou aucune. Définir une signature ne produit pas d’altération du support, et les signaux peuvent être définis sur des supports signés aussi bien que sur des supports non signés. La signature peut être redéfinie dans un contexte d’ordre inférieur, ce qui écrase simplement la signature précédente.
+</div>
+<div class="Standard">
+L’hypothèse comme quoi les signatures doivent être croissantes est l’autre condition indispensable à la cohérence temporelle (et de même toute exception constitue une erreur). Les objets contenant des références à des points-clef doivent nécessairement être définis dans un contexte signé (faute de quoi il s’agit également d’une erreur). Ces objets sont le plus souvent des enveloppes, mais il y a d’autres possibilités.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-1.3.4">1.3.4</a> Découpage suivant une signature
+</h3>
+<div class="Standard">
+Un opérateur permet d’effectuer le découpage d’un support suivant sa signature, ce qui produit une séquence de sous-supports non signés. Etant donné que cette séquence, une fois assemblée, couvre l’ensemble du support d’origine, il est possible de définir un signal de contrôle comme assemblage d’un tel découpage. Ceci permet notamment de définir une enveloppe comme une série de signaux correspondant chacun à un segment, et ainsi d’obtenir des enveloppes de taille variable<span class="FootOuter"><span class="SupFootMarker"> [A] </span><span class="HoverFoot"><span class="SupFootMarker"> [A] </span>Autrement, les enveloppes en SuperCollider sont nécessairement de taille bornée lors de leur définition, en raison des contraintes qui s’appliquent aux objets du serveur de synthèse.</span></span>.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-1.3.5">1.3.5</a> Distribution de support
+</h3>
+<div class="Standard">
+L’opération inverse est également possible, elle consiste à se référer depuis un contexte à des objets définis dans un contexte plus général. Le signal reçu dans ce cas correspond à une fenêtre prise dans le signal d’origine, sur sa partie commune avec le contexte d’arrivée. La encore il est possible d’appliquer cette opération à des signaux de contrôle.
+</div>
+<div class="Standard">
+Un opérateur (cf. <a class="Reference" href="#sub:nowarp">3.1.3↓</a>) permet de définir <i>dans le contexte courant</i> des variables qui pourront être lues dans un sous-contexte, <i>sans application des transformations successives</i>. Ceci permet notamment de restituer des phénomènes morphologiques d’ordre général, dans des objets composés de petits éléments.
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-2">2</a> Eléments standard des langages fonctionnels
+</h1>
+<div class="Standard">
+On explique ici dans les grandes lignes comment les fonctionnalités standard sont implémentées en FLSC. Pour une introduction plus détaillée sur les langages fonctionnels, se référer aux sources disponibles (par exemple sur LISP ou SCHEME).
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.1">2.1</a> Syntaxe générale
+</h2>
+<div class="Standard">
+Les expressions fonctionnelles sont données entre parenthèses. Elles peuvent contenir:
+</div>
+<ul>
+<li>
+des <i>mots-clef</i> introduisant une forme spéciale
+</li>
+<li>
+des <i>identificateurs</i> qui désignent soit une variable, soit le nom d’une nouvelle variable (dans les formes spéciales introduisant une fonction)
+</li>
+<li>
+des <i>constantes numériques</i> dont l’expression régulière est la suivante:<br/>
+<tt>(-)?[0-9]+(\.[0-9]+)?(e[0-9]+)?(pi)?</tt>
+</li>
+<li>
+le mot-clef <tt>nil</tt> qui désigne la valeur nulle
+</li>
+<li>
+des <i>listes</i> entre crochets qui contiennent une séquence de sous-expressions
+</li>
+
+</ul>
+<div class="Standard">
+Mis à part dans le cas des formes spéciales, une expression entre parenthèses a le sens d’un appel de fonction, son premier élément est la fonction elle-même et les éléments suivants sont les arguments de l’appel. Les fonctions sont des objets du langage au même titre que les autres et sont donc représentées dans le même espace de variables (tout comme en SCHEME et contrairement à LISP).
+</div>
+<div class="Standard">
+Les mots-clef réservés en FLSC sont:
+</div>
+<div class="Standard">
+<table>
+<tr>
+<td align="center" valign="top">
+<tt>lambda</tt>
+</td>
+<td align="center" valign="top">
+<tt>if</tt>
+</td>
+<td align="center" valign="top">
+<tt>let</tt>
+</td>
+<td align="center" valign="top">
+<tt>nowarp</tt>
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+<tt>patch</tt>
+</td>
+<td align="center" valign="top">
+<tt>cond</tt>
+</td>
+<td align="center" valign="top">
+<tt>let*</tt>
+</td>
+<td align="center" valign="top">
+<tt>nil</tt>
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+<tt>module</tt>
+</td>
+<td align="center" valign="top">
+<tt>else</tt>
+</td>
+<td align="center" valign="top">
+<tt>letrec</tt>
+</td>
+<td align="center" valign="top">
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.2">2.2</a> Formes spéciales
+</h2>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-2.2.1">2.2.1</a> <tt>lambda</tt>
+</h3>
+<div class="Standard">
+<tt>(lambda (<i>name</i> ...) <i>body</i>)</tt> retourne une fonction anonyme dont les paramètres sont les <tt><i>name</i> ...</tt>; ceux-ci peuvent être soit de simples identificateurs, soit des identificateurs précédés de <tt>!</tt>, ce qui signifie que la variable introduite peut apparaître plusieurs fois dans le corps de la fonction et qu’en conséquence, si il s’agit d’un élément de synthèse sonore (générateur ou signal), des mesures spécifiques seront mises en place afin d’éviter d’en effectuer des copies identiques lorsqu’il apparaît plusieurs fois dans le même contexte.
+</div>
+<div class="Standard">
+En outre le dernier identificateur peut être précédé de <tt>&amp;</tt>, ce qui signifie que la fonction admet un nombre variable d’arguments; si <tt>N</tt> est le nombre de paramètres de la fonction, les <tt>N-1</tt> premiers arguments seront liés aux <tt>N-1</tt> premiers identificateurs, et tous les arguments restants seront regroupés dans une liste qui sera liée au dernier identificateur.
+</div>
+<div class="Standard">
+<tt><i>body</i></tt> est le corps de la fonction, qui sera évalué lorsque celle-ci est appelée.
+</div>
+<div class="Standard">
+D’une façon générale, les différents types de fonctions engendrent une clôture lexicale qui mémorise les variables définies dans le contexte dans lequel la fonction est déclarée. Le comportement de la fonction ne dépend donc que de celles-ci, et des paramètres qui sont liés lors de l’appel. Encore une fois, FLSC s’apparente en cela à SCHEME et non à LISP.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-2.2.2">2.2.2</a> <tt>let, let*, letrec</tt>
+</h3>
+<div class="Standard">
+<tt>(let ((<i>name</i> <i>val</i>) ...) <i>body</i>)</tt> est un équivalent sémantique de <tt>((lambda (<i>name</i> ...) <i>body</i>) <i>val</i> ...)</tt>; sa réalisation concrète est probablement légèrement plus efficace. Les <tt>name</tt> peuvent être précédés de <tt>!</tt>, par contre le <tt>&amp;</tt> n’a aucun sens dans ce cas.
+</div>
+<div class="Standard">
+Tout comme en SCHEME, <tt>let*</tt> effectue la même opération, mis à part que la i<sup>ème</sup> <tt><i>val</i></tt> peut se référer au j<sup>ème</sup> <tt><i>name</i></tt>, si j &lt; i.
+</div>
+<div class="Standard">
+La forme <tt>letrec</tt> permet de définir des fonctions récursives dans la mesure où les <tt><i>name</i></tt> sont ajoutés a posteriori dans la clôture lexicale des <tt><i>val</i></tt>, si celles-ci sont des fonctions. Ils ne sont par contre pas présents lorsque celles-ci sont évaluées, on ne peut donc pas définir des valeurs ordinaires de façon récursive (ce qui serait une faute sémantique conduisant à une boucle infinie).
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-2.2.3">2.2.3</a> <tt>if, cond</tt>
+</h3>
+<div class="Standard">
+<tt>(if <i>clause</i> <i>then</i> <i>else</i>)</tt> évalue l’expression booléenne <tt><i>clause</i></tt>; si celle-ci vaut <tt>true</tt>, alors <tt><i>then</i></tt> est évalué et sa valeur retournée; si <tt><i>clause</i></tt> vaut <tt>false</tt>, alors de même avec <tt><i>else</i></tt>. Toute autre valeur constitue une faute sémantique (attention, sur ce point le comportement de FLSC est différent de celui de SCHEME). Parmi <tt><i>then</i></tt> et <tt><i>else</i></tt>, seul celui qui est choisi est évalué; l’autre a simplement besoin d’être syntaxiquement correct.
+</div>
+<div class="Standard">
+<tt>(cond (<i>clause</i> <i>consequence</i>) ...)</tt> effectue le même type d’opération, mis à part que les <tt><i>clause</i></tt> sont évaluées dans l’ordre, et que lorsque l’une d’elles vaut <tt>true</tt>, la <tt><i>consequence</i></tt> associée est évaluée et sa valeur retournée. Les autres <tt><i>consequence</i></tt> ne sont pas évaluées. La dernière <tt><i>clause</i></tt> peut être le mot-clef <tt>else</tt>, ce qui signifie qu’il s’agit de la condition par défaut; si aucune autre <tt><i>clause</i></tt> n’est <tt>true</tt>, alors la valeur est celle de la dernière <tt><i>consequence</i></tt>. Comme pour <tt>if</tt>, les <tt><i>clause</i></tt> doivent avoir soit <tt>true</tt> soit <tt>false</tt> pour valeur. A la différence de SCHEME, chaque sous-expression doit avoir une et une seule <tt><i>consequence</i></tt>, puisque la <tt><i>clause</i></tt> choisie vaut toujours true, et qu’il n’y a pas d’effet de bord.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.3">2.3</a> Listes
+</h2>
+<div class="Standard">
+Les listes en FLSC ont parfois un comportement non standard, car leur rôle n’est pas aussi fondamental que ce qu’il est dans beaucoup de langages fonctionnels (par exemple en LISP, toute expression parenthésée est une liste, qui est évaluée sauf quand elle est échappée par <tt>quote</tt>).
+</div>
+<div class="Standard">
+Ici l’implémentation repose sur la notion de <i>tableau</i> en SuperCollider; ceux-ci peuvent être hétérogènes, puisque SuperCollider est un langage orienté objet à typage dynamique (les tableaux contiennent donc des références et non des données). Lorsqu’on effectue une opération sur une liste, la structure de donnée sous-jacente est copiée pour empêcher tout effet de bord, mais cela ne semble pas avoir un impact important sur les performances (il est probable que l’implémentation des tableaux en SuperCollider est fortement optimisée; par exemple les objets référencés ne sont pas copiés, quant à eux).
+</div>
+<div class="Standard">
+En conséquence, la notion de paire pointée n’est pas pertinente en FLSC (on peut accomplir la même chose avec une liste à deux éléments), et il est possible d’accèder sans surcoût à n’importe quel élément d’une liste, ou d’effectuer des ajouts à la fin aussi bien qu’au début. Pour ces raisons la syntaxe des listes en FLSC emprunte à celle des tableaux en LISP — en fait ces notions sont ici confondues.
+</div>
+<div class="Standard">
+Etant donné qu’en SuperCollider, les opérateurs numériques sont étendus aux tableaux (ils sont appliqués itérativement aux éléments du tableau, et produisent dans ce cas un tableau), il en va de même pour les listes FLSC. A noter que lorsqu’on applique une opération binaire à deux tableaux de longueur différente, le tableau le plus court est répété de façon cyclique (et lors d’une opération n-aire, le résultat peut dépendre de l’ordre des arguments, qui sont toujours traités de gauche à droite).
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-3">3</a> Eléments spécifiques à la synthèse sonore
+</h1>
+<div class="Standard">
+On passe ici en revue les formes spéciales et fonctions de bibliothèque qui mettent en place les fonctionnalités fondamentales de FLSC (qu’on a vu en <a class="Reference" href="#sec:Introduction-aux-concepts">1↑</a>). Notamment, leur syntaxe est donnée de façon précise.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.1">3.1</a> Formes spéciales
+</h2>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-3.1.1">3.1.1</a> <tt>patch</tt>
+</h3>
+<div class="Standard">
+La forme spéciale <tt>patch</tt> définit un instrument virtuel modulaire; il s’agit d’un type spécifique de fonction. Sa syntaxe est la suivante:
+</div>
+<div class="Standard">
+<tt>(patch (<i>parm</i> ...) <i>sign</i> <i>signal</i>)</tt>
+</div>
+<div class="Standard">
+<tt><i>parm</i> ...</tt> : une séquence d’identificateurs
+</div>
+<div class="Standard">
+<tt><i>sign</i></tt> : une liste de nombres, ou une liste de listes de nombres
+</div>
+<div class="Standard">
+<tt><i>signal</i></tt> : un signal
+</div>
+<div class="Standard">
+Lors de l’appel à l’instrument virtuel, les paramètres <tt><i>parm</i> ...</tt> sont substitués, la signature temporelle ou l’ensemble de signatures temporelles <tt><i>sign</i></tt> est évalué, puis le signal <tt><i>signal</i></tt> est évalué dans ce contexte.
+</div>
+<div class="Standard">
+Les paramètres peuvent être précédés de <tt>!</tt> et le dernier paramètre peut être précédé de <tt>&amp;</tt>, tout comme pour <tt>lambda</tt>.
+</div>
+<div class="Standard">
+Si la signature est une liste simple, et si elle ne commence pas par 0, un 0 est ajouté implicitement au début; si c’est une liste de listes, son premier élément est traité de la même façon.
+</div>
+<div class="Standard">
+D’une manière générale, une signature devrait être rangée en ordre croissant et un ensemble de signatures devrait être rangé par ordre croissant de leur premier élément; ne pas le faire ne constitue pas directement une faute sémantique mais risque de susciter des comportements imprévus.
+</div>
+<div class="Standard">
+Le signal produit devrait être de type audio, puisqu’il est destiné à être situé comme un fragment audionumérique dans l’espace global de la partition.
+</div>
+<div class="Standard">
+Les formes spéciales <tt>patch</tt> ne doivent pas être imbriquées. Si tel est le cas, le comportement est non-spécifié.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-3.1.2">3.1.2</a> <tt>module</tt>
+</h3>
+<div class="Standard">
+La forme spéciale <tt>module</tt> produit un module de synthèse sonore, qui est un type spécifique de fonction.
+</div>
+<div class="Standard">
+Sa syntaxe est identique à celle de <tt>lambda</tt>, mis à part quelques restrictions importantes en raison de l’impératif d’invariance algorithmique:
+</div>
+<ul>
+<li>
+le nombre d’arguments est nécessairement fixe (la syntaxe <tt>&amp;</tt> n’est pas définie)
+</li>
+<li>
+les arguments sont nécéssairement soit des nombres, soit d’autres modules, soit <tt>nil</tt>
+</li>
+<li>
+mis à part les générateurs de signaux (primitives et opérations arithmétiques sur les signaux), le corps du module est évalué lors de sa déclaration (et non lors de l’appel); notamment les structures de contrôle sont résolues, elles ne peuvent donc pas dépendre des paramètres du module (cela constitue une faute sémantique). Cette évaluation doit produire un graphe de générateurs de signaux.
+</li>
+
+</ul>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-3.1.3">3.1.3</a> <a class="Label" name="sub:nowarp"> </a><tt>nowarp</tt>
+</h3>
+<div class="Standard">
+La forme spéciale <tt>nowarp</tt> permet d’introduire des variables, tout comme <tt>let</tt>; sa syntaxe est la même.
+</div>
+<div class="Standard">
+La différence réside dans le fait que le contexte temporel (la signature effective) qui sera appliqué aux valeurs liées est celui du <tt>nowarp</tt> (et non celui dans lequel elles apparaissent finalement, qui peut contenir des tranformations subséquentes); ceci permet aux expressions contenues dans son corps de se référer à des signaux définis sur un support temporel plus général.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.2">3.2</a> Primitives des générateurs de signaux
+</h2>
+<div class="Standard">
+Les primitives peuvent apparaître dans les modules, et en sont les éléments fondamentaux. Elles engendrent des signaux (audio ou de contrôle) dont la valeur peut varier au cours du temps.
+</div>
+<div class="Standard">
+Les fonctions numériques peuvent s’appliquer à des signaux; dans ce cas leur valeur est un signal dont la valeur instantanée est le résultat de l’application de cette fonction aux valeurs instantanées des signaux passés en argument. Dans ce contexte, une constante numérique prend le sens d’un signal constant.
+</div>
+<div class="Standard">
+Le type d’un signal est soit fixé par la primitive employée, soit déterminé par les types en entrée; le plus souvent il s’agit dans ce cas du type minimal qui évite un sous-échantillonnage. Ainsi beaucoup de primitives proposent une variante préfixée par <tt>’hf’</tt>, qui impose un type de sortie audio. Mis à part le cas des générateurs de signaux audibles, ceci permet également de modéliser des phénomènes transitoires dans lesquels l’échantillonnage à fréquence audio des paramètres d’un signal est nécessaire.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.3">3.3</a> <a class="Label" name="sub:Listes-de-signaux"> </a>Listes de signaux audio
+</h2>
+<div class="Standard">
+Dans les contextes où un signal audio est attendu (dans le contexte global, à la racine d’un patch, dans une composition parallèle), ce signal peut être donné sous la forme d’une liste (éventuellement récursive) dont les éléments terminaux sont des signaux audio, ce qui prend le sens d’une somme de signaux.
+</div>
+<div class="Standard">
+Cette règle s’applique également aux arguments de modules, qui ne peuvent pas être autrement des listes; néanmoins elle ne s’applique qu’aux signaux audio (la présence de tout autre type d’élément constitue une erreur).
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.4">3.4</a> <a class="Label" name="sub:Altérations-de-signature"> </a>Altérations de signature temporelle
+</h2>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-3.4.1">3.4.1</a> <tt>delay</tt>
+</h3>
+<div class="Standard">
+La fonction <tt>(delay <i>theta</i> <i>fragment</i>)</tt> opère un retard <tt><i>theta</i></tt> (en secondes) sur un fragment audionumérique <tt><i>fragment</i></tt> au niveau global. Ceci permet de situer les fragments dans la temporalité globale de la partition.
+</div>
+<div class="Standard">
+Etant donné que les fragments peuvent être structurés en listes récursives, il est possible d’organiser la partition en parties et en sous-parties au moyen de plusieurs retards successifs.
+</div>
+<div class="Standard">
+Les retards ne peuvent pas apparaître à l’intérieur d’un instrument virtuel.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-3.4.2">3.4.2</a> <tt>par</tt>, <tt>seq, hybrid</tt>
+</h3>
+<div class="Standard">
+Les opérateurs de composition sont <tt>par</tt> (composition parallèle, pour les signaux audio), <tt>seq</tt> (composition séquentielle, pour les signaux de contrôle) et <tt>hybrid</tt> (composition hybride, pour les mélanges).
+</div>
+<div class="Standard">
+<tt>(seq <i>breaks</i> <i>signals</i>)</tt> produit la succession de la liste de signaux de contrôle <tt><i>signals</i></tt> sur le support temporel dans lequel elle est appellée, en introduisant des césures aux indices (entiers) de signature désignés par <tt><i>breaks</i></tt>. Le résultat de la composition étant nécessairement défini sur le même support temporel, <tt><i>breaks</i></tt> doit avoir exactement un élément de moins que <tt><i>signals</i></tt>.
+</div>
+<tt>hybrid</tt> a la même syntaxe que <tt>seq</tt> et effectue la même opération, sauf que certains signaux peuvent être de type audio. Le résultat est de type audio.<div class="Standard">
+<tt>(par <i>segs</i> <i>signals</i>)</tt> produit la somme de la liste de signaux audio <tt><i>signals</i></tt>, chacun resitué dans la sous-signature définie par l’élément correspondant de <tt><i>segs</i></tt>. Ces éléments sont des couples <tt>[<i>start</i> <i>end</i>]</tt>, qui délimitent une sous-partie de la signature temporelle englobante.
+</div>
+<div class="Standard">
+Les opérateurs de composition ne peuvent apparaître qu’à l’intérieur d’un instrument virtuel.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-3.4.3">3.4.3</a> <tt>ssub, ssel, ssubsel</tt>
+</h3>
+<div class="Standard">
+<tt>(ssub <i>indexes</i> <i>signal</i>)</tt> applique au signal <tt><i>signal</i></tt> une signature temporelle qui ne retient que le début, la fin, et les indices de la liste <tt><i>indexes</i></tt> parmi la signature temporelle englobante. <tt><i>indexes</i></tt> devrait être donnée en ordre croissant. Le type de <tt><i>signal</i></tt> est indifférent.
+</div>
+<div class="Standard">
+<tt>(ssel <i>signs</i> <i>signal</i>)</tt> applique au signal audio <tt><i>signal</i></tt> un ensemble de signatures temporelles qui ne retient que les indices présents dans la liste <tt><i>signs</i></tt> parmi l’ensemble englobant. Lorsqu’on ne souhaite retenir qu’un seul indice, <tt><i>signs</i></tt> peut être un entier plutôt qu’une liste. Si c’est une liste, elle devrait être donnée en ordre croissant. Le support temporel peut se trouver réduit, et donc <tt><i>signal</i></tt> doit être de type audio.
+</div>
+<div class="Standard">
+<tt>(ssubsel <i>indexes</i> <i>signal</i>)</tt> applique au signal <tt><i>signal</i></tt> une signature temporelle composée d’indices de signature sélectionnés, dans des signatures choisies parmi des sous-ensembles indépendants de l’ensemble de signatures temporelles englobant. La liste <tt><i>indexes</i></tt> est constituée de couples, dont le premier élément est un indice de signature, et le deuxième soit un entier (pour sélectionner une signature parmi l’ensemble), soit une liste d’entiers (pour sélectionner un sous-ensemble de signatures).
+</div>
+<div class="Standard">
+De façon implicite le début et la fin de la signature appliquée sont le début et la fin du support temporel englobant si <tt><i>signal</i></tt> est un signal de contrôle. Si <tt><i>signal</i></tt> est un signal audio, ce sont simplement le premier et le dernier point sélectionnés (car dans ce cas il est acceptable de réduire le support temporel).
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-4">4</a> Fonctions de la bibliothèque FLSC
+</h1>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.1">4.1</a> Fonctions numériques
+</h2>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.1.1">4.1.1</a> Constantes
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>inf</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+l’infini
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.1.2">4.1.2</a> Opérateurs de signe
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(sgn x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+signum de x (vaut 1 si x&gt;0, -1 si x&lt;0, 0 si x=0)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(neg x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+opposé de x
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(abs x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+valeur absolue de x
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.1.3">4.1.3</a> Opérateurs arithméthiques
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(+ &amp;a), (* &amp;a)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+somme et produit des a
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(- a &amp;b), (/ a &amp;b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+différence et quotient de a par les b
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(** a b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+a puissance b; si a est un signal non positif, la valeur est égale à<br/>
+<tt>(* (sign a) (** (abs a) b))</tt><br/>
+(ce qui permet de traiter plus aisément les signaux)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(mod a b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+a modulo b
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(++ a), (-- a)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+incrémentation et décrémentation de a
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.1.4">4.1.4</a> Fonctions usuelles
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(cos x), (sin x),<br/>
+(tan x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+fonctions trigonométriques
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(log2 x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+logarithme en base 2
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(floor x),<br/>
+(ceil x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+entier immédiatement inférieur ou supérieur
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(round x y)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+multiple de y le plus proche de x; par défaut y=1
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(min &amp;a), (max &amp;a)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+minimum et maximum des a
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(random x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+valeur pseudo-aléatoire entre 0 et x (non-inclus); si x est entier, alors la valeur est entière; par défaut x=1.0
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.2">4.2</a> Fonctions booléennes
+</h2>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.2.1">4.2.1</a> Constantes
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>false, fl</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+faux
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>true, tr</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+vrai
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.2.2">4.2.2</a> Opérateurs booléens
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(not p)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+négation de p
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(and &amp;p), (or &amp;p)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+conjonction et disjonction des p
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(xor &amp;p)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+non-parité des p (vrai si un nombre impair de p sont vrais)
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.2.3">4.2.3</a> Comparaisons
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(eq? a &amp;b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+égalité (vrai si a est égal à tous les b)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(neq? a b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+inégalité (vrai si a est différent de b)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(gt? a &amp;b),<br/>
+(lt? a &amp;b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+supériorité et infériorité stricte (vrai si les arguments sont strictement décroissants ou croissants)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(gte? a &amp;b),<br/>
+(lte? a &amp;b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+supériorité et infériorité non-stricte (vrai si les arguments sont non-strictement décroissants ou croissants)
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.2.4">4.2.4</a> Tests
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(? o), (nil? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+non-nullité et nullité de o
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(boolean? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+vrai si o est booléen
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(number? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+vrai si o est un nombre
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(function? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+vrai si o est une fonction
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(list? o),<br/>
+(empty? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+vrai si o est une liste, une liste vide
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(sig? o),<br/>
+(control? o),<br/>
+(audio? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+vrai si o est un signal, un signal de contrôle, un signal audio; <tt>control?</tt> et <tt>audio?</tt> déclenchent une erreur si l’objet n’est pas du type signal
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.3">4.3</a> Listes
+</h2>
+<div class="Standard">
+Remarque: dans certains cas, lorsqu’une liste est demandée et que l’argument n’en est pas une, il est remplacé par une liste à un élément, ou par la liste vide si il s’agit de <tt>nil</tt>. Notamment dans le cas de <tt>cons</tt>, cela signifie qu’il n’y a pas de paire pointées en FLSC; en revanche <tt>(cons e nil)</tt> vaut effectivement <tt>[e]</tt>.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.3.1">4.3.1</a> Constructeurs
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(list &amp;e)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+liste composée des e
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(cons e l),<br/>
+(add l e) </tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+ajout de e au début ou à la fin de l (éventuellement converti en liste)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(insert l e i)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+ajout de e à l’indice i dans l (éventuellement converti en liste)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(range a b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+liste des entiers consécutifs entre a et b (inclus)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(range0 n),<br/>
+(range1 n)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+liste de n entiers consécutifs à partir de 0 ou 1
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(step n dn n0)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+liste de n nombres d’incrément dn à partir de n0
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(repeat e n)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+liste de n occurences de e
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.3.2">4.3.2</a> Accesseurs
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(elt l i)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+élément d’indice i dans l
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(subseq l i j)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+sous-séquence de l, entre les indices i et j (non-inclus)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(length l)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+nombre d’éléments de l
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(position l e)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+position de la première occurence de e dans l
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.3.3">4.3.3</a> Opérations sur les listes
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(append &amp;l)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+concaténation des l (éventuellement convertis en listes)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(reverse l)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+retournement de l
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(flop l)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+transposition de la liste de listes l (inversion de l’ordre des indices)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(select f l)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+liste des éléments de l qui vérifient la fonction booléenne unaire f
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(apply f l)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+appel à la fonction f avec les éléments de l pour arguments
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.3.4">4.3.4</a> Itérations
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(mapcar f &amp;l)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+liste résultant des applications de f aux i-èmes éléments des listes l; si celles-ci ne sont pas de la même longueur, elles sont répétées cycliquement jusqu’à la longueur la plus grande
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(reduce f l a)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+application incrémentale de la fonction binaire f au résultat précédent et aux éléments successifs de l; si a est défini, alors c’est la valeur initiale; sinon la valeur initiale est le premier élément de l
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.4">4.4</a> Primitives pour la synthèse sonore
+</h2>
+<div class="Standard">
+Dans la plupart des cas les paramètres des primitives possèdent des valeurs par défaut et peuvent donc être omis lors de l’appel.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.4.1">4.4.1</a> Oscillateur
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(osc freq phi)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+oscillateur sinusoïdal (audio) de fréquence freq et de phase initiale phi; par défaut freq=440 et phi=0
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.4.2">4.4.2</a> Enveloppes
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(seg start end),<br/>
+(hfseg start end)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+segment linéaire d’enveloppe, variant entre start et end du début à la fin du support temporel local; par défaut start=0 et end=1
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(env lvls times),<br/>
+(hfenv lvls times)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+enveloppe linéaire à nombre de points fixe, qui traverse les valeurs de lvls selon les points de césure times, entre le début et la fin du support temporel local; times est une liste d’indices de signature temporelle et ne peut dépendre des paramètres du module
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.4.3">4.4.3</a> Modulateurs
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(lfo freq phi)<br/>
+(tri freq phi)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+modulateurs sinusoïdal et triangulaire; analogues à osc, mais pour tri la phase est donnée entre 0 et 4
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(squ freq phi pw)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+modulateur carré; le paramètre supplémentaire est la largeur d’impulsion sur [0,1], par défaut 0.5; la phase est donnée entre 0 et 1
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(hftri freq phi)<br/>
+(hfsqu freq<br/>
+  phi pw)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+équivalents haute-fréquence de tri et squ; l’équivalent de lfo est osc
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.4.4">4.4.4</a> Générateurs pseudo-aléatoires
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(rand max min<br/>
+  freq)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+génère des paliers pseudo-aléatoires entre min et max, à la fréquence freq; par défaut max=1, min=0, freq=500
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(crand max min<br/>
+  freq)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+idem avec une ligne brisée (signal continu)
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.4.5">4.4.5</a> Autres
+</h3>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(k2a sig)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+convertisseur de contrôle en audio (sous-échantillonné)
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.5">4.5</a> Modules prédéfinis
+</h2>
+<div class="Standard">
+La bibliothèque contient des modules prédéfinis qui correspondent à l’application élémentaire d’une primitive ou d’une fonction numérique; pour ces derniers, le nombre de paramètres des modules étant fixe, les opérateurs sont strictement binaires.
+</div>
+<div class="Standard">
+On ne donne ici que les correspondances, les paramètres étant les mêmes. Les noms des modules sont les noms des primitives, précédés de <tt>’m’</tt>.
+</div>
+<div class="Standard">
+Remarque: <tt>env</tt> ne peut pas être trivialement converti en module, <tt>menv</tt> désigne en fait une fonction que l’on verra plus bas. Il en va de même en ce qui concerne <tt>hfenv</tt>.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.5.1">4.5.1</a> Modules correspondant aux primitives
+</h3>
+<div class="Standard">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+Modules
+</td>
+<td align="left" valign="top" style="width: 45%;">
+Primitives
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>mosc mlfo mtri mhftri msqu mhfsqu</tt>
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>osc lfo tri hftri squ hfsqu</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>mseg mhfseg</tt>
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>seg hfseg</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>mrand mcrand</tt>
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>rand crand</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>mk2a</tt>
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>k2a</tt>
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.5.2">4.5.2</a> Modules arithmétiques
+</h3>
+<div class="Standard">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+Modules
+</td>
+<td align="left" valign="top" style="width: 45%;">
+Primitives
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>m+ m* m- m/ m** mmod</tt> (binaires)
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>+ * - / ** mod</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>msgn mneg mabs</tt>
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>sgn neg abs</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>msin mcos mtan mlog2</tt>
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>sin cos tan log2</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>mfloor mceil mround</tt>
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>floor ceil round</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 45%;">
+<tt>mmin mmax</tt>
+</td>
+<td align="left" valign="top" style="width: 45%;">
+<tt>min max</tt>
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.6">4.6</a> Fonctions génératrices d’enveloppes
+</h2>
+<div class="Standard">
+Les fonctions génératrices d’enveloppe permettent d’exploiter la structure modulaire pour produire des enveloppes à nombre de points variables à partir de modules <tt>mseg</tt> et <tt>mhfseg</tt>.
+</div>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(menv levels)<br/>
+(mhfenv levels)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+modules parcourant les niveaux levels entre le début et la fin du support temporel local, avec des césures sur les indices de signature consécutifs à partir de 1
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(mhybenv levels<br/>
+  type)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+idem avec une composition hybride; le i-ème segment est de type audio si l’indice i de type est vrai, et de type contrôle si il est faux (noter que le nombre de segments est la longueur de levels moins 1)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(lmenv levels<br/>
+  times)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+fonction engendrant un appel à un module ad-hoc; les paramètres sont les mêmes que ceux de env; noter que dans ce cas chaque appel produit un nouveau module (ce qui est peu économique)
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.7">4.7</a> Fonctions diverses
+</h2>
+<div class="Standard">
+<tt><table>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(mn+ &amp;a), (mn* &amp;a)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+fonctions engendrant une chaîne de longueur arbitraire de modules <tt>m+</tt> ou <tt>m*</tt>, ce qui permet d’obtenir un assemblage n-aire
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(smap sigs)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+fonction permettant d’appliquer à chaque élément de la liste de signaux sigs la signature temporelle d’indice correspondant
+</td>
+
+</tr>
+
+</table>
+</tt>
+</div>
+
+</div>
+</body>
+</html>
