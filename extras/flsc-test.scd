@@ -24,8 +24,8 @@ FLSC_Interpreter().read(
 FLSC_Interpreter().readFile.evaluate;
 FLSC_Interpreter().readFile("examples/tutorial/07-sous-signature.flsc").play;
 
-// exemple de lecture de répertoire (extras/examples/tutorial)
-FLSC_Interpreter().playDir;
+// exemple de lecture interactive de répertoire (extras/examples/tutorial)
+FLSC_Interpreter().playDir(interactive: true);
 
 // créer le catalogue (extras/examples/catalog) dans recordings (recordings/catalog)
 // BROKEN

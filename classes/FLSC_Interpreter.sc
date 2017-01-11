@@ -126,7 +126,7 @@ FLSC_Interpreter {
 	}
 
 	performDir {|selector, subDir ("examples" +/+ "tutorial"), args = #[],
-		recursive = false, recordDir = nil|
+		recursive = false, recordDir = nil, interactive = false|
 		var list = this.getFileList(subDir, recursive);
 		var rec = {|list|
 			var next = list.first;
@@ -141,17 +141,23 @@ FLSC_Interpreter {
 					[fileName] ++ args;
 				}
 				{args}) ++
-				[{
-				if(rest.notEmpty) {rec.value(rest)} {"Done.".postln};
-				}]
+				[if(interactive)
+					{{{this.getKey(
+						{if(rest.notEmpty) {rec.value(rest)} {"Done.".postln}},
+						{rec.value(list)},
+						{"Exit.".postln}
+					)}.defer}}
+					{{if(rest.notEmpty) {rec.value(rest)} {"Done.".postln}}}
+				]
 			)
 		};
 
 		rec.value(list);
 	}
 
-	playDir {|subDir ("examples" +/+ "tutorial"), before = 0.5, after = 0.5, recursive = false|
-		this.performDir(\play, subDir, [before, after], recursive);
+	playDir {|subDir ("examples" +/+ "tutorial"), before = 0.5, after = 0.5,
+		recursive = false, interactive = false|
+		this.performDir(\play, subDir, [before, after], recursive, interactive: interactive);
 	}
 
 	recordDir{|subDir = ("examples" +/+ "catalog"), before = 1, after = 1,
@@ -160,7 +166,25 @@ FLSC_Interpreter {
 		recordDir = (Platform.userExtensionDir +/+ "FLSC" +/+ "recordings")|
 		this.performDir(\recordNRT, subDir, [before, after,
 		headerFormat, sampleRate, sampleFormat,
-		numChannels], recursive, recordDir);
+		numChannels], recursive, recordDir, false);
+	}
+
+	getKey {|return, space, escape|
+		var window = Window("User Interaction", Rect(500, 300, 200, 60));
+		var view = View(window, Rect(0, 0, 200, 60));
+		var text = StaticText(view, Rect(0, 0, 200, 60)).string =
+		"Press\t<RET> to continue\n" +
+		"\t<SPACE> to repeat\n" +
+		"\t<ESC> to quit";
+		view.keyDownAction = {|view, char, mod, uni, code, key|
+			switch(key)
+			{16777220} {return.value}
+			{32}       {space.value}
+			{16777216} {escape.value};
+			window.close;
+		};
+		window.front;
+		view.focus;
 	}
 
 	asFLSC {
