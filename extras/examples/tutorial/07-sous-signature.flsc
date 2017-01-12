@@ -11,8 +11,10 @@
               (seq [(mseg 0 1) (mseg 1 sus) ; deux segments standard
                     ;; le segment avec modulation
                     (m* sus ; produit par la constante
-                      (m+ 1 (m* (mtri 32) ; 1 + (signal sur [-1, 1] * enveloppe)
-                              ;; on déclare une nouvelle signature à l'intérieur du segment
+                      ;; 1 + (signal sur [-1, 1] * enveloppe)
+                      (m+ 1 (m* (mtri 32)
+                              ;; on déclare une nouvelle signature
+                              ;; à l'intérieur du segment
                               (sign [(* 0.1 dur) (* 0.9 dur)]
                                 ;; on spécifie l'enveloppe du modulateur
                                 (menv [0 0.5 0.5 0])))))

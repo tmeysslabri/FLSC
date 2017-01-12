@@ -8,7 +8,8 @@
          (scale [1 0.75 1.25]))
      [end
       ;; on définit une fonction globale de fréquence
-      (nowarp ((freq (m* basefreq (m** 2 (sign [(* 0.5 dur)] (menv [-1 1 -1])) ))))
+      (nowarp ((freq (m* basefreq (m** 2 (sign [(* 0.5 dur)] 
+                                           (menv [-1 1 -1])) ))))
         (mapcar (lambda (i)
                   (let ((start (* i dt)))
                     (base [start (+ start time)]
