@@ -18,7 +18,7 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 		// les arguments à passer au synthétiseur
 		var synthArgs;
 
-		super.value(outBus, timeWarp, varDict, noWarpDict);
+		this.initScore(outBus, timeWarp, varDict, noWarpDict);
 
 		synthArgs = args.collect {|item|
 			case

@@ -20,7 +20,7 @@ FLSC_LocalListSpec : FLSC_LocalScoreSpec {
 	}
 
 	value {|outBus, timeWarp, varDict, noWarpDict|
-		super.value(outBus, timeWarp, varDict, noWarpDict);
+		this.initScore(outBus, timeWarp, varDict, noWarpDict);
 
 		// on itère sur les éléments
 		subSpecs.do {|item|

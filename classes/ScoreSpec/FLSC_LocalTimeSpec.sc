@@ -15,7 +15,7 @@ FLSC_LocalTimeSpec : FLSC_LocalScoreSpec {
 		// le résultat de l'évaluation du sous-graphe
 		var subScore;
 
-		super.value(outBus, timeWarp, varDict, noWarpDict);
+		this.initScore(outBus, timeWarp, varDict, noWarpDict);
 
 		// on rappelle sur la FLSC_WarpSpec
 		// le bus demandé est le bus de sortie

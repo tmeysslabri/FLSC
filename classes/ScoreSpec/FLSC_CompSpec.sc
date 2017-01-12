@@ -12,7 +12,7 @@ FLSC_CompSpec : FLSC_LocalScoreSpec {
 	}
 
 	value {|outBus, timeWarp, varDict, noWarpDict|
-		super.value(outBus, timeWarp, varDict, noWarpDict);
+		this.initScore(outBus, timeWarp, varDict, noWarpDict);
 
 		// on rappelle itérativement sur les FLSC_WarpSpec
 		// le bus demandé est le outBus

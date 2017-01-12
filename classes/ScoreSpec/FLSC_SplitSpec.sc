@@ -20,7 +20,7 @@ FLSC_SplitSpec : FLSC_LocalScoreSpec {
 		// on copie le noWarpDict pour éliminer les interférences
 		var newNoWarpDict = noWarpDict.copy;
 
-		super.value(outBus, timeWarp, varDict, newNoWarpDict);
+		this.initScore(outBus, timeWarp, varDict, newNoWarpDict);
 
 		noWarpList.do {|item|
 			var subScore = item.value(nil, timeWarp, varDict, newNoWarpDict);

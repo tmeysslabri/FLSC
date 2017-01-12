@@ -24,7 +24,7 @@ FLSC_ScoreSpec {
 		^FLSC_OutSpec(rate, varList, this).value(before, after);
 	}
 
-	value {|outBus, timeWarp, varDict, noWarpDict|
+	initScore {|outBus, timeWarp, varDict, noWarpDict|
 		score = FLSC_Score();
 		score.outBus = this.makeOut(outBus, timeWarp);
 		^score;
