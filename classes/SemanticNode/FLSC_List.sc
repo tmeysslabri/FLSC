@@ -3,7 +3,7 @@ FLSC_List : FLSC_SemanticNode {
 		^super.new(list);
 	}
 
-	value {|context|
+	semanticValue {|context|
 		^nodeVal.collect {|item| item.value(context) };
 	}
 

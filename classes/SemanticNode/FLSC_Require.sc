@@ -10,7 +10,7 @@ FLSC_Require : FLSC_SemanticNode {
 		^this;
 	}
 
-	value {|context, library, baseDir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras")|
+	semanticValue {|context, library, baseDir (Platform.userExtensionDir +/+ "FLSC" +/+ "extras")|
 		var path = if(fileName[0] == $/)
 		{ fileName }
 		{ baseDir +/+ fileName };

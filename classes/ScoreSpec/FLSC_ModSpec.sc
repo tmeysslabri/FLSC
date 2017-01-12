@@ -14,7 +14,7 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict, noWarpDict|
+	scoreValue {|outBus, timeWarp, varDict, noWarpDict|
 		// les arguments à passer au synthétiseur
 		var synthArgs;
 

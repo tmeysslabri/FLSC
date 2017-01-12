@@ -19,7 +19,7 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict, noWarpDict|
+	scoreValue {|outBus, timeWarp, varDict, noWarpDict|
 		// on va chercher la référence dans le varDict
 		var sub = varDict[subSpec];
 		// si outBus n'est pas nil, créer un raccord

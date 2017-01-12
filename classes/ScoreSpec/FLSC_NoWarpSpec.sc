@@ -18,7 +18,7 @@ FLSC_NoWarpSpec : FLSC_ScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict, noWarpDict|
+	scoreValue {|outBus, timeWarp, varDict, noWarpDict|
 		// on va chercher la référence dans le noWarpDict
 		var sub = noWarpDict[subSpec];
 		// les dates de début et de fin doivent correspondre à l'appelant

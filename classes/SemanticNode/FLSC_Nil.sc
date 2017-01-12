@@ -2,7 +2,7 @@ FLSC_Nil : FLSC_SemanticNode {
 
 	*new {^super.new(nil)}
 
-	value {^this}
+	semanticValue {^this}
 
 	rate {^nil}
 

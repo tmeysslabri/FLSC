@@ -18,6 +18,10 @@ FLSC_ScoreSpec {
 		^this;
 	}
 
+	value {|outBus, timeWarp, varDict, noWarpDict|
+		^this.scoreValue(outBus, timeWarp, varDict, noWarpDict);
+	}
+
 	// méthode appelée à la racine du graphe de FLSC_ScoreSpec
 	// encapsuler dans une FLSC_OutSpec et évaluer
 	asFLSCScore {|before = 0, after = 0|

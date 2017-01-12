@@ -3,7 +3,7 @@ FLSC_Lambda : FLSC_RestFuncDef {
 		^super.new(parms, body, rest);
 	}
 
-	value {|context|
+	semanticValue {|context|
 		^super.value(context);
 	}
 

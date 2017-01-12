@@ -11,7 +11,11 @@ FLSC_SemanticNode {
 		^this;
 	}
 
-	value {|context|
+	value {|context, library, baseDir|
+		^this.semanticValue(context, library, baseDir);
+	}
+
+	semanticValue {|context|
 		^nodeVal.value;
 	}
 

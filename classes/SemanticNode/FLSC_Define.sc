@@ -10,7 +10,7 @@ FLSC_Define : FLSC_SemanticNode {
 		defs = defPairs;
 	}
 
-	value {|context|
+	semanticValue {|context|
 		var bindings = defs.inject([])
 		{|res, item| res ++ [[item[0], item[1].value(FLSC_Context(context, res))]]};
 		/*

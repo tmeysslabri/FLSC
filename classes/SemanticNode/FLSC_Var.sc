@@ -3,7 +3,7 @@ FLSC_Var : FLSC_SemanticNode {
 		^super.new(symb);
 	}
 
-	value {|context|
+	semanticValue {|context|
 		^context.at(nodeVal);
 	}
 }

@@ -3,7 +3,7 @@ FLSC_Module : FLSC_FuncDef {
 		^super.new(parms, body);
 	}
 
-	value {|context|
+	semanticValue {|context|
 		// on rajoute les FLSC_Control correspondants aux paramètres dans le contexte
 		var baseContext = FLSC_Context(context, parmNames.collect
 			{|item| [item, FLSC_Control(item.value)] });

@@ -11,7 +11,7 @@ FLSC_Conditional : FLSC_SemanticNode {
 		^this;
 	}
 
-	value {|context|
+	semanticValue {|context|
 		^nodeVal[choiceFunc.value(context)].value(context);
 	}
 }

@@ -16,7 +16,7 @@ FLSC_Patch : FLSC_RestFuncDef {
 		^this;
 	}
 	*/
-	value {|context|
+	semanticValue {|context|
 		var warpFunc = {|callContext|
 			// var sig = nodeVal.value(callContext).asFLSCScoreSpec;
 			// var dur = duration.value(callContext);

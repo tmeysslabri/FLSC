@@ -19,7 +19,7 @@ FLSC_NoWarp : FLSC_Let {
 		};
 	}
 
-	value {|context|
+	semanticValue {|context|
 		// la valeur doit être une FLSC_ScoreSpec,
 		// sinon on ne peut pas l'encapsuler et obtenir la résolution par le noWarpDict
 		var val = super.value(context).asFLSCScoreSpec;

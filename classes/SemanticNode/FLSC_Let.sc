@@ -13,7 +13,7 @@ FLSC_Let : FLSC_SemanticNode {
 		^this;
 	}
 
-	value {|context|
+	semanticValue {|context|
 		^nodeVal.value(FLSC_Context(context, this.letBindings(context)));
 	}
 

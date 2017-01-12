@@ -14,7 +14,7 @@ FLSC_SplitSpec : FLSC_LocalScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict, noWarpDict|
+	scoreValue {|outBus, timeWarp, varDict, noWarpDict|
 		// le résultat de l'évaluation du sous-graphe
 		var subScore;
 		// on copie le noWarpDict pour éliminer les interférences

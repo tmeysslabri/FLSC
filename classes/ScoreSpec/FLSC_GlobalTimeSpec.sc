@@ -11,7 +11,7 @@ FLSC_GlobalTimeSpec : FLSC_GlobalScoreSpec {
 		^this;
 	}
 
-	value {|outBus, timeWarp, varDict, noWarpDict|
+	scoreValue {|outBus, timeWarp, varDict, noWarpDict|
 		// le résultat de l'évaluation du sous-graphe
 		var subScore;
 

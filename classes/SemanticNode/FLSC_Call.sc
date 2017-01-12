@@ -11,7 +11,7 @@ FLSC_Call : FLSC_SemanticNode {
 		^this;
 	}
 
-	value {|context|
+	semanticValue {|context|
 		var args = argList.collect({|item| item.value(context)});
 		^nodeVal.value(context).value(args);
 	}
