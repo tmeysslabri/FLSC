@@ -11,5 +11,5 @@
 }
 
 + Object {
-	asFLSCScoreSpec {^Error("Not compliant to asFLSCScoreSpec: %".format(this)).throw}
+	asFLSCScoreSpec {^FLSC_Error("Not compliant to asFLSCScoreSpec: %".format(this)).throw}
 }

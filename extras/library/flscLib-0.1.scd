@@ -317,7 +317,7 @@
 					{|subs|
 						var input = subs[0];
 						if(input.rate != 'control')
-						{Error("Non-control in k2a: %".format(input)).throw};
+						{FLSC_Error("Non-control in k2a: %".format(input)).throw};
 						K2A.ar(input)
 				});
 		})],
@@ -330,7 +330,7 @@
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec(true);
 				var warp = FLSC_WarpSpec({|t| t + dt}, sig);
 				if(sig.rate != 'audio')
-				{Error("Non-audio in delay: %".format(sig)).throw};
+				{FLSC_Error("Non-audio in delay: %".format(sig)).throw};
 				FLSC_GlobalTimeSpec('audio', warp);
 		})],
 		// definition de support
@@ -342,7 +342,7 @@
 				var warp = FLSC_WarpSpec({|t|
 					// vérifier que la valeur n'est pas signée
 					if(t.isArray)
-					{Error("Signed time value in unsigned base: %".format(t)).throw};
+					{FLSC_Error("Signed time value in unsigned base: %".format(t)).throw};
 					// situer la valeur dans le support temporel courant
 					start + t.(end - start);
 				}, sig, {|new, old|
@@ -353,12 +353,12 @@
 						var newEnd = new.({|t|t});
 						var oldEnd = old.({|t|t});
 						if((newStart < oldStart) || (newEnd > oldEnd))
-						{Error("Timebase out of bounds: % not in %".format(
+						{FLSC_Error("Timebase out of bounds: % not in %".format(
 							[newStart, newEnd] - oldStart, [0, oldEnd - oldStart])).throw}
 					}
 				);
 				if(sig.rate != 'audio')
-				{Error("Non-audio in base: %".format(sig)).throw};
+				{FLSC_Error("Non-audio in base: %".format(sig)).throw};
 				FLSC_LocalTimeSpec('audio', warp);
 		})],
 		// definition de signature
@@ -382,7 +382,7 @@
 						// vérifier l'ordre de la signature
 						var timeVals = times.collect(old);
 						if(timeVals.differentiate.minItem < 0)
-						{Error("Signature not sorted: %".format(
+						{FLSC_Error("Signature not sorted: %".format(
 							timeVals - timeVals[0])).throw}
 					}
 				);
@@ -396,11 +396,11 @@
 				var rate = sigs[0].rate;
 				var warps = sigs.collect {|sig, i|
 					if(sig.rate != rate)
-					{Error("Non-homogenous rate in seq: %".format(sig.rate)).throw};
+					{FLSC_Error("Non-homogenous rate in seq: %".format(sig.rate)).throw};
 					FLSC_WarpSpec({|t|
 						// vérifier que la valeur n'est pas signée
 						if(t.isArray)
-						{Error("Signed time value in unsigned base: %".format(t)).throw};
+						{FLSC_Error("Signed time value in unsigned base: %".format(t)).throw};
 						[i, t]
 					}, sig)
 				};

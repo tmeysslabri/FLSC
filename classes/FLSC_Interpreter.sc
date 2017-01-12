@@ -62,7 +62,7 @@ FLSC_Interpreter {
 			file.close;
 			workingDir = path.dirname;
 		} {
-			Error("Cannot open file: %".format(path)).throw;
+			FLSC_Error("Cannot open file: %".format(path)).throw;
 		}
 		^this;
 	}
@@ -78,7 +78,7 @@ FLSC_Interpreter {
 		this.evaluate;
 		if(treeValue.isKindOf(FLSC_Context))
 		{ curContext = treeValue.refContext_(curContext) }
-		{ Error("Not a valid package file: %".format(fileName)).throw }
+		{ FLSC_Error("Not a valid package file: %".format(fileName)).throw }
 		^this;
 	}
 

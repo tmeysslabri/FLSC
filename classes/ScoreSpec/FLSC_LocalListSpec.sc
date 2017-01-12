@@ -9,7 +9,7 @@ FLSC_LocalListSpec : FLSC_LocalScoreSpec {
 		subSpecs = specs.collect(_.asFLSCScoreSpec);
 		// on vérifie que les éléments sont tous de rate 'audio'
 		subSpecs.do {|item| if(item.rate != 'audio')
-			{Error("Non-audio member in ListSpec: %".format(item)).throw}};
+			{FLSC_Error("Non-audio member in ListSpec: %".format(item)).throw}};
 		varList = subSpecs.inject(List()) {|acc, it| acc.union(it.varList)};
 		^super.new('audio', varList).listSpecInit(subSpecs);
 	}

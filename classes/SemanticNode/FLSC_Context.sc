@@ -57,7 +57,7 @@ FLSC_Context : Dictionary {
 		if(value.isNil) {
 			if(refContext.notNil)
 			{ value = refContext.at(key) }
-			{ Error("Variable % not found.".format(key)).throw }
+			{ FLSC_Error("Variable % not found.".format(key)).throw }
 		};
 
 		^value;

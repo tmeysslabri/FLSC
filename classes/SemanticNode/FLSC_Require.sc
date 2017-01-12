@@ -20,15 +20,15 @@ FLSC_Require : FLSC_SemanticNode {
 			package = FLSC_Interpreter.getTree(file.readAllString);
 			file.close;
 		} {
-			Error("Cannot open file: %".format(path)).throw;
+			FLSC_Error("Cannot open file: %".format(path)).throw;
 		};
 		if(package.isKindOf(FLSC_ErrNode))
-		{ Error("Error in file %: %".format(path, package.asFLSC)).throw };
+		{ FLSC_Error("Error in file %: %".format(path, package.asFLSC)).throw };
 		// on évalue les paquetages dans le contexte de la bibliothèque uniquement
 		// les paquetages ne doivent pas interférer (sauf quand c'est explicite)
 		newContext = package.value(library, library, path.dirname);
 		if(newContext.isKindOf(FLSC_Context).not)
-		{ Error("Not a valid package file: %:".format(path)).throw };
+		{ FLSC_Error("Not a valid package file: %:".format(path)).throw };
 		// on effectue le chaînage du paquetage sur le contexte courant
 		newContext.refContext = context;
 		// on évalue l'expression en passant les paramètres supplémentaires

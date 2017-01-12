@@ -26,7 +26,7 @@ FLSC_Patch : FLSC_RestFuncDef {
 			var warp = FLSC_WarpSpec({|t|
 				// vérifier que la valeur est non-signée
 				if(t.isArray)
-				{Error("Signed time value in unsigned base: %".format(t)).throw};
+				{FLSC_Error("Signed time value in unsigned base: %".format(t)).throw};
 				t.(dur)}, sig);
 			FLSC_GlobalTimeSpec(sig.rate, warp);
 		};

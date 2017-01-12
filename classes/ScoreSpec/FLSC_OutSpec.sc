@@ -28,10 +28,10 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		var timeWarp = {|t|
 			// vérifier que la valeur est un nombre
 			if(t.isNumber.not)
-			{Error("Global time value is not a number: %".format(t)).throw};
+			{FLSC_Error("Global time value is not a number: %".format(t)).throw};
 			// vérifier que la valeur est positive
 			if(t < 0)
-			{Error("Global time value is negative: %".format(t)).throw};
+			{FLSC_Error("Global time value is negative: %".format(t)).throw};
 			// ajouter la marge de début
 			t + before;
 		};
@@ -61,7 +61,7 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		// sinon, déclencher une erreur
 		// (cela signifie qu'un module est présent en dehors d'un patch)
 		if(score.bundle.notEmpty) {
-			Error("DEBUG: non-empty bundle in top-level FLSC_ScoreSpec: %".format(
+			FLSC_Error("DEBUG: non-empty bundle in top-level FLSC_ScoreSpec: %".format(
 				score.bundle)).throw;
 		};
 		// ajouter systemOut à la fin

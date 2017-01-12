@@ -18,7 +18,7 @@ FLSC_Time {
 		^times.collect {|item|
 			var res = timeWarp.(item[0]) - timeWarp.(item[1]);
 			if(res < 0)
-			{Error("Anachronism in Time: duration(%) < 0".format(res)).throw};
+			{FLSC_Error("Anachronism in Time: duration(%) < 0".format(res)).throw};
 			res;
 		}
 	}
