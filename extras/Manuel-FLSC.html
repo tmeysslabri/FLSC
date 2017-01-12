@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-01-11"/>
+<meta name="create-date" content="2017-01-12"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Manuel de référence FLSC</title>
 </head>
@@ -73,6 +73,9 @@ Table des matières
 <div class="toc">
 <a class="Link" href="#toc-Subsubsection-2.2.3">2.2.3 <tt>if, cond</tt></a>
 </div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-2.2.4">2.2.4 <tt>define, require</tt></a>
+</div>
 </div>
 <div class="toc">
 <a class="Link" href="#toc-Subsection-2.3">2.3 Listes</a>
@@ -110,10 +113,10 @@ Table des matières
 <a class="Link" href="#toc-Subsubsection-3.4.1">3.4.1 <tt>delay</tt></a>
 </div>
 <div class="toc">
-<a class="Link" href="#toc-Subsubsection-3.4.2">3.4.2 <tt>par</tt>, <tt>seq, hybrid</tt></a>
+<a class="Link" href="#toc-Subsubsection-3.4.2">3.4.2 <tt>sign, base, dur</tt></a>
 </div>
 <div class="toc">
-<a class="Link" href="#toc-Subsubsection-3.4.3">3.4.3 <tt>ssub, ssel, ssubsel</tt></a>
+<a class="Link" href="#toc-Subsubsection-3.4.3">3.4.3 <tt>seq, hybrid</tt></a>
 </div>
 </div>
 </div>
@@ -388,6 +391,9 @@ Les mots-clef réservés en FLSC sont:
 <td align="center" valign="top">
 <tt>nowarp</tt>
 </td>
+<td align="center" valign="top">
+<tt>define</tt>
+</td>
 
 </tr>
 <tr>
@@ -403,6 +409,9 @@ Les mots-clef réservés en FLSC sont:
 <td align="center" valign="top">
 <tt>nil</tt>
 </td>
+<td align="center" valign="top">
+<tt>require</tt>
+</td>
 
 </tr>
 <tr>
@@ -414,6 +423,9 @@ Les mots-clef réservés en FLSC sont:
 </td>
 <td align="center" valign="top">
 <tt>letrec</tt>
+</td>
+<td align="center" valign="top">
+
 </td>
 <td align="center" valign="top">
 
@@ -463,6 +475,18 @@ La forme <tt>letrec</tt> permet de définir des fonctions récursives dans la me
 <div class="Standard">
 <tt>(cond (<i>clause</i> <i>consequence</i>) ...)</tt> effectue le même type d’opération, mis à part que les <tt><i>clause</i></tt> sont évaluées dans l’ordre, et que lorsque l’une d’elles vaut <tt>true</tt>, la <tt><i>consequence</i></tt> associée est évaluée et sa valeur retournée. Les autres <tt><i>consequence</i></tt> ne sont pas évaluées. La dernière <tt><i>clause</i></tt> peut être le mot-clef <tt>else</tt>, ce qui signifie qu’il s’agit de la condition par défaut; si aucune autre <tt><i>clause</i></tt> n’est <tt>true</tt>, alors la valeur est celle de la dernière <tt><i>consequence</i></tt>. Comme pour <tt>if</tt>, les <tt><i>clause</i></tt> doivent avoir soit <tt>true</tt> soit <tt>false</tt> pour valeur. A la différence de SCHEME, chaque sous-expression doit avoir une et une seule <tt><i>consequence</i></tt>, puisque la <tt><i>clause</i></tt> choisie vaut toujours true, et qu’il n’y a pas d’effet de bord.
 </div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-2.2.4">2.2.4</a> <tt>define, require</tt>
+</h3>
+<div class="Standard">
+<tt>(define (<i>name</i> <i>val</i>) ...)</tt> permet de lier à chaque identificateur <tt><i>name</i></tt> la valeur quelconque <tt><i>val</i></tt>. Dans un programme, l’expression terminale peut être précédée d’un nombre quelconque de <tt>define</tt>, ce qui a pour conséquence que les variables qui y sont liées sont disponibles par la suite. Tout comme pour <tt>let*</tt>, les valeurs peuvent se référer à une variable définie précédemment à l’intérieur du même <tt>define</tt>.
+</div>
+<div class="Standard">
+En outre, une séquence de <tt>define</tt> qui n’est pas suivie d’une expression standard constitue un <i>paquetage</i>, c’est à dire un ensemble de définitions qui peuvent ensuite être ajoutées dans un autre fichier. Attention, seules les définitions données dans le dernier <tt>define</tt> sont comprises dans le paquetage (mais de toute façon dans aucun cas il n’est nécessaire qu’il y en ait plusieurs).
+</div>
+<div class="Standard">
+<tt>(require ”<i>filename</i>”)</tt> a pour effet d’ajouter dans le programme courant les définitions contenues dans le fichier de paquetage <tt><i>filename</i></tt> (exprimé relativement au répertoire du fichier courant). Un nombre quelconque de <tt>require</tt> peuvent apparaître au début d’un programme ou d’un paquetage. En ce qui concerne ces derniers, les définitions des <tt>require</tt> ne sont pas incluses dans le paquetage produit (pour des raisons d’économie), mais elles peuvent y être utilisées et sont sauvegardées dans la clôture lexicale des fonctions qui y sont définies.
+</div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-2.3">2.3</a> Listes
 </h2>
@@ -494,34 +518,31 @@ On passe ici en revue les formes spéciales et fonctions de bibliothèque qui me
 La forme spéciale <tt>patch</tt> définit un instrument virtuel modulaire; il s’agit d’un type spécifique de fonction. Sa syntaxe est la suivante:
 </div>
 <div class="Standard">
-<tt>(patch (<i>parm</i> ...) <i>sign</i> <i>signal</i>)</tt>
+<tt>(patch (<i>parm</i> ...) <i>pair</i>)</tt>
 </div>
 <div class="Standard">
 <tt><i>parm</i> ...</tt> : une séquence d’identificateurs
 </div>
 <div class="Standard">
-<tt><i>sign</i></tt> : une liste de nombres, ou une liste de listes de nombres
+<tt><i>pair</i></tt> : une paire <tt>[<i>dur</i> <i>signal</i>]</tt>
+</div>
+<div class="Standard">
+<tt><i>dur</i></tt> : un nombre
 </div>
 <div class="Standard">
 <tt><i>signal</i></tt> : un signal
 </div>
 <div class="Standard">
-Lors de l’appel à l’instrument virtuel, les paramètres <tt><i>parm</i> ...</tt> sont substitués, la signature temporelle ou l’ensemble de signatures temporelles <tt><i>sign</i></tt> est évalué, puis le signal <tt><i>signal</i></tt> est évalué dans ce contexte.
+Lors de l’appel à l’instrument virtuel, les paramètres <tt><i>parm</i> ...</tt> sont substitués, la paire durée-signal <tt>[<i>dur</i> <i>signal</i>]</tt> est évaluée, et le signal <tt><i>signal</i></tt> est situé dans un support temporel local de durée <tt><i>dur</i></tt>.
 </div>
 <div class="Standard">
 Les paramètres peuvent être précédés de <tt>!</tt> et le dernier paramètre peut être précédé de <tt>&amp;</tt>, tout comme pour <tt>lambda</tt>.
 </div>
 <div class="Standard">
-Si la signature est une liste simple, et si elle ne commence pas par 0, un 0 est ajouté implicitement au début; si c’est une liste de listes, son premier élément est traité de la même façon.
-</div>
-<div class="Standard">
-D’une manière générale, une signature devrait être rangée en ordre croissant et un ensemble de signatures devrait être rangé par ordre croissant de leur premier élément; ne pas le faire ne constitue pas directement une faute sémantique mais risque de susciter des comportements imprévus.
-</div>
-<div class="Standard">
 Le signal produit devrait être de type audio, puisqu’il est destiné à être situé comme un fragment audionumérique dans l’espace global de la partition.
 </div>
 <div class="Standard">
-Les formes spéciales <tt>patch</tt> ne doivent pas être imbriquées. Si tel est le cas, le comportement est non-spécifié.
+Les formes spéciales <tt>patch</tt> ne doivent pas être imbriquées, et ne doivent pas effectuer un appel à un autre <tt>patch</tt>. Si tel est le cas, le comportement est non-spécifié.
 </div>
 <h3 class="Subsubsection">
 <a class="toc" name="toc-Subsubsection-3.1.2">3.1.2</a> <tt>module</tt>
@@ -551,7 +572,10 @@ mis à part les générateurs de signaux (primitives et opérations arithmétiqu
 La forme spéciale <tt>nowarp</tt> permet d’introduire des variables, tout comme <tt>let</tt>; sa syntaxe est la même.
 </div>
 <div class="Standard">
-La différence réside dans le fait que le contexte temporel (la signature effective) qui sera appliqué aux valeurs liées est celui du <tt>nowarp</tt> (et non celui dans lequel elles apparaissent finalement, qui peut contenir des tranformations subséquentes); ceci permet aux expressions contenues dans son corps de se référer à des signaux définis sur un support temporel plus général.
+La différence réside dans le fait que le contexte temporel qui sera appliqué aux valeurs liées est celui du <tt>nowarp</tt> (et non celui dans lequel elles apparaissent finalement, qui peut contenir des tranformations subséquentes); ceci permet aux expressions contenues dans son corps de se référer à des signaux définis sur un support temporel plus général.
+</div>
+<div class="Standard">
+La syntaxe <tt>!</tt> peut être employée dans <tt>nowarp</tt>, mais elle est sans effet puisque le comportement de <tt>nowarp</tt> implique déjà que les variables signal ne sont pas dédoublées.
 </div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-3.2">3.2</a> Primitives des générateurs de signaux
@@ -563,16 +587,16 @@ Les primitives peuvent apparaître dans les modules, et en sont les éléments f
 Les fonctions numériques peuvent s’appliquer à des signaux; dans ce cas leur valeur est un signal dont la valeur instantanée est le résultat de l’application de cette fonction aux valeurs instantanées des signaux passés en argument. Dans ce contexte, une constante numérique prend le sens d’un signal constant.
 </div>
 <div class="Standard">
-Le type d’un signal est soit fixé par la primitive employée, soit déterminé par les types en entrée; le plus souvent il s’agit dans ce cas du type minimal qui évite un sous-échantillonnage. Ainsi beaucoup de primitives proposent une variante préfixée par <tt>’hf’</tt>, qui impose un type de sortie audio. Mis à part le cas des générateurs de signaux audibles, ceci permet également de modéliser des phénomènes transitoires dans lesquels l’échantillonnage à fréquence audio des paramètres d’un signal est nécessaire.
+Le type d’un signal est soit fixé par la primitive employée, soit déterminé par les types en entrée; le plus souvent il s’agit dans ce cas du type minimal qui évite un sous-échantillonnage. Ainsi beaucoup de primitives proposent une variante préfixée par <tt>’hf’</tt>, qui impose un type de sortie audio. Mis à part le cas des générateurs de signaux audibles, ceci permet également de modéliser des phénomènes transitoires dans lesquels l’échantillonnage à fréquence audio des paramètres d’un signal est nécessaire. Dans ce cas, bien qu’il soit techniquement possible de restreindre le support temporel d’un signal de contrôle à haute fréquence, cela ne présente probablement jamais d’interêt.
 </div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-3.3">3.3</a> <a class="Label" name="sub:Listes-de-signaux"> </a>Listes de signaux audio
 </h2>
 <div class="Standard">
-Dans les contextes où un signal audio est attendu (dans le contexte global, à la racine d’un patch, dans une composition parallèle), ce signal peut être donné sous la forme d’une liste (éventuellement récursive) dont les éléments terminaux sont des signaux audio, ce qui prend le sens d’une somme de signaux.
+Dans les contextes où un signal audio est attendu (dans le contexte global, à la racine d’un patch, dans une composition), ce signal peut être donné sous la forme d’une liste (éventuellement récursive) dont les éléments terminaux sont des signaux audio, ce qui prend le sens d’une somme de signaux.
 </div>
 <div class="Standard">
-Cette règle s’applique également aux arguments de modules, qui ne peuvent pas être autrement des listes; néanmoins elle ne s’applique qu’aux signaux audio (la présence de tout autre type d’élément constitue une erreur).
+Cette règle s’applique également aux arguments de modules, qui ne peuvent pas être autrement des listes; néanmoins dans tous les cas elle ne s’applique qu’aux signaux audio (la présence de tout autre type d’élément constitue une erreur).
 </div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-3.4">3.4</a> <a class="Label" name="sub:Altérations-de-signature"> </a>Altérations de signature temporelle
@@ -590,34 +614,34 @@ Etant donné que les fragments peuvent être structurés en listes récursives, 
 Les retards ne peuvent pas apparaître à l’intérieur d’un instrument virtuel.
 </div>
 <h3 class="Subsubsection">
-<a class="toc" name="toc-Subsubsection-3.4.2">3.4.2</a> <tt>par</tt>, <tt>seq, hybrid</tt>
+<a class="toc" name="toc-Subsubsection-3.4.2">3.4.2</a> <tt>sign, base, dur</tt>
 </h3>
 <div class="Standard">
-Les opérateurs de composition sont <tt>par</tt> (composition parallèle, pour les signaux audio), <tt>seq</tt> (composition séquentielle, pour les signaux de contrôle) et <tt>hybrid</tt> (composition hybride, pour les mélanges).
+<tt>(sign <i>times</i> <i>signal</i>)</tt> applique au signal <tt><i>signal</i></tt> une signature temporelle dont les points-clef sont les éléments de la liste de temps <tt><i>times</i></tt>. Celle-ci doit être donnée en ordre croissant. Le type de <tt><i>signal</i></tt> est indifférent.
 </div>
 <div class="Standard">
-<tt>(seq <i>breaks</i> <i>signals</i>)</tt> produit la succession de la liste de signaux de contrôle <tt><i>signals</i></tt> sur le support temporel dans lequel elle est appellée, en introduisant des césures aux indices (entiers) de signature désignés par <tt><i>breaks</i></tt>. Le résultat de la composition étant nécessairement défini sur le même support temporel, <tt><i>breaks</i></tt> doit avoir exactement un élément de moins que <tt><i>signals</i></tt>.
-</div>
-<tt>hybrid</tt> a la même syntaxe que <tt>seq</tt> et effectue la même opération, sauf que certains signaux peuvent être de type audio. Le résultat est de type audio.<div class="Standard">
-<tt>(par <i>segs</i> <i>signals</i>)</tt> produit la somme de la liste de signaux audio <tt><i>signals</i></tt>, chacun resitué dans la sous-signature définie par l’élément correspondant de <tt><i>segs</i></tt>. Ces éléments sont des couples <tt>[<i>start</i> <i>end</i>]</tt>, qui délimitent une sous-partie de la signature temporelle englobante.
+<tt>(base <i>interval</i> <i>signal</i>)</tt> définit le sous-support <tt><i>interval</i></tt> (une paire de temps <tt>[<i>start</i> <i>end</i>]</tt>) et l’applique au signal audio <tt><i>signal</i></tt>. Le sous-support doit être inclus dans le support englobant. Le support temporel peut se trouver réduit, et donc <tt><i>signal</i></tt> doit être de type audio.
 </div>
 <div class="Standard">
-Les opérateurs de composition ne peuvent apparaître qu’à l’intérieur d’un instrument virtuel.
+Les valeurs de temps peuvent être des nombres, ou des expressions numériques faisant intervenir la variable spéciale <tt>dur</tt>. Celle-ci représente toujours la durée du support temporel local, là où elle apparaît (lier cette valeur à une variable dans un autre contexte n’y change rien, en interne elle représente une fonction).
+</div>
+<div class="Standard">
+Les déclarations de supports et de signatures ne peuvent apparaître qu’à l’intérieur d’un instrument virtuel.
 </div>
 <h3 class="Subsubsection">
-<a class="toc" name="toc-Subsubsection-3.4.3">3.4.3</a> <tt>ssub, ssel, ssubsel</tt>
+<a class="toc" name="toc-Subsubsection-3.4.3">3.4.3</a> <tt>seq, hybrid</tt>
 </h3>
 <div class="Standard">
-<tt>(ssub <i>indexes</i> <i>signal</i>)</tt> applique au signal <tt><i>signal</i></tt> une signature temporelle qui ne retient que le début, la fin, et les indices de la liste <tt><i>indexes</i></tt> parmi la signature temporelle englobante. <tt><i>indexes</i></tt> devrait être donnée en ordre croissant. Le type de <tt><i>signal</i></tt> est indifférent.
+Les opérateurs de composition séqurentielle sont <tt>seq</tt> et <tt>hybrid</tt> (composition hybride, pour les mélanges audio/contrôle).
 </div>
 <div class="Standard">
-<tt>(ssel <i>signs</i> <i>signal</i>)</tt> applique au signal audio <tt><i>signal</i></tt> un ensemble de signatures temporelles qui ne retient que les indices présents dans la liste <tt><i>signs</i></tt> parmi l’ensemble englobant. Lorsqu’on ne souhaite retenir qu’un seul indice, <tt><i>signs</i></tt> peut être un entier plutôt qu’une liste. Si c’est une liste, elle devrait être donnée en ordre croissant. Le support temporel peut se trouver réduit, et donc <tt><i>signal</i></tt> doit être de type audio.
+<tt>(seq <i>signals</i>)</tt> produit la succession de la liste de signaux <tt><i>signals</i></tt> sur le support temporel local, découpé suivant la signature temporelle locale. Le résultat de la composition étant nécessairement défini sur le même support temporel, le nombre de signaux doit correspondre au nombre de segments de la signature (c’est à dire le nombre de points-clef, plus un). Effectuer une composition sur un support non signé constitue une erreur.
 </div>
 <div class="Standard">
-<tt>(ssubsel <i>indexes</i> <i>signal</i>)</tt> applique au signal <tt><i>signal</i></tt> une signature temporelle composée d’indices de signature sélectionnés, dans des signatures choisies parmi des sous-ensembles indépendants de l’ensemble de signatures temporelles englobant. La liste <tt><i>indexes</i></tt> est constituée de couples, dont le premier élément est un indice de signature, et le deuxième soit un entier (pour sélectionner une signature parmi l’ensemble), soit une liste d’entiers (pour sélectionner un sous-ensemble de signatures).
+Les signaux peuvent être de type audio ou contrôle, mais doivent tous être du même type. Il est techniquement possible qu’il y ait moins de signaux que de segments de signature, mais cela risque de produire des comportements imprévisibles (les contrôles sont fixes à leur dernière valeur, l’audio devient nul).
 </div>
-<div class="Standard">
-De façon implicite le début et la fin de la signature appliquée sont le début et la fin du support temporel englobant si <tt><i>signal</i></tt> est un signal de contrôle. Si <tt><i>signal</i></tt> est un signal audio, ce sont simplement le premier et le dernier point sélectionnés (car dans ce cas il est acceptable de réduire le support temporel).
+<tt>hybrid</tt> a la même syntaxe que <tt>seq</tt> et effectue la même opération, sauf que les signaux peuvent être de type hétérogène. Le résultat est de type audio.<div class="Standard">
+Les opérateurs de composition ne peuvent apparaître qu’à l’intérieur d’un instrument virtuel.
 </div>
 <h1 class="Section">
 <a class="toc" name="toc-Section-4">4</a> Fonctions de la bibliothèque FLSC
@@ -1226,11 +1250,11 @@ segment linéaire d’enveloppe, variant entre start et end du début à la fin 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(env lvls times),<br/>
-(hfenv lvls times)</tt>
+<tt>(env levels),<br/>
+(hfenv levels)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-enveloppe linéaire à nombre de points fixe, qui traverse les valeurs de lvls selon les points de césure times, entre le début et la fin du support temporel local; times est une liste d’indices de signature temporelle et ne peut dépendre des paramètres du module
+enveloppe linéaire à nombre de points fixe, qui traverse les valeurs de levels selon les points-clef de la signature locale, entre le début et la fin du support local; le support doit être signé, et avoir suffisamment de segments (le dernier segment de l’enveloppe est prolongé sur les segment restants de la signature)
 </td>
 
 </tr>
@@ -1467,7 +1491,7 @@ Les fonctions génératrices d’enveloppe permettent d’exploiter la structure
 (mhfenv levels)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-modules parcourant les niveaux levels entre le début et la fin du support temporel local, avec des césures sur les indices de signature consécutifs à partir de 1
+modules parcourant les niveaux levels entre le début et la fin du support temporel local, avec des césures sur les points-clef de la signature locale (utilise <tt>seq</tt>)
 </td>
 
 </tr>
@@ -1483,8 +1507,7 @@ idem avec une composition hybride; le i-ème segment est de type audio si l’in
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(lmenv levels<br/>
-  times)</tt>
+<tt>(lmenv levels)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
 fonction engendrant un appel à un module ad-hoc; les paramètres sont les mêmes que ceux de env; noter que dans ce cas chaque appel produit un nouveau module (ce qui est peu économique)
@@ -1511,10 +1534,11 @@ fonctions engendrant une chaîne de longueur arbitraire de modules <tt>m+</tt> o
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(smap sigs)</tt>
+<tt>(basemap bases<br/>
+  sigs)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-fonction permettant d’appliquer à chaque élément de la liste de signaux sigs la signature temporelle d’indice correspondant
+fonction permettant d’appliquer à chaque élément de la liste de signaux sigs le support temporel d’indice correspondant dans la liste bases
 </td>
 
 </tr>
