@@ -68,7 +68,7 @@ FLSC_Interpreter {
 	}
 
 	evaluate {
-		if(semanticTree.isKindOf(FLSC_Error))
+		if(semanticTree.isKindOf(FLSC_ErrNode))
 		{^treeValue = semanticTree.asFLSC}
 		{^treeValue = semanticTree.value(curContext, library, workingDir)};
 	}

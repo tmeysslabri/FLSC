@@ -1,4 +1,4 @@
-FLSC_Error : FLSC_SemanticNode {
+FLSC_ErrNode : FLSC_SemanticNode {
 	*new {|string|
 		^super.new(string);
 	}

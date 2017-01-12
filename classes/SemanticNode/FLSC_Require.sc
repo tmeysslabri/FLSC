@@ -22,7 +22,7 @@ FLSC_Require : FLSC_SemanticNode {
 		} {
 			Error("Cannot open file: %".format(path)).throw;
 		};
-		if(package.isKindOf(FLSC_Error))
+		if(package.isKindOf(FLSC_ErrNode))
 		{ Error("Error in file %: %".format(path, package.asFLSC)).throw };
 		// on évalue les paquetages dans le contexte de la bibliothèque uniquement
 		// les paquetages ne doivent pas interférer (sauf quand c'est explicite)
