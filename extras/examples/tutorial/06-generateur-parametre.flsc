@@ -1,17 +1,17 @@
-;;;; exemple de gÃ©nÃ©rateur de paramÃ¨tre
+;;;; exemple de générateur de paramètre
 ;;;; on introduit une fonction qui calcule une enveloppe
 
-;; introduction de fonction (gÃ©nÃ©rateur d'enveloppe)
+;; introduction de fonction (générateur d'enveloppe)
 (let ((adsr (lambda (sus)
-              ;; on prÃ©cise l'allure en faisant abstraction du temps
+              ;; on précise l'allure en faisant abstraction du temps
               (menv [0 1 sus sus 0]))))
-;; l'instrument admet une fonction en paramÃ¨tre
+;; l'instrument admet une fonction en paramètre
   ((patch (amp freq time envgen)
      [time
      (mn* amp (mosc freq)
-       ;; la signature doit avoir le bon nombre d'Ã©lÃ©ments
-       ;; dur est une variable spÃ©ciale qui renvoie Ã  la fin du support
+       ;; la signature doit avoir le bon nombre d'éléments
+       ;; dur est une variable spéciale qui renvoie à la fin du support
        (sign [0.1 0.2 (- dur 0.5)]
-         ;; on applique la fonction passÃ©e en argument
+         ;; on applique la fonction passée en argument
          (envgen 0.5)))])
    0.1 220 2 adsr))

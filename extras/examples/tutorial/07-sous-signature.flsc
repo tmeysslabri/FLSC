@@ -1,23 +1,23 @@
 ;;;; exemple de sous-signature
 
-;;; on ajoute une modulation Ã  l'enveloppe de 06
+;;; on ajoute une modulation à l'enveloppe de 06
 ;;; cela implique une enveloppe de modulateur
-;;; dÃ©finie sur l'un des segments d'enveloppe
+;;; définie sur l'un des segments d'enveloppe
 ;;; noter que seule la fonction externe change
 
-;; introduction de fonction (gÃ©nÃ©rateur d'enveloppe)
+;; introduction de fonction (générateur d'enveloppe)
 (let ((adsr (lambda (sus)
-              ;; on utilise seq puisque les Ã©lÃ©ments sont hÃ©tÃ©rogÃ¨nes
+              ;; on utilise seq puisque les éléments sont hétérogènes
               (seq [(mseg 0 1) (mseg 1 sus) ; deux segments standard
                     ;; le segment avec modulation
                     (m* sus ; produit par la constante
                       (m+ 1 (m* (mtri 32) ; 1 + (signal sur [-1, 1] * enveloppe)
-                              ;; on dÃ©clare une nouvelle signature Ã  l'intÃ©rieur du segment
+                              ;; on déclare une nouvelle signature à l'intérieur du segment
                               (sign [(* 0.1 dur) (* 0.9 dur)]
-                                ;; on spÃ©cifie l'enveloppe du modulateur
+                                ;; on spécifie l'enveloppe du modulateur
                                 (menv [0 0.5 0.5 0])))))
                     (mseg sus 0)])))) ; fin seq, lambda, adsr, letlist
-  ;; l'instrument est le mÃªme
+  ;; l'instrument est le même
   ((patch (amp freq time envgen)
      [time
      (mn* amp (mosc freq)

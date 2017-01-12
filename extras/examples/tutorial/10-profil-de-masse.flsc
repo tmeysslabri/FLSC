@@ -1,19 +1,19 @@
 ;;;; exemple de liste de signaux (3)
-;;;; la mÃªme chose que 09 avec un indice dynamique
+;;;; la même chose que 09 avec un indice dynamique
 
-;;; on introduit Ã©galement le split [!] qui permet
-;;; d'Ã©viter des clones inutiles
+;;; on introduit également le split [!] qui permet
+;;; d'éviter des clones inutiles
 
-;; on introduit la fonction de distorsion Ã  indice variable
+;; on introduit la fonction de distorsion à indice variable
 (let ((warp (lambda (i exp) (m** i exp))) ; on utilise un module
-      ;; l'indice dynamique est toujours le mÃªme,
+      ;; l'indice dynamique est toujours le même,
       ;; on le multiplie avec split [!]
       (!index (mseg 0.5 1)))
-;; le paramÃ¨tre dist est la fonction de distorsion
+;; le paramètre dist est la fonction de distorsion
   ((patch (amp freq time num dist)
      [time
       ;; split sur l'enveloppe, en sortant la division
-      ;; note: le sign doit aller avec, car il dÃ©finit
+      ;; note: le sign doit aller avec, car il définit
       ;; un contexte temporel
       (let ((!dyn (sign [(/ time 4)] (menv [0 amp 0]))))
         (mapcar (lambda (i)

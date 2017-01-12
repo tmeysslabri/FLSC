@@ -1,11 +1,11 @@
 ;;;; exemple de patch avec parametre signal
-;;;; la mÃªme chose que 04, sauf que la frÃ©quence
-;;;; est un signal pseudo-alÃ©atoire
+;;;; la même chose que 04, sauf que la fréquence
+;;;; est un signal pseudo-aléatoire
 
-;; l'instrument est le mÃªme
+;; l'instrument est le même
 ((patch (amp freq time)
    [time
    (m* (mosc freq)
      (sign [(/ time 4)] (menv [0 amp 0])))])
- ;; le paramÃ¨tre de frÃ©quence est un signal
+ ;; le paramètre de fréquence est un signal
  0.1 (m* 220 (mrand 0.9 1.1)) 2)
