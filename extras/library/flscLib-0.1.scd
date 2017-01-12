@@ -354,7 +354,7 @@
 						var oldEnd = old.({|t|t});
 						if((newStart < oldStart) || (newEnd > oldEnd))
 						{Error("Timebase out of bounds: % not in %".format(
-							[newStart, newEnd], [oldStart, oldEnd])).throw}
+							[newStart, newEnd] - oldStart, [0, oldEnd - oldStart])).throw}
 					}
 				);
 				if(sig.rate != 'audio')
@@ -382,7 +382,8 @@
 						// vérifier l'ordre de la signature
 						var timeVals = times.collect(old);
 						if(timeVals.differentiate.minItem < 0)
-						{Error("Signature not sorted: %".format(timeVals)).throw}
+						{Error("Signature not sorted: %".format(
+							timeVals - timeVals[0])).throw}
 					}
 				);
 				FLSC_LocalTimeSpec(sig.rate, warp);
@@ -391,7 +392,7 @@
 		// sequentielle
 		['seq', FLSC_Function(nil, ['sigs'],
 			{|ctxt|
-				var sigs = FLSC_Var('sigs').value(ctxt);
+				var sigs = FLSC_Var('sigs').value(ctxt).collect(_.asFLSCScoreSpec);
 				var rate = sigs[0].rate;
 				var warps = sigs.collect {|sig, i|
 					if(sig.rate != rate)

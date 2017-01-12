@@ -30,8 +30,9 @@ FLSC_Interpreter().playDir();
 FLSC_Interpreter().playDir(interactive: true);
 
 // créer le catalogue (extras/examples/catalog) dans recordings (recordings/catalog)
-// BROKEN
 FLSC_Interpreter().recordDir;
+// idem avec le tutoriel
+FLSC_Interpreter().recordDir("examples/tutorial");
 
 // exemple de lecture d'un paquetage
 FLSC_Interpreter().loadPackage("packages/testpkg.flsc").read("(???)").evaluate;
