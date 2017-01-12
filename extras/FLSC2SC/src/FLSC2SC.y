@@ -66,8 +66,6 @@ int yyerror(const char *s);
 
 %type <ptr> Func
 %type <ptr> StdFunc
-//%type <ptr> Lambda
-//%type <ptr> Patch
 %type <ptr> Let
 %type <ptr> Module
 
@@ -100,7 +98,6 @@ int yyerror(const char *s);
 %%
 
 Top:	Program		{ printwords(concat($1, cons("\n", NULL))->start); }
-//	| Define	{ printwords(concat($1, cons("\n", NULL))->start); }
 
 Program:	Defines
 		| PARL REQUIRE STRING PARR Program
@@ -122,8 +119,6 @@ Expr:	SpecForm | Call | Var | Num | List
 
 SpecForm:	Func | Conditional
 
-//Func:		Lambda | Let | Patch | Module
-
 Func:		StdFunc | Let | Module
 
 StdFunc:	PARL FuncOp PARL IdList1 PARR Expr PARR
@@ -142,41 +137,7 @@ StdFunc:	PARL FuncOp PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(concat($2, $5), cons("],",
 			lnbrk(1, $7))), cons(",",
 			lnbrk(-1, cons("true)", NULL)))); }
-/*
-Lambda:		PARL LAMBDA PARL IdList1 PARR Expr PARR
-		{ $$ = concat(concat(cons("FLSC_Lambda([", $4), cons("],",
-			lnbrk(1, $6))),
-			lnbrk(-1, cons(")", NULL))); }
-		| PARL LAMBDA PARL IdList1 AMP Ident PARR Expr PARR
-		{ $$ = concat(concat(concat(cons("FLSC_Lambda([", $4), cons(",", $6)), cons("],",
-			lnbrk(1, $8))), cons(",",
-			lnbrk(-1, cons("true)", NULL)))); }
-		|PARL LAMBDA PARL PARR Expr PARR
-		{ $$ = concat(cons("FLSC_Lambda([],",
-			lnbrk(1, $5)),
-			lnbrk(-1, cons(")", NULL))); }
-		| PARL LAMBDA PARL AMP Ident PARR Expr PARR
-		{ $$ = concat(concat(cons("FLSC_Lambda([", $5), cons("],",
-			lnbrk(1, $7))), cons(",",
-			lnbrk(-1, cons("true)", NULL)))); }
 
-Patch:		PARL PATCH PARL IdList1 PARR Expr PARR
-		{ $$ = concat(concat(cons("FLSC_Patch([", $4), cons("],",
-			lnbrk(1, $6))),
-			lnbrk(-1, cons(")", NULL))); }
-		| PARL PATCH PARL IdList1 AMP Ident PARR Expr PARR
-		{ $$ = concat(concat(concat(cons("FLSC_Patch([", $4), cons(",", $6)), cons("],",
-			lnbrk(1, $8))), cons(",",
-			lnbrk(-1, cons("true)", NULL)))); }
-		| PARL PATCH PARL PARR Expr PARR
-		{ $$ = concat(cons("FLSC_Patch([],",
-			lnbrk(1, $5)),
-			lnbrk(-1, cons(")", NULL))); }
-		| PARL PATCH PARL AMP Ident PARR Expr PARR
-		{ $$ = concat(concat(cons("FLSC_Patch([", $5), cons("],",
-			lnbrk(1, $7))), cons(",",
-			lnbrk(-1, cons("true)", NULL)))); }
-*/
 Module:		PARL MODULE PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Module([", $4), cons("],",
 			lnbrk(1, $6))),
