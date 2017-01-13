@@ -22,7 +22,7 @@ FLSC_NoWarp : FLSC_Let {
 	semanticValue {|context|
 		// la valeur doit être une FLSC_ScoreSpec,
 		// sinon on ne peut pas l'encapsuler et obtenir la résolution par le noWarpDict
-		var val = super.value(context).asFLSCScoreSpec;
+		var val = super.semanticValue(context).asFLSCScoreSpec;
 		// on créée la varList dans l'environnement du nowarp
 		// elle inclut les variables référencées dans noWarpList
 		var varList = List().addAll(val.varList);

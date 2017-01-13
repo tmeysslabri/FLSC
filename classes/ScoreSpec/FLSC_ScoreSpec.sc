@@ -7,6 +7,8 @@ FLSC_ScoreSpec {
 	var <varList;
 	// l'objet Score construit
 	var score;
+	// le SemanticNode parent
+	var >parent;
 
 	*new {|timeBase, vars|
 		^super.new.scoreSpecInit(timeBase, vars);
@@ -19,8 +21,17 @@ FLSC_ScoreSpec {
 	}
 
 	value {|outBus, timeWarp, varDict, noWarpDict|
-		^this.scoreValue(outBus, timeWarp, varDict, noWarpDict);
+		var res;
+		try {
+			res = this.scoreValue(outBus, timeWarp, varDict, noWarpDict);
+		} {|error|
+			if(error.isKindOf(FLSC_Error))
+			{FLSC_LocError(error.errorString, parent.start, parent.end).throw}
+			{error.throw}
+		}
+		^res;
 	}
+
 
 	// méthode appelée à la racine du graphe de FLSC_ScoreSpec
 	// encapsuler dans une FLSC_OutSpec et évaluer
@@ -32,6 +43,13 @@ FLSC_ScoreSpec {
 		score = FLSC_Score();
 		score.outBus = this.makeOut(outBus, timeWarp);
 		^score;
+	}
+
+	doesNotUnderstand {|selector ... args|
+		if(Number.findRespondingMethodFor(selector).notNil)
+		{FLSC_Error("Signal does not respond to numeric operator: %"
+			.format(selector)).throw}
+		{DoesNotUnderstandError(this, selector, args).throw};
 	}
 
 	// méthodes génériques

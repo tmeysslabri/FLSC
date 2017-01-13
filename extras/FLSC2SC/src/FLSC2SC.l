@@ -3,7 +3,10 @@
 #include "flsc_types.h"
 #include "flsc2sc.h"
 
+#define TMPLEN 16
+
 int linenum = 1;
+char tmpstr[TMPLEN];
 %}
 
 %option noyywrap
@@ -48,10 +51,10 @@ other	.
 {comment}	{ /* ignore */ }
 {blanks}	{ /* ignore */ }
 
-{parl}		{ return(PARL); }
-{parr}		{ return(PARR); }
-{brl}		{ return(BRL); }
-{brr}		{ return(BRR); }
+{parl}		{ snprintf(tmpstr, TMPLEN, "%d", linenum); yylval.str = strdup(tmpstr); return(PARL); }
+{parr}		{ snprintf(tmpstr, TMPLEN, "%d", linenum); yylval.str = strdup(tmpstr); return(PARR); }
+{brl}		{ snprintf(tmpstr, TMPLEN, "%d", linenum); yylval.str = strdup(tmpstr); return(BRL); }
+{brr}		{ snprintf(tmpstr, TMPLEN, "%d", linenum); yylval.str = strdup(tmpstr); return(BRR); }
 {amp}		{ return(AMP); }
 {nunq}		{ return(NUNQ); }
 

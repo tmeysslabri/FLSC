@@ -12,8 +12,11 @@ FLSC_Call : FLSC_SemanticNode {
 	}
 
 	semanticValue {|context|
+		var res;
 		var args = argList.collect({|item| item.value(context)});
-		^nodeVal.value(context).value(args);
+		res = nodeVal.value(context).value(args);
+		if(res.isFLSCScoreSpec) {res.parent = this}
+		^res;
 	}
 
 	asFLSC {

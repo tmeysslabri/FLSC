@@ -532,8 +532,11 @@ char *yytext;
 #include "flsc_types.h"
 #include "flsc2sc.h"
 
+#define TMPLEN 16
+
 int linenum = 1;
-#line 537 "flsc2sc-lex.c"
+char tmpstr[TMPLEN];
+#line 540 "flsc2sc-lex.c"
 
 #define INITIAL 0
 
@@ -720,10 +723,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 45 "FLSC2SC.l"
+#line 48 "FLSC2SC.l"
 
 
-#line 727 "flsc2sc-lex.c"
+#line 730 "flsc2sc-lex.c"
 
 	if ( !(yy_init) )
 		{
@@ -809,141 +812,141 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 47 "FLSC2SC.l"
+#line 50 "FLSC2SC.l"
 { linenum++; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 48 "FLSC2SC.l"
+#line 51 "FLSC2SC.l"
 { /* ignore */ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 49 "FLSC2SC.l"
+#line 52 "FLSC2SC.l"
 { /* ignore */ }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 51 "FLSC2SC.l"
-{ return(PARL); }
+#line 54 "FLSC2SC.l"
+{ snprintf(tmpstr, TMPLEN, "%d", linenum); yylval.str = strdup(tmpstr); return(PARL); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 52 "FLSC2SC.l"
-{ return(PARR); }
+#line 55 "FLSC2SC.l"
+{ snprintf(tmpstr, TMPLEN, "%d", linenum); yylval.str = strdup(tmpstr); return(PARR); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 53 "FLSC2SC.l"
-{ return(BRL); }
+#line 56 "FLSC2SC.l"
+{ snprintf(tmpstr, TMPLEN, "%d", linenum); yylval.str = strdup(tmpstr); return(BRL); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 54 "FLSC2SC.l"
-{ return(BRR); }
+#line 57 "FLSC2SC.l"
+{ snprintf(tmpstr, TMPLEN, "%d", linenum); yylval.str = strdup(tmpstr); return(BRR); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 55 "FLSC2SC.l"
+#line 58 "FLSC2SC.l"
 { return(AMP); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 56 "FLSC2SC.l"
+#line 59 "FLSC2SC.l"
 { return(NUNQ); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 58 "FLSC2SC.l"
+#line 61 "FLSC2SC.l"
 { return(NIL); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 60 "FLSC2SC.l"
+#line 63 "FLSC2SC.l"
 { return(DEFINE); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 61 "FLSC2SC.l"
+#line 64 "FLSC2SC.l"
 { return(REQUIRE); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 63 "FLSC2SC.l"
+#line 66 "FLSC2SC.l"
 { return(LAMBDA); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 64 "FLSC2SC.l"
+#line 67 "FLSC2SC.l"
 { return(PATCH); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 65 "FLSC2SC.l"
+#line 68 "FLSC2SC.l"
 { return(MODULE); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 67 "FLSC2SC.l"
+#line 70 "FLSC2SC.l"
 { return(LET); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 68 "FLSC2SC.l"
+#line 71 "FLSC2SC.l"
 { return(LETREC); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 69 "FLSC2SC.l"
+#line 72 "FLSC2SC.l"
 { return(LETSTAR); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 70 "FLSC2SC.l"
+#line 73 "FLSC2SC.l"
 { return(NOWARP); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 72 "FLSC2SC.l"
+#line 75 "FLSC2SC.l"
 { return(IF); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 73 "FLSC2SC.l"
+#line 76 "FLSC2SC.l"
 { return(COND); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 74 "FLSC2SC.l"
+#line 77 "FLSC2SC.l"
 { return(ELSE); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 76 "FLSC2SC.l"
+#line 79 "FLSC2SC.l"
 { yylval.str = strdup(yytext); return(SYMB); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 77 "FLSC2SC.l"
+#line 80 "FLSC2SC.l"
 { yylval.str = strdup(yytext); return(NUM); }
 	YY_BREAK
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 78 "FLSC2SC.l"
+#line 81 "FLSC2SC.l"
 { yylval.str = strdup(yytext); return(STRING); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 80 "FLSC2SC.l"
+#line 83 "FLSC2SC.l"
 { return(ERROR); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 81 "FLSC2SC.l"
+#line 84 "FLSC2SC.l"
 ECHO;
 	YY_BREAK
-#line 947 "flsc2sc-lex.c"
+#line 950 "flsc2sc-lex.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1941,4 +1944,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 81 "FLSC2SC.l"
+#line 84 "FLSC2SC.l"

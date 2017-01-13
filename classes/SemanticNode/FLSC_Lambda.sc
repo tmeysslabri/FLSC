@@ -4,7 +4,7 @@ FLSC_Lambda : FLSC_RestFuncDef {
 	}
 
 	semanticValue {|context|
-		^super.value(context);
+		^super.semanticValue(context);
 	}
 
 	asFLSC {

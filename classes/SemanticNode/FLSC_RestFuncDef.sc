@@ -14,7 +14,7 @@ FLSC_RestFuncDef : FLSC_FuncDef {
 	semanticValue {|context|
 		if(hasRest,
 			{ ^FLSC_RestFunc(context, parmNames, {|callContext| nodeVal.value(callContext)}); },
-			{ ^super.value(context); }
+			{ ^super.semanticValue(context); }
 		);
 	}
 

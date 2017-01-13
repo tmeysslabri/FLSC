@@ -103,7 +103,7 @@ Program:	Defines
 		| PARL REQUIRE STRING PARR Program
 		{ $$ = concat(cons("FLSC_Require(", cons($3, cons(", ",
 			lnbrk(1, $5)))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($4, cons(")" , NULL))))))); }
 
 Defines:	Expr
 		| %empty	{ $$ = cons("nil", NULL); }
@@ -112,7 +112,7 @@ Defines:	Expr
 			lnbrk(1, $3)),
 			lnbrk(0, cons("],",
 			lnbrk(0, $5)))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($4, cons(")" , NULL))))))); }
 
 Expr:	SpecForm | Call | Var | Num | List
 	| NIL	{ $$ = cons("FLSC_Nil()", NULL); }
@@ -124,58 +124,64 @@ Func:		StdFunc | Let | Module
 StdFunc:	PARL FuncOp PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(concat($2, $4), cons("],",
 			lnbrk(1, $6))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($7, cons(")" , NULL))))))); }
 		| PARL FuncOp PARL IdList1 AMP Ident PARR Expr PARR
 		{ $$ = concat(concat(concat(concat($2, $4), cons(",", $6)), cons("],",
 			lnbrk(1, $8))), cons(",",
-			lnbrk(-1, cons("true)", NULL)))); }
+			lnbrk(-1, cons("true).setLines(", cons($1, cons(", ", cons($9, cons(")" , NULL)))))))); }
 		|PARL FuncOp PARL PARR Expr PARR
 		{ $$ = concat(concat($2, cons("],",
 			lnbrk(1, $5))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($6, cons(")" , NULL))))))); }
 		| PARL FuncOp PARL AMP Ident PARR Expr PARR
 		{ $$ = concat(concat(concat($2, $5), cons("],",
 			lnbrk(1, $7))), cons(",",
-			lnbrk(-1, cons("true)", NULL)))); }
+			lnbrk(-1, cons("true).setLines(", cons($1, cons(", ", cons($8, cons(")" , NULL)))))))); }
 
 Module:		PARL MODULE PARL IdList1 PARR Expr PARR
 		{ $$ = concat(concat(cons("FLSC_Module([", $4), cons("],",
 			lnbrk(1, $6))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($7, cons(")" , NULL))))))); }
 		| PARL MODULE PARL PARR Expr PARR
 		{ $$ = concat(cons("FLSC_Module([],",
 			lnbrk(1, $5)),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($6, cons(")" , NULL))))))); }
 
 Let:		PARL LetOp PARL LetList1 PARR Expr PARR
 		{ $$ = concat(concat(concat($2,
 			lnbrk(1, $4)),
 			lnbrk(0, cons("],",
 			lnbrk(0, $6)))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($7, cons(")" , NULL))))))); }
 
 Conditional:	If | Cond
 
 If:		PARL IF Expr Expr PARR
-		{ $$ = concat(concat(cons("FLSC_If(", lnbrk(1, $3)), cons(",", lnbrk(0, $4))), lnbrk(-1, cons(")", NULL))); }
+		{ $$ = concat(concat(cons("FLSC_If(",
+			lnbrk(1, $3)), cons(",",
+			lnbrk(0, $4))),
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($5, cons(")" , NULL))))))); }
 		| PARL IF Expr Expr Expr PARR
 		{ $$ = concat(concat(concat(cons("FLSC_If(",
 			lnbrk(1, $3)), cons(",",
 			lnbrk(0, $4))), cons(",",
 			lnbrk(0, $5))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($6, cons(")" , NULL))))))); }
 
 Cond:		PARL COND CondClsList1 PARR
 		{ $$ = concat(cons("FLSC_Cond([",
 			lnbrk(1, $3)),
-			lnbrk(-1, cons("])", NULL))); }
+			lnbrk(-1, cons("]).setLines(", cons($1, cons(", ", cons($4, cons(")" , NULL))))))); }
 
 Call:		PARL Expr ExprList1 PARR
-		{ $$ = concat(concat(cons("FLSC_Call(", lnbrk(1, $2)), cons(",[", lnbrk(1, $3))) , lnbrk(-2, cons("])", NULL))); }
+		{ $$ = concat(concat(cons("FLSC_Call(",
+			lnbrk(1, $2)), cons(",[",
+			lnbrk(1, $3))) ,
+			lnbrk(-2, cons("]).setLines(", cons($1, cons(", ", cons($4, cons(")" , NULL))))))); }
 
-Var:		SYMB	{ $$ = cons("FLSC_Var('", cons($1, cons("')", NULL))); }
+Var:		SYMB	{ $$ = cons("FLSC_Var('", cons($1, cons("')" , NULL))); }
 
-Num:		NUM	{ $$ = cons("FLSC_Num(", cons($1, cons(")", NULL))); }
+Num:		NUM	{ $$ = cons("FLSC_Num(", cons($1, cons(")" , NULL))); }
 
 Ident:		SYMB		{ $$ = cons("'", cons($1, cons("'", NULL))); }
 		| NUNQ SYMB	{ $$ = cons("FLSC_NonUnique('", cons($2, cons("')", NULL))); }
@@ -191,7 +197,7 @@ FuncOp:		LAMBDA		{ $$ = cons("FLSC_Lambda([", NULL); }
 List:		BRL ExprList1 BRR
 		{ $$ = concat(cons("FLSC_List([",
 			lnbrk(1, $2)),
-			lnbrk(-1, cons("])", NULL))); } 
+			lnbrk(-1, cons("]).setLines(", cons($1, cons(", ", cons($3, cons(")" , NULL))))))); } 
 
 ExprList1:	%empty		{ $$ = cons("", NULL); }
 		| Expr ExprList	{ $$ = concat($1, $2); }

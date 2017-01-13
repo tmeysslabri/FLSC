@@ -67,12 +67,6 @@ FLSC_Interpreter {
 		^this;
 	}
 
-	evaluate {
-		if(semanticTree.isKindOf(FLSC_ErrNode))
-		{^treeValue = semanticTree.asFLSC}
-		{^treeValue = semanticTree.value(curContext, library, workingDir)};
-	}
-
 	loadPackage {|fileName|
 		this.readFile(fileName);
 		this.evaluate;
@@ -84,12 +78,36 @@ FLSC_Interpreter {
 
 	reset { curContext = library }
 
+	processError {|error|
+		if(error.isKindOf(FLSC_LocError))
+		{
+			inputString.split($\n)[error.start-1..error.end-1].do(_.postln);
+			"[%-%]: %".format(error.start, error.end, error.what).postln;
+		} {error.throw}
+	}
+
+	evaluate {
+		try {
+			if(semanticTree.isKindOf(FLSC_ErrNode))
+			{treeValue = semanticTree.asFLSC}
+			{treeValue = semanticTree.value(curContext, library, workingDir)};
+		} {|error|
+			this.processError(error)
+		}
+		^treeValue;
+	}
+
 	asFLSCScore {|before = 0, after = 0|
 		if(treeValue.isNil) {this.evaluate};
-		if(treeValue.isFLSCScoreSpec ||
-			(treeValue.isArray && treeValue.isString.not))
-		{^scoreValue = treeValue.asFLSCScoreSpec(true).asFLSCScore(before, after)}
-		{^scoreValue = treeValue};
+		try {
+			if(treeValue.isFLSCScoreSpec ||
+				(treeValue.isArray && treeValue.isString.not))
+			{scoreValue = treeValue.asFLSCScoreSpec(true).asFLSCScore(before, after)}
+			{scoreValue = treeValue};
+		} {|error|
+			this.processError(error);
+		}
+		^scoreValue;
 	}
 
 	play {|before = 0, after = 0, doneAction = nil|

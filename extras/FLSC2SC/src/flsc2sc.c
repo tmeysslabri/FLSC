@@ -439,15 +439,15 @@ static const yytype_uint8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint16 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,   102,   102,   105,   106,   111,   112,   113,   120,   120,
-     120,   120,   120,   121,   123,   123,   127,   127,   127,   129,
-     133,   137,   141,   180,   184,   189,   196,   196,   198,   200,
-     207,   212,   215,   217,   219,   220,   222,   223,   224,   225,
-     227,   228,   230,   235,   236,   238,   239,   242,   244,   245,
-     247,   248,   250,   251,   253,   255,   256,   257,   259,   260,
-     261,   263,   265
+       0,   100,   100,   102,   103,   108,   109,   110,   117,   117,
+     117,   117,   117,   118,   120,   120,   122,   122,   122,   124,
+     128,   132,   136,   141,   145,   150,   157,   157,   159,   164,
+     171,   176,   182,   184,   186,   187,   189,   190,   191,   192,
+     194,   195,   197,   202,   203,   205,   206,   209,   211,   212,
+     214,   215,   217,   218,   220,   222,   223,   224,   226,   227,
+     228,   230,   232
 };
 #endif
 
@@ -1560,319 +1560,325 @@ yyreduce:
     switch (yyn)
       {
           case 2:
-#line 102 "FLSC2SC.y" /* yacc.c:1646  */
+#line 100 "FLSC2SC.y" /* yacc.c:1646  */
     { printwords(concat((yyvsp[0].ptr), cons("\n", NULL))->start); }
 #line 1566 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 107 "FLSC2SC.y" /* yacc.c:1646  */
+#line 104 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(cons("FLSC_Require(", cons((yyvsp[-2].str), cons(", ",
 			lnbrk(1, (yyvsp[0].ptr))))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-4].str), cons(", ", cons((yyvsp[-1].str), cons(")" , NULL))))))); }
 #line 1574 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 112 "FLSC2SC.y" /* yacc.c:1646  */
+#line 109 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = cons("nil", NULL); }
 #line 1580 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 114 "FLSC2SC.y" /* yacc.c:1646  */
+#line 111 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(concat(cons("FLSC_Define([",
 			lnbrk(1, (yyvsp[-2].ptr))),
 			lnbrk(0, cons("],",
 			lnbrk(0, (yyvsp[0].ptr))))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-4].str), cons(", ", cons((yyvsp[-1].str), cons(")" , NULL))))))); }
 #line 1590 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 121 "FLSC2SC.y" /* yacc.c:1646  */
+#line 118 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = cons("FLSC_Nil()", NULL); }
 #line 1596 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 130 "FLSC2SC.y" /* yacc.c:1646  */
+#line 125 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(concat(concat((yyvsp[-5].ptr), (yyvsp[-3].ptr)), cons("],",
 			lnbrk(1, (yyvsp[-1].ptr)))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-6].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
 #line 1604 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 134 "FLSC2SC.y" /* yacc.c:1646  */
+#line 129 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(concat(concat(concat((yyvsp[-7].ptr), (yyvsp[-5].ptr)), cons(",", (yyvsp[-3].ptr))), cons("],",
 			lnbrk(1, (yyvsp[-1].ptr)))), cons(",",
-			lnbrk(-1, cons("true)", NULL)))); }
+			lnbrk(-1, cons("true).setLines(", cons((yyvsp[-8].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL)))))))); }
 #line 1612 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 138 "FLSC2SC.y" /* yacc.c:1646  */
+#line 133 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(concat((yyvsp[-4].ptr), cons("],",
 			lnbrk(1, (yyvsp[-1].ptr)))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-5].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
 #line 1620 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 142 "FLSC2SC.y" /* yacc.c:1646  */
+#line 137 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(concat(concat((yyvsp[-6].ptr), (yyvsp[-3].ptr)), cons("],",
 			lnbrk(1, (yyvsp[-1].ptr)))), cons(",",
-			lnbrk(-1, cons("true)", NULL)))); }
+			lnbrk(-1, cons("true).setLines(", cons((yyvsp[-7].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL)))))))); }
 #line 1628 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 181 "FLSC2SC.y" /* yacc.c:1646  */
+#line 142 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(concat(cons("FLSC_Module([", (yyvsp[-3].ptr)), cons("],",
 			lnbrk(1, (yyvsp[-1].ptr)))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-6].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
 #line 1636 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 185 "FLSC2SC.y" /* yacc.c:1646  */
+#line 146 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(cons("FLSC_Module([],",
 			lnbrk(1, (yyvsp[-1].ptr))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-5].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
 #line 1644 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 190 "FLSC2SC.y" /* yacc.c:1646  */
+#line 151 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(concat(concat((yyvsp[-5].ptr),
 			lnbrk(1, (yyvsp[-3].ptr))),
 			lnbrk(0, cons("],",
 			lnbrk(0, (yyvsp[-1].ptr))))),
-			lnbrk(-1, cons(")", NULL))); }
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-6].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
 #line 1654 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 199 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(concat(cons("FLSC_If(", lnbrk(1, (yyvsp[-2].ptr))), cons(",", lnbrk(0, (yyvsp[-1].ptr)))), lnbrk(-1, cons(")", NULL))); }
-#line 1660 "flsc2sc.c" /* yacc.c:1646  */
+#line 160 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(concat(cons("FLSC_If(",
+			lnbrk(1, (yyvsp[-2].ptr))), cons(",",
+			lnbrk(0, (yyvsp[-1].ptr)))),
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-4].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
+#line 1663 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 201 "FLSC2SC.y" /* yacc.c:1646  */
+#line 165 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(concat(concat(cons("FLSC_If(",
 			lnbrk(1, (yyvsp[-3].ptr))), cons(",",
 			lnbrk(0, (yyvsp[-2].ptr)))), cons(",",
 			lnbrk(0, (yyvsp[-1].ptr)))),
-			lnbrk(-1, cons(")", NULL))); }
-#line 1670 "flsc2sc.c" /* yacc.c:1646  */
+			lnbrk(-1, cons(").setLines(", cons((yyvsp[-5].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
+#line 1673 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 208 "FLSC2SC.y" /* yacc.c:1646  */
+#line 172 "FLSC2SC.y" /* yacc.c:1646  */
     { (yyval.ptr) = concat(cons("FLSC_Cond([",
 			lnbrk(1, (yyvsp[-1].ptr))),
-			lnbrk(-1, cons("])", NULL))); }
-#line 1678 "flsc2sc.c" /* yacc.c:1646  */
+			lnbrk(-1, cons("]).setLines(", cons((yyvsp[-3].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
+#line 1681 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 213 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(concat(cons("FLSC_Call(", lnbrk(1, (yyvsp[-2].ptr))), cons(",[", lnbrk(1, (yyvsp[-1].ptr)))) , lnbrk(-2, cons("])", NULL))); }
-#line 1684 "flsc2sc.c" /* yacc.c:1646  */
-    break;
-
-  case 32:
-#line 215 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_Var('", cons((yyvsp[0].str), cons("')", NULL))); }
+#line 177 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(concat(cons("FLSC_Call(",
+			lnbrk(1, (yyvsp[-2].ptr))), cons(",[",
+			lnbrk(1, (yyvsp[-1].ptr)))) ,
+			lnbrk(-2, cons("]).setLines(", cons((yyvsp[-3].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
 #line 1690 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 33:
-#line 217 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_Num(", cons((yyvsp[0].str), cons(")", NULL))); }
+  case 32:
+#line 182 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_Var('", cons((yyvsp[0].str), cons("')" , NULL))); }
 #line 1696 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 34:
-#line 219 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("'", cons((yyvsp[0].str), cons("'", NULL))); }
+  case 33:
+#line 184 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_Num(", cons((yyvsp[0].str), cons(")" , NULL))); }
 #line 1702 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 35:
-#line 220 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_NonUnique('", cons((yyvsp[0].str), cons("')", NULL))); }
+  case 34:
+#line 186 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("'", cons((yyvsp[0].str), cons("'", NULL))); }
 #line 1708 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 36:
-#line 222 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_Let([", NULL); }
+  case 35:
+#line 187 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_NonUnique('", cons((yyvsp[0].str), cons("')", NULL))); }
 #line 1714 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 37:
-#line 223 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_LetRec([", NULL); }
+  case 36:
+#line 189 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_Let([", NULL); }
 #line 1720 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 38:
-#line 224 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_LetStar([", NULL); }
+  case 37:
+#line 190 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_LetRec([", NULL); }
 #line 1726 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 39:
-#line 225 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_NoWarp([", NULL); }
+  case 38:
+#line 191 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_LetStar([", NULL); }
 #line 1732 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 40:
-#line 227 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_Lambda([", NULL); }
+  case 39:
+#line 192 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_NoWarp([", NULL); }
 #line 1738 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 41:
-#line 228 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("FLSC_Patch([", NULL); }
+  case 40:
+#line 194 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_Lambda([", NULL); }
 #line 1744 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 42:
-#line 231 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(cons("FLSC_List([",
-			lnbrk(1, (yyvsp[-1].ptr))),
-			lnbrk(-1, cons("])", NULL))); }
-#line 1752 "flsc2sc.c" /* yacc.c:1646  */
+  case 41:
+#line 195 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("FLSC_Patch([", NULL); }
+#line 1750 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 43:
-#line 235 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("", NULL); }
+  case 42:
+#line 198 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(cons("FLSC_List([",
+			lnbrk(1, (yyvsp[-1].ptr))),
+			lnbrk(-1, cons("]).setLines(", cons((yyvsp[-2].str), cons(", ", cons((yyvsp[0].str), cons(")" , NULL))))))); }
 #line 1758 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 44:
-#line 236 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat((yyvsp[-1].ptr), (yyvsp[0].ptr)); }
+  case 43:
+#line 202 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("", NULL); }
 #line 1764 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 45:
-#line 238 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("", NULL); }
+  case 44:
+#line 203 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat((yyvsp[-1].ptr), (yyvsp[0].ptr)); }
 #line 1770 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 46:
-#line 239 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(cons(",", lnbrk(0, (yyvsp[-1].ptr))), (yyvsp[0].ptr)); }
+  case 45:
+#line 205 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("", NULL); }
 #line 1776 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 47:
-#line 242 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat((yyvsp[-1].ptr), (yyvsp[0].ptr)); }
+  case 46:
+#line 206 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(cons(",", lnbrk(0, (yyvsp[-1].ptr))), (yyvsp[0].ptr)); }
 #line 1782 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 48:
-#line 244 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("", NULL); }
+  case 47:
+#line 209 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat((yyvsp[-1].ptr), (yyvsp[0].ptr)); }
 #line 1788 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 49:
-#line 245 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(concat((yyvsp[-1].ptr), (yyvsp[0].ptr)), cons(",", NULL)); }
+  case 48:
+#line 211 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("", NULL); }
 #line 1794 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 50:
-#line 247 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("", NULL); }
+  case 49:
+#line 212 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(concat((yyvsp[-1].ptr), (yyvsp[0].ptr)), cons(",", NULL)); }
 #line 1800 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 51:
-#line 248 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat((yyvsp[-1].ptr), (yyvsp[0].ptr)); }
+  case 50:
+#line 214 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("", NULL); }
 #line 1806 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 52:
-#line 250 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("", NULL); }
+  case 51:
+#line 215 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat((yyvsp[-1].ptr), (yyvsp[0].ptr)); }
 #line 1812 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 53:
-#line 251 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(cons(",", lnbrk(0, (yyvsp[-1].ptr))), (yyvsp[0].ptr)); }
+  case 52:
+#line 217 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("", NULL); }
 #line 1818 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 54:
-#line 253 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(concat(cons("[", (yyvsp[-2].ptr)), cons(",", (yyvsp[-1].ptr))), cons("]", NULL)); }
+  case 53:
+#line 218 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(cons(",", lnbrk(0, (yyvsp[-1].ptr))), (yyvsp[0].ptr)); }
 #line 1824 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 55:
-#line 255 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("", NULL); }
+  case 54:
+#line 220 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(concat(cons("[", (yyvsp[-2].ptr)), cons(",", (yyvsp[-1].ptr))), cons("]", NULL)); }
 #line 1830 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 56:
-#line 256 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat((yyvsp[-1].ptr), (yyvsp[0].ptr)); }
+  case 55:
+#line 222 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("", NULL); }
 #line 1836 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 57:
-#line 257 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = (yyvsp[0].ptr); }
+  case 56:
+#line 223 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat((yyvsp[-1].ptr), (yyvsp[0].ptr)); }
 #line 1842 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 58:
-#line 259 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons("", NULL); }
+  case 57:
+#line 224 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = (yyvsp[0].ptr); }
 #line 1848 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 59:
-#line 260 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(cons(",", lnbrk(0, (yyvsp[-1].ptr))), (yyvsp[0].ptr)); }
+  case 58:
+#line 226 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons("", NULL); }
 #line 1854 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 60:
-#line 261 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = cons(",", lnbrk(0, (yyvsp[0].ptr))); }
+  case 59:
+#line 227 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(cons(",", lnbrk(0, (yyvsp[-1].ptr))), (yyvsp[0].ptr)); }
 #line 1860 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 61:
-#line 263 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(concat(cons("[", (yyvsp[-2].ptr)), cons(",", (yyvsp[-1].ptr))), cons("]", NULL)); }
+  case 60:
+#line 228 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = cons(",", lnbrk(0, (yyvsp[0].ptr))); }
 #line 1866 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
-  case 62:
-#line 265 "FLSC2SC.y" /* yacc.c:1646  */
-    { (yyval.ptr) = concat(cons("[FLSC_Else(),", (yyvsp[-1].ptr)), cons("]", NULL)); }
+  case 61:
+#line 230 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(concat(cons("[", (yyvsp[-2].ptr)), cons(",", (yyvsp[-1].ptr))), cons("]", NULL)); }
 #line 1872 "flsc2sc.c" /* yacc.c:1646  */
     break;
 
+  case 62:
+#line 232 "FLSC2SC.y" /* yacc.c:1646  */
+    { (yyval.ptr) = concat(cons("[FLSC_Else(),", (yyvsp[-1].ptr)), cons("]", NULL)); }
+#line 1878 "flsc2sc.c" /* yacc.c:1646  */
+    break;
 
-#line 1876 "flsc2sc.c" /* yacc.c:1646  */
+
+#line 1882 "flsc2sc.c" /* yacc.c:1646  */
         default: break;
       }
     if (yychar_backup != yychar)
@@ -2112,7 +2118,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 267 "FLSC2SC.y" /* yacc.c:1906  */
+#line 234 "FLSC2SC.y" /* yacc.c:1906  */
 
 
 wptr *cons(char *new, wptr *rest) {
