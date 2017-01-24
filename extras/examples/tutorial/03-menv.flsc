@@ -1,16 +1,16 @@
-;;;; exemple de menv (générateur d'enveloppe)
-;;;; la même chose que 02 en utilisant un raccourci
+;;;; exemple de menv (gÃ©nÃ©rateur d'enveloppe)
+;;;; la mÃªme chose que 02 en utilisant un raccourci
 
-;;; la composition séquentielle [seq]
+;;; la composition sÃ©quentielle [seq]
 ;;; et les deux segments d'enveloppe [mseg]
-;;; sont remplacés par un générateur d'enveloppe [menv]
+;;; sont remplacÃ©s par un gÃ©nÃ©rateur d'enveloppe [menv]
 
-;; début comme 02
+;; dÃ©but comme 02
 ((patch ()
    [2
    (m* (mosc 220)
      ;; enveloppe
-     ;; on déclare toujours la signature temporelle
+     ;; on dÃ©clare toujours la signature temporelle
      (sign [0.5]
-       ;; menv produit la même enveloppe qu'en 02
+       ;; menv produit la mÃªme enveloppe qu'en 02
        (menv [0 0.1 0])))])) ; l'argument est la liste des niveaux

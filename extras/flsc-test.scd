@@ -6,6 +6,7 @@ FLSC_Interpreter().read("(random)").evaluate;
 // erreur de syntaxe
 FLSC_Interpreter().read(")").play;
 
+FLSC_Interpreter().read("dur").evaluate - 0.5;
 
 // exemple de fonction récursive (la factorielle)
 (

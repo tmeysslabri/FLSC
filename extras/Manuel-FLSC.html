@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-01-12"/>
+<meta name="create-date" content="2017-01-24"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Manuel de référence FLSC</title>
 </head>
@@ -50,6 +50,9 @@ Table des matières
 </div>
 <div class="toc">
 <a class="Link" href="#toc-Subsubsection-1.3.5">1.3.5 Distribution de support</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-1.3.6">1.3.6 Temporalité initiale des objets</a>
 </div>
 </div>
 </div>
@@ -339,10 +342,10 @@ A l’intérieur des définitions de modules, néanmoins, ces usages sont restre
 Une instance de module (un signal) a nécessairement un début et une fin, qui définissent ce qu’on nomme son <i>support temporel</i>. En outre certains signaux (ceux qui sont définis par des enveloppes) se réfèrent également à des valeurs temporelles internes au support, que l’on nomme <i>points-clef</i>; une succession de points-clef dans un support est nommée <i>signature temporelle</i>.
 </div>
 <div class="Standard">
-De façon à assurer la cohérence des valeurs temporelles, celles-ci ne sont pas spécifiées directement à l’intérieur des modules, mais produites au moyen de fonctions spécifiques (cf. <a class="Reference" href="#sub:Altérations-de-signature">3.4↓</a>) qui effectuent des transformations cumulatives à partir du référentiel temporel global de la partition; ainsi toute expression est située dans ce que l’on nomme un <i>contexte temporel</i>.
+De façon à assurer la cohérence des valeurs temporelles, celles-ci ne sont pas spécifiées directement à l’intérieur des modules, mais produites au moyen de fonctions spécifiques (cf. <a class="Reference" href="#sub:Altérations-de-signature">3.4↓</a>) qui effectuent des transformations cumulatives jusqu’au référentiel temporel global de la partition; on nomme son <i>contexte temporel</i> l’ensemble des transformations qui s’appliquent à une sous-expression donnée.
 </div>
 <div class="Standard">
-Le comportement temporel des objets FLSC est déterminé (sauf exception) par le contexte temporel dans lequel ils apparaissent, et non celui dans lequel ils sont définis; leur sens fait abstraction du contexte temporel. Ainsi un même objet peut être réutilisé dans différents contextes, et aura dans ce cas des morphologies potentiellement différentes.
+Le comportement temporel des objets FLSC est déterminé par le contexte temporel dans lequel ils apparaissent. Ils sont spécifiés par une <i>morphologie non quantifiée</i> (qui fait abstraction de la quantification des valeurs temporelles), et leur temporalité est ensuite déterminée par l’ensemble des opérateurs temporels qui s’appliquent à eux (c’est à dire leur contexte temporel). Ainsi un même objet peut être réutilisé dans différents contextes, et aura dans ce cas des morphologies potentiellement différentes.
 </div>
 <h3 class="Subsubsection">
 <a class="toc" name="toc-Subsubsection-1.3.1">1.3.1</a> Temporalité globale
@@ -385,6 +388,24 @@ L’opération inverse est également possible, elle consiste à se référer de
 </div>
 <div class="Standard">
 Un opérateur (cf. <a class="Reference" href="#sub:nowarp">3.1.3↓</a>) permet de définir <i>dans le contexte courant</i> des variables qui pourront être lues dans un sous-contexte, <i>sans application des transformations successives</i>. Ceci permet notamment de restituer des phénomènes morphologiques d’ordre général, dans des objets composés de petits éléments.
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-1.3.6">1.3.6</a> Temporalité initiale des objets
+</h3>
+<div class="Standard">
+Avant toute transformation par les opérateurs temporels, la morphologie abstraite des objets est toujours la même:
+</div>
+<ul>
+<li>
+Ils sont définis du début à la fin d’un support temporel abstrait
+</li>
+<li>
+Dans le cas où ils dépendent d’une signature, leurs points-clef internes sont les indices successifs d’une signature abstraite, à partir de 1
+</li>
+
+</ul>
+<div class="Standard">
+Il est donc nécessaire d’appliquer un support temporel sur n’importe quel objet, et (au préalable) une signature sur les objets à points-clef.
 </div>
 <h1 class="Section">
 <a class="toc" name="toc-Section-2">2</a> Eléments standard des langages fonctionnels
@@ -1605,6 +1626,8 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 <div class="Standard">
 <div class="listing">
 <pre class="listing">​
+;;;; exemple de calcul simple: la factorielle
+​
 ;;; on utilise l’arithmétique, une comparaison,
 ;;; une conditionnelle, une fonction, et un letrec
 ​
@@ -1628,7 +1651,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; oscillateur et enveloppe dynamique à deux segments
+<pre class="listing">​
+;;;; exemple minimaliste de partition
+;;;; oscillateur et enveloppe dynamique à deux segments
 ​
 ;;; on utilise un instrument virtuel [patch],
 ;;; un module arithmétique [m*],
@@ -1661,7 +1686,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 02 en utilisant un raccourci
+<pre class="listing">​
+;;;; exemple de menv (générateur d’enveloppe)
+;;;; la même chose que 02 en utilisant un raccourci
 ​
 ;;; la composition séquentielle [seq]
 ;;; et les deux segments d’enveloppe [mseg]
@@ -1685,7 +1712,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 03 avec une fréquence,
+<pre class="listing">​
+;;;; exemple de patch avec parametres
+;;;; la même chose que 03 avec une fréquence,
 ;;;; une amplitude et une durée parametrables
 ​
 ;; on déclare des paramètres
@@ -1705,7 +1734,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 04, sauf que la fréquence
+<pre class="listing">​
+;;;; exemple de patch avec parametre signal
+;;;; la même chose que 04, sauf que la fréquence
 ;;;; est un signal pseudo-aléatoire
 ​
 ;; l’instrument est le même
@@ -1724,7 +1755,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; on introduit une fonction qui calcule une enveloppe
+<pre class="listing">​
+;;;; exemple de générateur de paramètre
+;;;; on introduit une fonction qui calcule une enveloppe
 ​
 ;; introduction de fonction (générateur d’enveloppe)
 (let ((adsr (lambda (sus)
@@ -1750,6 +1783,8 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 <div class="Standard">
 <div class="listing">
 <pre class="listing">​
+;;;; exemple de sous-signature
+​
 ;;; on ajoute une modulation à l’enveloppe de 06
 ;;; cela implique une enveloppe de modulateur
 ;;; définie sur l’un des segments d’enveloppe
@@ -1785,7 +1820,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 04 avec une liste d’oscillateurs
+<pre class="listing">​
+;;;; exemple de liste de signaux
+;;;; la même chose que 04 avec une liste d’oscillateurs
 ​
 ;;; note: les listes ne sont acceptées
 ;;; que pour les signaux audio
@@ -1815,7 +1852,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 08 avec une distorsion harmonique
+<pre class="listing">​
+;;;; exemple de liste de signaux (2)
+;;;; la même chose que 08 avec une distorsion harmonique
 ​
 ;; on introduit la fonction de distorsion
 (let ((warp (lambda (i) (** i 0.5)))) ; fonction racine
@@ -1839,7 +1878,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 09 avec un indice dynamique
+<pre class="listing">​
+;;;; exemple de liste de signaux (3)
+;;;; la même chose que 09 avec un indice dynamique
 ​
 ;;; on introduit également le split [!] qui permet
 ;;; d’éviter des clones inutiles
@@ -1873,7 +1914,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 08 avec des composantes non-synchrones
+<pre class="listing">​
+;;;; exemple de supports temporels multiples
+;;;; la même chose que 08 avec des composantes non-synchrones
 ​
 ;; time est ici la durée de chaque composante
 ;; dt est le décalage entre les composantes
@@ -1903,7 +1946,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; le patch est donc une fonction d’ordre supérieur
+<pre class="listing">​
+;;;; exemple de supports temporels donnés par une fonction
+;;;; le patch est donc une fonction d’ordre supérieur
 ​
 ;; déclaration de la fonction support
 (let ((makebase (lambda (i) [(* 0.5 i) (+ 1 i)])))
@@ -1936,7 +1981,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 10 avec une fonction de fréquence globale
+<pre class="listing">​
+;;;; exemple de nowarp
+;;;; la même chose que 10 avec une fonction de fréquence globale
 ​
 ((patch (amp basefreq time dt num)
    ;; on calcule la durée totale
@@ -1965,7 +2012,9 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 </h2>
 <div class="Standard">
 <div class="listing">
-<pre class="listing">;;;; la même chose que 13 avec une enveloppe
+<pre class="listing">​
+;;;; exemple de nowarp
+;;;; la même chose que 13 avec une enveloppe
 ​
 ((patch (amp basefreq time dt num)
    ;; on calcule la durée totale
