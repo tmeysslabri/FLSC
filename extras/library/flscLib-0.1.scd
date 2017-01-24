@@ -383,7 +383,7 @@
 						var start = times[index];
 						if(index >= (times.size-1))
 						{FLSC_Error("Signature index(%) is undefined".format(index)).throw};
-						start + t[1].(times[index+1] - start)
+						start + t[1].(times[index+1] - start);
 					} {
 						// la valeur peut provenir d'un module, d'une durée non-signée
 						// ou d'une signature de remplacement
