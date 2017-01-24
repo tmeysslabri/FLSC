@@ -85,20 +85,18 @@ FLSC_Interpreter {
 			var start = error.start-1;
 			var end = error.end-1;
 			var div = "".padLeft(64, "-");
-			lines[start-3..start-1].do(_.postln);
+			lines[start-2..start-1].do(_.postln);
 			div.postln;
 			lines[start..end].do(_.postln);
 			div.postln;
-			lines[end+1..end+3].do(_.postln);
+			lines[end+1..end+2].do(_.postln);
 			"[%-%]: %".format(error.start, error.end, error.what).postln;
 		} {error.throw}
 	}
 
 	evaluate {
 		try {
-			if(semanticTree.isKindOf(FLSC_ErrNode))
-			{treeValue = semanticTree.asFLSC}
-			{treeValue = semanticTree.value(curContext, library, workingDir)};
+			treeValue = semanticTree.value(curContext, library, workingDir);
 		} {|error|
 			this.processError(error)
 		}

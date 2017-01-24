@@ -2186,7 +2186,7 @@ void printwords(words *text) {
 }
 
 int yyerror(const char *s) {
-	printf("FLSC_ErrNode(\"Line %d: %s\")\n", linenum, s);
+	printf("FLSC_ErrNode(\"%s\").setLines(%d, %d)\n", s, linenum, linenum);
 	return 0;
 }
 
