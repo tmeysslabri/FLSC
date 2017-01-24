@@ -381,7 +381,9 @@
 					if(t.isArray) {
 						var index = t[0];
 						var start = times[index];
-						(start + t[1].(times[index+1] - start))
+						if(index >= (times.size-1))
+						{FLSC_Error("Signature index(%) is undefined".format(index)).throw};
+						start + t[1].(times[index+1] - start)
 					} {
 						// la valeur peut provenir d'un module, d'une durée non-signée
 						// ou d'une signature de remplacement
@@ -414,7 +416,14 @@
 						[i, t]
 					}, sig)
 				};
-				FLSC_CompSpec(rate, warps);
+				FLSC_CompSpec(rate, warps, {|warp|
+					// vérifier que la fin de la séquence est bien la fin du support
+					var seqEnd = warp.([sigs.size - 1, {|t|t}]);
+					var baseEnd = warp.({|t|t});
+					if(seqEnd != baseEnd)
+					{FLSC_Error("End of seq(%) is different from base end(%)"
+						.format(seqEnd, baseEnd)).throw}
+				});
 		})],
 	]
 }.value();

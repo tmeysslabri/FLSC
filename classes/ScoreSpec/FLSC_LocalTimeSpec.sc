@@ -25,6 +25,12 @@ FLSC_LocalTimeSpec : FLSC_LocalScoreSpec {
 		// récupérer les valeurs de la subScore
 		score.add(subScore);
 
+		// si la score.outBus.end == inf,
+		// alors nous sommes en train de définir un support
+		// dans le contexte global; corriger l'erreur
+		if(score.outBus.end == inf)
+		{score.outBus.end = score.end}
+
 		^score;
 	}
 }

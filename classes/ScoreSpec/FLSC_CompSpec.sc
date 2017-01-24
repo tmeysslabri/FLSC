@@ -1,17 +1,21 @@
 FLSC_CompSpec : FLSC_LocalScoreSpec {
 	// la liste des FLSC_WarpSpec auxquelles on se réfère
 	var subSpecs;
+	// la fonction de vérification
+	var checkFunc;
 
-	*new {|rate, specs|
-		^super.new(rate, List()).compSpecInit(specs);
+	*new {|rate, specs, checkFunc|
+		^super.new(rate, List()).compSpecInit(specs, checkFunc);
 	}
 
-	compSpecInit {|specs|
+	compSpecInit {|specs, check|
 		subSpecs = specs;
+		checkFunc = check;
 		^this;
 	}
 
 	scoreValue {|outBus, timeWarp, varDict, noWarpDict|
+		checkFunc.(timeWarp);
 		this.initScore(outBus, timeWarp, varDict, noWarpDict);
 
 		// on rappelle itérativement sur les FLSC_WarpSpec
