@@ -6,7 +6,6 @@
 		['fl', false],
 		['tr', true],
 		['inf', inf],
-		['dur', {|t|t}], // durée du support temporel courant
 		// FONCTIONS NUMERIQUES:
 		// generateur aléatoire
 		// attention, si l'argument est un entier, random produira des entiers
@@ -325,6 +324,15 @@
 		})],
 
 		// ALTERATIONS DE SIGNATURE:
+		// durée du support temporel courant
+		['dur', {|t|t}],
+		// liste de temps relatifs à la durée
+		['relt', FLSC_Function(nil, ['list'],
+			{|ctxt| FLSC_Var('list').value(ctxt).collect(_*{|t|t})})],
+		['negt', FLSC_Function(nil, ['list'],
+			{|ctxt| FLSC_Var('list').value(ctxt).collect({|t|t}-_)})],
+		['rnt', FLSC_Function(nil, ['list'],
+			{|ctxt| FLSC_Var('list').value(ctxt).collect {|e|{|t|t}*(1-e)}})],
 		// retard
 		['delay', FLSC_Function(nil, ['theta', 'sig'],
 			{|ctxt|
