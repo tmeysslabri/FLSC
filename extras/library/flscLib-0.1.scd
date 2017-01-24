@@ -138,7 +138,9 @@
 			{|ctxt| (FLSC_Var('a').value(ctxt)..FLSC_Var('b').value(ctxt))})],
 		['reverse', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).reverse})],
 		['repeat', FLSC_Function(nil, ['elt', 'num'],
-			{|ctxt| FLSC_Var('elt').value(ctxt) ! FLSC_Var('num').value(ctxt)})],
+			{|ctxt|
+				var elt = FLSC_Var('elt').value(ctxt);
+				Array.fill(FLSC_Var('num').value(ctxt), {elt})})],
 		// accesseurs:
 		['elt', FLSC_Function(nil, ['list', 'i'],
 			{|ctxt| FLSC_Var('list').value(ctxt)[FLSC_Var('i').value(ctxt)]})],
