@@ -52,6 +52,8 @@ FLSC_Score {
 
 	checkTimes {
 		case
+		{end == inf}
+		{FLSC_Error("Local specification in global time referential").throw}
 		{start < end}  {^this}
 		{start == end} {^FLSC_Score(nil, t0: start, tf: end)}
 		{start > end}

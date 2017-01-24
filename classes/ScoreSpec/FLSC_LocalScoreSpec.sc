@@ -6,6 +6,8 @@ FLSC_LocalScoreSpec : FLSC_ScoreSpec {
 		if(outBus.notNil) {^outBus}
 		{
 			var bus = FLSC_Bus(rate, timeWarp.value(0), timeWarp.value({|t|t}));
+			// if(bus.end == inf)
+			// {FLSC_Error("Local specification in global time referential").throw};
 			score.busList.add(bus);
 			^bus;
 		}
