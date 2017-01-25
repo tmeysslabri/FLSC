@@ -182,6 +182,11 @@
 			{|ctxt| FLSC_Var('func').value(ctxt).value(FLSC_Var('arglist').value(ctxt))})],
 
 		// GENERATEURS DE SIGNAL:
+		// constante
+		['const', FLSC_Function(nil, ['num'],
+			{|ctxt|
+				FLSC_UGen.newFromClass([FLSC_Var('num').value(ctxt)],
+					DC, ['in'])})],
 		// oscillateur sinusoïdal
 		['osc', FLSC_Function(nil, ['freq', 'phi'],
 			{|ctxt|

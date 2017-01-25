@@ -45,6 +45,9 @@
 		['mmax', "(module (a b) (max a b))"],
 
 		// modules générateurs de signaux:
+		// valeur nulle
+		['m0', "(module () (const 0))"],
+		['mc', "(module (num) (const num))"],
 		// modules standard
 		['mosc', "(module (freq phi) (osc freq phi))"],
 		['mseg', "(module (start end) (seg start end))"],
