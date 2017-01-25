@@ -25,9 +25,13 @@ FLSC_ScoreSpec {
 		try {
 			res = this.scoreValue(outBus, timeWarp, varDict, noWarpDict);
 		} {|error|
-			if(error.isKindOf(FLSC_Error))
-			{FLSC_LocError(error.errorString, parent.start, parent.end).throw}
+			case
+			{error.isKindOf(FLSC_LocError)}
 			{error.throw}
+			{error.isKindOf(FLSC_Error)}
+			{FLSC_LocError(error.errorString, parent.start, parent.end).throw}
+			{true}
+			{error.reportError; Main.stop}
 		}
 		^res;
 	}

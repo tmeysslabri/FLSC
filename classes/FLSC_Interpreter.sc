@@ -91,7 +91,8 @@ FLSC_Interpreter {
 			div.postln;
 			lines[end+1..end+2].do(_.postln);
 			"[%-%]: %".format(error.start, error.end, error.what).postln;
-		} {error.throw}
+		}
+		{error.reportError; Main.stop}
 	}
 
 	evaluate {
