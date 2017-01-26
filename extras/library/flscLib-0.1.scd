@@ -376,18 +376,50 @@
 				{FLSC_Error("Non-audio in base: %".format(sig)).throw};
 				FLSC_LocalTimeSpec('audio', warp);
 		})],
+		// signatures:
 		// definition de signature
 		['sign', FLSC_Function(nil, ['times', 'sig'],
 			{|ctxt|
-				var times = [0] ++ FLSC_Var('times').value(ctxt) ++ [{|t|t}];
+				var times = FLSC_Var('times').value(ctxt);
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp = FLSC_WarpSpec({|t|
 					if(t.isArray) {
-						var index = t[0];
-						var start = times[index];
-						if(index >= (times.size-1))
+						var indexes = t[0].asArray;
+						var subsign = times;
+						while {(indexes.size > 1) && subsign.notFLSCNil}
+						{
+							subsign = subsign[indexes.first];
+							indexes = indexes[1..];
+						};
+						if(subsign.notNil)
+						{
+							var index = indexes.first;
+							var selected = [0] ++ subsign ++ [{|t|t}];
+							var start = selected[index];
+							var end = selected[index+1];
+							if(selected.rank != 1)
+							{FLSC_Error("Multiple signature selected: rank(%)"
+								.format(selected.rank)).throw};
+							if(index > (selected.size-2))
+							{FLSC_Error("Signature index(%) is undefined".format(index)).throw};
+							start + t[1].(end - start);
+						} {
+							[indexes, t[1]]
+						};
+						/*
+						var indexes = t[0].asArray;
+						var index = indexes.last;
+						var selected = [0] ++ times.performList(\slice,
+							indexes[..indexes.size-2]) ++ [{|t|t}];
+						var start = selected[index];
+						var end = selected[index+1];
+						if(selected.rank != 1)
+						{FLSC_Error("Multiple signature selected: rank(%)"
+							.format(selected.rank)).throw};
+						if(index > (selected.size-2))
 						{FLSC_Error("Signature index(%) is undefined".format(index)).throw};
-						start + t[1].(times[index+1] - start);
+						start + t[1].(end - start);
+						*/
 					} {
 						// la valeur peut provenir d'un module, d'une durée non-signée
 						// ou d'une signature de remplacement
@@ -395,11 +427,19 @@
 						t
 					}
 				}, sig, {|new, old|
-						// vérifier l'ordre de la signature
-						var timeVals = times.collect(old);
-						if(timeVals.differentiate.minItem < 0)
-						{FLSC_Error("Signature not sorted: %".format(
-							timeVals - timeVals[0])).throw}
+						// vérifier l'ordre des signatures
+						var check = {|signs|
+							if(signs.rank > 1)
+							{
+								signs.do(check)
+							} {
+								var timeVals = signs.collect(old);
+								if(timeVals.differentiate.minItem < 0)
+								{FLSC_Error("Signature not sorted: %".format(
+									timeVals - timeVals[0])).throw}
+							}
+						};
+						check.(times);
 					}
 				);
 				FLSC_LocalTimeSpec(sig.rate, warp);
@@ -414,11 +454,30 @@
 					if(t.isArray) {
 						var index = t[0];
 						var time = t[1];
+						// on ne gère pas le cas des découpages sur signatures multiples
+						if(index.isArray)
+						{
+							if(index.size > 1)
+							{FLSC_Error("Split on multiple indexes: %".format(index)).throw}
+							{index = index.first};
+						};
 						case
 						{index < sindex}        {[index, time]}
 						{index == sindex}       {[sindex, time.(stime)]}
 						{index == (sindex + 1)} {[sindex, stime + time.({|t|t} - stime)]}
-						{index > (sindex + 1)}  {[index - 1, time]}
+						{index > (sindex + 1)}  {[index-1, time]}
+						/*
+						var indexes = t[0].asArray;
+						var stInd = indexes[..indexes.size-2];
+						var index = indexes.last;
+						var time = t[1];
+						case
+						{index < sindex}        {[stInd ++ [index], time]}
+						{index == sindex}       {[stInd ++ [sindex], time.(stime)]}
+						{index == (sindex + 1)} {[stInd ++ [sindex],
+							stime + time.({|t|t} - stime)]}
+						{index > (sindex + 1)}  {[stInd ++ [index-1], time]}
+						*/
 					} {
 						// la valeur peut provenir d'un module, d'une durée non-signée
 						// ou d'une signature de remplacement
@@ -435,6 +494,27 @@
 							[0, timeVals[2] - timeVals[0]])).throw}
 					}
 				);
+				FLSC_LocalTimeSpec(sig.rate, warp);
+		})],
+		// selection de signature
+		['ssel', FLSC_Function(nil, ['indexes', 'sig'],
+			{|ctxt|
+				var indexList = FLSC_Var('indexes').value(ctxt).asArray;
+				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
+				var warp = FLSC_WarpSpec({|t|
+					if(t.isArray) {
+						var indexes = t[0];
+						var time = t[1];
+						// prendre en compte le cas où l'indice est un simple nombre
+						// pour raison de compatibilité avec l'ancien système
+						[indexList ++ indexes.asArray, time];
+					} {
+						// la valeur peut provenir d'un module, d'une durée non-signée
+						// ou d'une signature de remplacement
+						// dans ce cas, ne rien faire
+						t
+					}
+				}, sig);
 				FLSC_LocalTimeSpec(sig.rate, warp);
 		})],
 		// compositions:
