@@ -404,6 +404,39 @@
 				);
 				FLSC_LocalTimeSpec(sig.rate, warp);
 		})],
+		// découpage de signature
+		['ssplit', FLSC_Function(nil, ['index', 'time', 'sig'],
+			{|ctxt|
+				var sindex = FLSC_Var('index').value(ctxt);
+				var stime = FLSC_Var('time').value(ctxt);
+				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
+				var warp = FLSC_WarpSpec({|t|
+					if(t.isArray) {
+						var index = t[0];
+						var time = t[1];
+						case
+						{index < sindex}        {[index, time]}
+						{index == sindex}       {[sindex, time.(stime)]}
+						{index == (sindex + 1)} {[sindex, stime + time.({|t|t} - stime)]}
+						{index > (sindex + 1)}  {[index - 1, time]}
+					} {
+						// la valeur peut provenir d'un module, d'une durée non-signée
+						// ou d'une signature de remplacement
+						// dans ce cas, ne rien faire
+						t
+					}
+				}, sig, {|new, old|
+						// vérifier que le temps est compris dans le segment
+						var timeVals =
+						[[sindex, 0], [sindex, stime], [sindex, {|t|t}]].collect(old);
+						if(timeVals.differentiate.minItem < 0)
+						{FLSC_Error("Signature split is out of bounds: % not in %".format(
+							timeVals[1] - timeVals[0],
+							[0, timeVals[2] - timeVals[0]])).throw}
+					}
+				);
+				FLSC_LocalTimeSpec(sig.rate, warp);
+		})],
 		// compositions:
 		// sequentielle
 		['seq', FLSC_Function(nil, ['sigs'],
