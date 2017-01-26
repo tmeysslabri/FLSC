@@ -382,7 +382,6 @@
 				var times = [0] ++ FLSC_Var('times').value(ctxt) ++ [{|t|t}];
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp = FLSC_WarpSpec({|t|
-					t;
 					if(t.isArray) {
 						var index = t[0];
 						var start = times[index];
