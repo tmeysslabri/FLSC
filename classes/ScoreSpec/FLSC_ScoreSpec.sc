@@ -1,6 +1,6 @@
-FLSC_ScoreSpec {
-	// la définition de la sortie système
-	// classvar systemOut;
+FLSC_ScoreSpec : FLSC_Object {
+	// description du type
+	classvar <typeDesc;
 	// la base d'échantillonnage, compatible avec les classes SC
 	var <rate;
 	// la liste des ScoreSpec référencées, dans leur ordre d'apparition
@@ -9,6 +9,10 @@ FLSC_ScoreSpec {
 	var score;
 	// le SemanticNode parent
 	var >parent;
+
+	*initClass {
+		typeDesc = "Signal";
+	}
 
 	*new {|timeBase, vars|
 		^super.new.scoreSpecInit(timeBase, vars);
@@ -51,12 +55,14 @@ FLSC_ScoreSpec {
 		^score;
 	}
 
+	/*
 	doesNotUnderstand {|selector ... args|
 		if(Number.findRespondingMethodFor(selector).notNil)
 		{FLSC_Error("Signal does not respond to numeric operator: %"
 			.format(selector)).throw}
 		{DoesNotUnderstandError(this, selector, args).throw};
 	}
+	*/
 
 	// méthodes génériques
 	isFLSCScoreSpec { ^true; }

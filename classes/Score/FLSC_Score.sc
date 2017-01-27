@@ -1,4 +1,4 @@
-FLSC_Score {
+FLSC_Score : FLSC_Object {
 	// le FLSC_Bus de sortie
 	var <>outBus;
 	// le dictionnaire [SynthDef.name: SynthDef] des définitions employées

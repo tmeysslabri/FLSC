@@ -1,10 +1,17 @@
-FLSC_Function {
+FLSC_Function : FLSC_Object {
+	// description du type
+	classvar <typeDesc;
+
 	// la table de symboles à laquelle se réfère la fonction: un FLSC_Context
 	var baseContext;
 	// la liste des paramètres à associer: un Array de Symbol
 	var funcParms;
 	// l'opération à executer: une Function d'un FLSC_Context
 	var function;
+
+	*initClass {
+		typeDesc = "Function";
+	}
 
 	*new {|context, parms, func|
 		^super.new.funcInit(context, parms, func);

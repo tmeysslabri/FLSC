@@ -1,8 +1,15 @@
-FLSC_SemanticNode {
+FLSC_SemanticNode : FLSC_Object {
+	// description du type
+	classvar <typeDesc;
+
 	// la valeur que représente le noeud: nombre, symbole, sous-expression
 	var <nodeVal;
 	// les lignes de début et de fin
 	var <start, <end;
+
+	*initClass {
+		typeDesc = "Expression";
+	}
 
 	*new {|val|
 		^super.new.nodeInit(val);
