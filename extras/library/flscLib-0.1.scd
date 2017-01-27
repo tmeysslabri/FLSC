@@ -378,28 +378,28 @@
 		})],
 		// signatures:
 		// definition de signature
-		['sign', FLSC_Function(nil, ['times', 'sig'],
+		['sign', FLSC_Function(nil, ['signs', 'sig'],
 			{|ctxt|
-				var times = FLSC_Var('times').value(ctxt);
+				var signs = FLSC_Var('signs').value(ctxt);
 				var sig = FLSC_Var('sig').value(ctxt).asFLSCScoreSpec;
 				var warp = FLSC_WarpSpec({|t|
 					if(t.isArray) {
 						var indexes = t[0].asArray;
-						var subsign = times;
+						var subsign = signs;
 						while {(indexes.size > 1) && subsign.notFLSCNil}
 						{
 							subsign = subsign[indexes.first];
 							indexes = indexes[1..];
 						};
-						if(subsign.notNil)
+						if(subsign.notFLSCNil)
 						{
 							var index = indexes.first;
 							var selected = [0] ++ subsign ++ [{|t|t}];
 							var start = selected[index];
 							var end = selected[index+1];
-							if(selected.rank != 1)
-							{FLSC_Error("Multiple signature selected: rank(%)"
-								.format(selected.rank)).throw};
+							if(selected.maxDepth != 1)
+							{FLSC_Error("Multiple signature selected: depth(%)"
+								.format(selected.maxDepth)).throw};
 							if(index > (selected.size-2))
 							{FLSC_Error("Signature index(%) is undefined".format(index)).throw};
 							start + t[1].(end - start);
@@ -429,17 +429,18 @@
 				}, sig, {|new, old|
 						// vérifier l'ordre des signatures
 						var check = {|signs|
-							if(signs.rank > 1)
+							case
+							{signs.isFLSCNil} {}
+							{signs.maxDepth > 1} {signs.do(check)}
+							{signs.maxDepth == 1}
 							{
-								signs.do(check)
-							} {
-								var timeVals = signs.collect(old);
+								var timeVals = ([0] ++ signs ++ [{|t|t}]).collect(old);
 								if(timeVals.differentiate.minItem < 0)
 								{FLSC_Error("Signature not sorted: %".format(
 									timeVals - timeVals[0])).throw}
 							}
 						};
-						check.(times);
+						check.(signs);
 					}
 				);
 				FLSC_LocalTimeSpec(sig.rate, warp);
