@@ -19,6 +19,8 @@ FLSC_SemanticNode {
 			res = this.semanticValue(context, library, baseDir);
 		} {|error|
 			case
+			{error.isKindOf(FLSC_FatalError)}
+			{error.throw}
 			{error.isKindOf(FLSC_LocError)}
 			{error.throw}
 			{error.isKindOf(FLSC_Error)}
@@ -28,7 +30,7 @@ FLSC_SemanticNode {
 				{error.throw}
 			}
 			{true}
-			{error.reportError; Main.stop}
+			{error.reportError; FLSC_FatalError("Non-FLSC error: see above").throw}
 		}
 		^res;
 	}
