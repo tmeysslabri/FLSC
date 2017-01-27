@@ -3,7 +3,10 @@ FLSC_If : FLSC_Conditional {
 	var testFunc;
 	*new {|test, then, else|
 		^super.new([then, else], {|context|
-			test.value(context).not.binaryValue;
+			var testValue = test.value(context);
+			if(testValue.isKindOf(Boolean).not)
+			{FLSC_Error("Test value is not a Boolean: %".format(testValue)).throw};
+			testValue.not.binaryValue;
 		}).ifInit(test);
 	}
 

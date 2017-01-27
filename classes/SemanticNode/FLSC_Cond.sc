@@ -8,7 +8,12 @@ FLSC_Cond : FLSC_Conditional {
 		var exprs = unflopped[1];
 		^super.new(exprs, {|context|
 			var index = 0;
-			while { index < tests.size and: {tests[index].value(context).not} }
+			while { index < tests.size and: {
+				var testValue = tests[index].value(context);
+				if(testValue.isKindOf(Boolean).not)
+				{FLSC_Error("Test value is not a Boolean: %".format(testValue)).throw};
+				testValue.not}
+			}
 			{ index = index + 1 };
 			index;
 		}).condInit(tests);
