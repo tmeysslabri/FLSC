@@ -11,16 +11,25 @@ FLSC_Time {
 	}
 
 	value {|timeWarp|
+		/*
 		var times = [
-			(([_,{|t|t}]) ! (nbSeg - 1)) ++ [{|t|t}],
-			[0] ++ ({|i|[i+1,0]} ! (nbSeg - 1))
+			(([{|t|t},_]) ! (nbSeg - 1)) ++ [[{|t|t}]],
+			[[0]] ++ ({|i|[0, i+1]} ! (nbSeg - 1))
 		].flop;
+		*/
+		/*
 		^times.collect {|item|
 			var res = timeWarp.(item[0]) - timeWarp.(item[1]);
 			if(res < 0)
 			{FLSC_Error("Anachronism in Time: duration(%) < 0".format(res)).throw};
 			res;
 		}
+		*/
+		var times = [[0]] ++ ([0,_+1] ! (nbSeg-1)) ++ [[{|t|t}]];
+		var res = times.collect(timeWarp).differentiate[1..];
+		if(res.minItem < 0)
+		{FLSC_Error("Anachronism in Time: duration(%) < 0".format(res.minItem)).throw};
+		^res;
 	}
 
 	isFLSCTime { ^true }

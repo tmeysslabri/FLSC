@@ -34,7 +34,7 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 					sub.rank)])], sub.start, sub.end, sub.rank + 1).checkTimes;
 		} {
 			// toutes les informations ont déjà été ajoutées,
-			// seul le bus de sortie nous intéresse
+			// seuls le bus de sortie, le début, la fin et le rang nous intéressent
 			^FLSC_Score(sub.outBus, Dictionary(), List(), List(), List(),
 				sub.start, sub.end, sub.rank);
 		};

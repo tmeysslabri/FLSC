@@ -35,9 +35,12 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 				if(t < 0)
 				{FLSC_Error("Global time value is negative: %".format(t)).throw};
 				*/
+				if(t.size > 1)
+				{FLSC_Error("Global time value is signed: %".format(t)).throw};
 				// ajouter la marge de début
 				// la durée du support global est non-bornée
-				t.value(inf) + before;
+				// on transforme les valeurs temporelles en dates (nombres)
+				t.first.(inf) + before;
 			};
 			// varDict pour l'interprétation des FLSC_Score
 			var varDict = Dictionary();
@@ -86,7 +89,7 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 		} {|error|
 			if(error.isKindOf(FLSC_Error))
 			{FLSC_LocError(error.errorString, parent.start, parent.end).throw}
-			{error.throw}
+			{error.reportError; FLSC_FatalError.throw}
 		}
 	}
 }
