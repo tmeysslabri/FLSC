@@ -153,6 +153,7 @@ FLSC_Interpreter {
 	performDir {|selector, subDir ("examples" +/+ "tutorial"), args = #[],
 		recursive = false, recordDir = nil, interactive = false|
 		var list = this.getFileList(subDir, recursive);
+		var startTime = Date.getDate.secStamp.asInteger;
 		var rec = {|list|
 			var next = list.first;
 			var rest = list[1..];
@@ -172,7 +173,9 @@ FLSC_Interpreter {
 						{rec.value(list)},
 						{"Exit.".postln}
 					)}.defer}}
-					{{if(rest.notEmpty) {rec.value(rest)} {"Done.".postln}}}
+					{{if(rest.notEmpty) {rec.value(rest)}
+						{"Done (took %s)."
+							.format(Date.getDate.secStamp.asInteger - startTime).postln}}}
 				]
 			)
 		};
