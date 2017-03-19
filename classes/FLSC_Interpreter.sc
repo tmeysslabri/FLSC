@@ -120,7 +120,10 @@ FLSC_Interpreter {
 	play {|before = 0, after = 0, doneAction = nil|
 		if(scoreValue.isNil) {this.asFLSCScore(before, after)};
 		if(scoreValue.isKindOf(FLSC_Score))
-		{^scoreValue.play(doneAction)}
+		{
+			FLSC_Score.setUp;
+			^scoreValue.play({FLSC_Score.cleanUp; doneAction.();});
+		}
 		{if(doneAction.notNil)
 			{scoreValue.postln; doneAction.value}
 			{^scoreValue}};
@@ -128,10 +131,19 @@ FLSC_Interpreter {
 
 	recordNRT {|outFile, before = 0, after = 0, headerFormat = "WAV", sampleRate = 44100,
 		sampleFormat = "int16", numChannels = 2, doneAction = nil|
+		FLSC_Score.setUp;
+		this.subRecordNRT(outFile, before, after, headerFormat, sampleRate,
+			sampleFormat, numChannels, {FLSC_Score.cleanUp; doneAction.();});
+	}
+
+	subRecordNRT {|outFile, before = 0, after = 0, headerFormat = "WAV", sampleRate = 44100,
+		sampleFormat = "int16", numChannels = 2, doneAction = nil|
 		if(scoreValue.isNil) {this.asFLSCScore(before, after)};
 		if(scoreValue.isKindOf(FLSC_Score))
-		{^scoreValue.recordNRT(outFile, headerFormat, sampleRate,
-			sampleFormat, numChannels, doneAction)}
+		{
+			^scoreValue.recordNRT(outFile, headerFormat, sampleRate,
+				sampleFormat, numChannels, doneAction);
+		}
 		{if(doneAction.notNil)
 			{scoreValue.postln; doneAction.value}
 			{^scoreValue}};

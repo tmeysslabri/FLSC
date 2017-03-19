@@ -1,4 +1,7 @@
 FLSC_Score : FLSC_Object {
+	// le répertoire de stockage des SynthDefs
+	classvar defsDir;
+
 	// le FLSC_Bus de sortie
 	var <>outBus;
 	// le dictionnaire [SynthDef.name: SynthDef] des définitions employées
@@ -13,6 +16,10 @@ FLSC_Score : FLSC_Object {
 	var <>start, <>end;
 	// le rang du sous-graphe
 	var <>rank;
+
+	*initClass {
+		defsDir = Platform.userExtensionDir +/+ "FLSC" +/+ "synthdefs";
+	}
 
 	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
 		t0 = inf, tf = 0, rank = 0|
@@ -159,8 +166,8 @@ FLSC_Score : FLSC_Object {
 			score.play;
 			// attendre la fin
 			(score.endTime + 0.1).wait;
-			// supprimer les SynthDef
-			defDict.do {|item| SynthDef.removeAt(item.name)};
+			// supprimer les SynthDef -> géré par cleanUp
+			// defDict.do {|item| SynthDef.removeAt(item.name)};
 			// supprimer les Bus
 			busses.do {|list| list.do {|bus| bus.free}};
 			// effectuer l'action demandée
@@ -179,22 +186,34 @@ FLSC_Score : FLSC_Object {
 		var fileName = (if(outFile.notNil) {outFile}
 			{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
 		// créer les répertoires, si ils n'existent pas
-		baseDir.mkdir;
+		// baseDir.mkdir;
 		fileName.dirname.mkdir;
 		// créér les définitions
-		defDict.do {|item| item.writeDefFile };
-		score.recordNRT(baseDir +/+ "FLSC-osc", fileName, nil,
+		defDict.do {|item|
+			if (File.exists(defsDir+/+item.name++".scsyndef").not)
+			{item.writeDefFile(defsDir)}
+		};
+		score.recordNRT(fileName++".osc", fileName, nil,
 			sampleRate,	headerFormat, sampleFormat,
 			ServerOptions.new.numOutputBusChannels_(numChannels),
 			action:
 			{
-				defDict.do {|item| File.delete(Platform.userAppSupportDir +/+
-					"synthdefs" +/+ item.name ++ ".scsyndef")};
+				File.delete(fileName++".osc");
 				busses.do {|list| list.do {|bus| bus.free}};
 				"Recording finished.".postln;
 				doneAction.value;
 			}
 		);
 		^this;
+	}
+
+	*setUp {
+		defsDir.mkdir;
+		"SC_SYNTHDEF_PATH".setenv(defsDir);
+	}
+
+	*cleanUp {
+		"SC_SYNTHDEF_PATH".setenv(Platform.userAppSupportDir+/+"synthdefs");
+		"rm -R '%'".format(defsDir).unixCmd;
 	}
 }
