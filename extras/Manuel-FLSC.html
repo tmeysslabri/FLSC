@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-01-24"/>
+<meta name="create-date" content="2017-04-03"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Manuel de référence FLSC</title>
 </head>
@@ -611,6 +611,21 @@ Le signal produit devrait être de type audio, puisqu’il est destiné à être
 </div>
 <div class="Standard">
 Les formes spéciales <tt>patch</tt> ne doivent pas être imbriquées, et ne doivent pas effectuer un appel à un autre <tt>patch</tt>. Si tel est le cas, le comportement est non-spécifié.
+</div>
+<div class="Standard">
+Remarque importante: la forme <tt>patch</tt> est désormais obselète, en effet on peut rempalcer
+</div>
+<div class="Standard">
+<tt>(patch (<i>parm</i> ...) [dur sig])</tt>
+</div>
+<div class="Standard">
+par
+</div>
+<div class="Standard">
+<tt>(lambda (parm ...) (base [0 dur] sig))</tt>
+</div>
+<div class="Standard">
+avec une sémantique équivalente.
 </div>
 <h3 class="Subsubsection">
 <a class="toc" name="toc-Subsubsection-3.1.2">3.1.2</a> <tt>module</tt>
@@ -1655,28 +1670,27 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ;;;; exemple minimaliste de partition
 ;;;; oscillateur et enveloppe dynamique à deux segments
 ​
-;;; on utilise un instrument virtuel [patch],
+;;; on utilise un instrument virtuel [lambda],
 ;;; un module arithmétique [m*],
 ;;; le générateur sinusoïdal [mosc],
 ;;; la signature temporelle [sign],
 ;;; la composition séquentielle [seq],
 ;;; et deux segments d’enveloppe [mseg]
 ​
-;; la syntaxe de patch est la même que celle de lambda
-;; on déclare et on appelle un patch sans paramètres
-((patch ()
-   ;; la valeur est une paire [durée signal]
-   [2 ; durée de 2 secondes
-   ;; le signal (de type audio) est le produit
-   ;; d’un oscillateur et d’une enveloppe
-   (m* (mosc 220) ; produit et oscillateur à 220Hz
-     ;; enveloppe
-     ;; on doit d’abord déclarer la signature temporelle
-     (sign [0.5] ; on ajoute un point de césure à 0.5 secondes
-       (seq ; seq effectue le découpage du support suivant la signature
-         ;; liste des éléments composés séquentiellement
-         [(mseg 0 0.1) ; un segment de 0 à 0.1
-          (mseg 0.1 0)])))])) ; un segment de 0.1 à 0
+;; on déclare et on appelle une fonction sans paramètres
+((lambda ()
+   ;; la valeur est un signal sur le support [0 durée]
+   (base [0 2] ; durée de 2 secondes
+     ;; le signal (de type audio) est le produit
+     ;; d’un oscillateur et d’une enveloppe
+     (m* (mosc 220) ; produit et oscillateur à 220Hz
+       ;; enveloppe
+       ;; on doit d’abord déclarer la signature temporelle
+       (sign [0.5] ; on ajoute un point de césure à 0.5 secondes
+         (seq ; seq effectue le découpage du support suivant la signature
+           ;; liste des éléments composés séquentiellement
+           [(mseg 0 0.1) ; un segment de 0 à 0.1
+            (mseg 0.1 0)])))))) ; un segment de 0.1 à 0
 </pre>
 </div>
  
@@ -1695,14 +1709,14 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ;;; sont remplacés par un générateur d’enveloppe [menv]
 ​
 ;; début comme 02
-((patch ()
-   [2
-   (m* (mosc 220)
-     ;; enveloppe
-     ;; on déclare toujours la signature temporelle
-     (sign [0.5]
-       ;; menv produit la même enveloppe qu’en 02
-       (menv [0 0.1 0])))])) ; l’argument est la liste des niveaux
+((lambda ()
+   (base [0 2]
+     (m* (mosc 220)
+       ;; enveloppe
+       ;; on déclare toujours la signature temporelle
+       (sign [0.5]
+         ;; menv produit la même enveloppe qu’en 02
+         (menv [0 0.1 0])))))) ; l’argument est la liste des niveaux
 </pre>
 </div>
  
@@ -1718,11 +1732,11 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ;;;; une amplitude et une durée parametrables
 ​
 ;; on déclare des paramètres
-((patch (amp freq time)
-   [time ; time est la durée
-   (m* (mosc freq) ; freq est la fréquence
-     (sign [(/ time 4)] ; on réutilise time pour la césure
-       (menv [0 amp 0])))]) ; amp est l’amplitude max
+((lambda (amp freq time)
+   (base [0 time] ; time est la durée
+     (m* (mosc freq) ; freq est la fréquence
+       (sign [(/ time 4)] ; on réutilise time pour la césure
+         (menv [0 amp 0]))))) ; amp est l’amplitude max
  ;; on appelle avec les mêmes paramètres
  0.1 220 2)
 </pre>
@@ -1740,10 +1754,10 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ;;;; est un signal pseudo-aléatoire
 ​
 ;; l’instrument est le même
-((patch (amp freq time)
-   [time
-   (m* (mosc freq)
-     (sign [(/ time 4)] (menv [0 amp 0])))])
+((lambda (amp freq time)
+   (base [0 time]
+     (m* (mosc freq)
+       (sign [(/ time 4)] (menv [0 amp 0])))))
  ;; le paramètre de fréquence est un signal
  0.1 (m* 220 (mrand 0.9 1.1)) 2)
 </pre>
@@ -1764,14 +1778,14 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
               ;; on précise l’allure en faisant abstraction du temps
               (menv [0 1 sus sus 0]))))
 ;; l’instrument admet une fonction en paramètre
-  ((patch (amp freq time envgen)
-     [time
-     (mn* amp (mosc freq)
-       ;; la signature doit avoir le bon nombre d’éléments
-       ;; dur est une variable spéciale qui renvoie à la fin du support
-       (sign [0.1 0.2 (- dur 0.5)]
-         ;; on applique la fonction passée en argument
-         (envgen 0.5)))])
+  ((lambda (amp freq time envgen)
+     (base [0 time]
+       (mn* amp (mosc freq)
+         ;; la signature doit avoir le bon nombre d’éléments
+         ;; dur est une variable spéciale qui renvoie à la fin du support
+         (sign [0.1 0.2 (- dur 0.5)]
+           ;; on applique la fonction passée en argument
+           (envgen 0.5)))))
    0.1 220 2 adsr))
 </pre>
 </div>
@@ -1805,11 +1819,11 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
                                 (menv [0 0.5 0.5 0])))))
                     (mseg sus 0)])))) ; fin seq, lambda, adsr, letlist
   ;; l’instrument est le même
-  ((patch (amp freq time envgen)
-     [time
-     (mn* amp (mosc freq)
-       (sign [0.1 0.2 (- dur 0.5)]
-         (envgen 0.5)))])
+  ((lambda (amp freq time envgen)
+     (base [0 time]
+       (mn* amp (mosc freq)
+         (sign [0.1 0.2 (- dur 0.5)]
+           (envgen 0.5)))))
    0.1 220 2 adsr))
 </pre>
 </div>
@@ -1828,20 +1842,20 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ;;; que pour les signaux audio
 ​
 ;; le paramètre num est le nombre de composantes
-((patch (amp freq time num)
-   [time
-    ;; la liste est produite par itération
-    (mapcar (lambda (i)
-              ;; la fréquence varie suivant l’indice
-              ;; on utilise * et non m*
-              ;; car les arguments sont des nombres
-              (m* (mosc (* i freq))
-                (sign [(/ time 4)]
-                  ;; l’amplitude est l’inverse de l’indice
-                  ;; on obtient donc un dents-de-scie
-                  (menv [0 (/ amp i) 0]))))
-      ;; les valeurs sont les entiers consécutifs à partir de 1
-      (range1 num))])
+((lambda (amp freq time num)
+   (base [0 time]
+      ;; la liste est produite par itération
+      (mapcar (lambda (i)
+                ;; la fréquence varie suivant l’indice
+                ;; on utilise * et non m*
+                ;; car les arguments sont des nombres
+                (m* (mosc (* i freq))
+                  (sign [(/ time 4)]
+                    ;; l’amplitude est l’inverse de l’indice
+                    ;; on obtient donc un dents-de-scie
+                    (menv [0 (/ amp i) 0]))))
+        ;; les valeurs sont les entiers consécutifs à partir de 1
+        (range1 num))))
  0.1 220 2 16)
 </pre>
 </div>
@@ -1859,15 +1873,15 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ;; on introduit la fonction de distorsion
 (let ((warp (lambda (i) (** i 0.5)))) ; fonction racine
 ;; le paramètre dist est la fonction de distorsion
-  ((patch (amp freq time num dist)
-     [time
-      (mapcar (lambda (i)
-                ;; la fréquence varie suivant l’indice
-                ;; modifié par la distorsion
-                (m* (mosc (* (dist i) freq))
-                  (sign [(/ time 4)]
-                    (menv [0 (/ amp i) 0]))))
-        (range1 num))])
+  ((lambda (amp freq time num dist)
+     (base [0 time]
+       (mapcar (lambda (i)
+                 ;; la fréquence varie suivant l’indice
+                 ;; modifié par la distorsion
+                 (m* (mosc (* (dist i) freq))
+                   (sign [(/ time 4)]
+                     (menv [0 (/ amp i) 0]))))
+         (range1 num))))
    0.1 220 2 16 warp))
 </pre>
 </div>
@@ -1891,17 +1905,17 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
       ;; on le multiplie avec split [!]
       (!index (mseg 0.5 1)))
 ;; le paramètre dist est la fonction de distorsion
-  ((patch (amp freq time num dist)
-     [time
-      ;; split sur l’enveloppe, en sortant la division
-      ;; note: le sign doit aller avec, car il définit
-      ;; un contexte temporel
-      (let ((!dyn (sign [(/ time 4)] (menv [0 amp 0]))))
-        (mapcar (lambda (i)
-                  ;; ici aussi il faut un module
-                  (m* (mosc (m* (dist i) freq))
-                      (m/ dyn i)))
-          (range1 num)))])
+  ((lambda (amp freq time num dist)
+     (base [0 time]
+       ;; split sur l’enveloppe, en sortant la division
+       ;; note: le sign doit aller avec, car il définit
+       ;; un contexte temporel
+       (let ((!dyn (sign [(/ time 4)] (menv [0 amp 0]))))
+         (mapcar (lambda (i)
+                   ;; ici aussi il faut un module
+                   (m* (mosc (m* (dist i) freq))
+                       (m/ dyn i)))
+           (range1 num)))))
    ;; on obtient la fonction par application partielle
    ;; on augmente le temps pour entendre mieux
    0.1 220 4 16 (lambda (i) (warp i index))))
@@ -1920,22 +1934,20 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ​
 ;; time est ici la durée de chaque composante
 ;; dt est le décalage entre les composantes
-((patch (amp freq time dt num)
-   ;; on calcule la durée totale
-   [(+ (* (-- num) dt) time)
-    (mapcar (lambda (i)
-              ;; chaque composante est dans un support différent
-              ;; on calcule le début du support
-              (let ((start (* i dt)))
-                (base [start (+ start time)]
-                  ;; on joue sur une gamme à 9 tons
-                  (m* (mosc (* (** 2 (/ i 9)) freq))
-                    ;; on emploie une enveloppe adsr
-                    ;; pour que les composantes soient plus distinctes
-                    (sign [0.1 0.2 (- time 0.5)]
-                      (menv [0 (* 2 amp) amp amp 0]))))))
-      ;; on itère sur les entiers consécutifs à partir de 0
-      (range0 num))])
+((lambda (amp freq time dt num)
+   (mapcar (lambda (i)
+             ;; chaque composante est dans un support différent
+             ;; on calcule le début du support
+             (let ((start (* i dt)))
+               (base [start (+ start time)]
+                 ;; on joue sur une gamme à 9 tons
+                 (m* (mosc (* (** 2 (/ i 9)) freq))
+                   ;; on emploie une enveloppe adsr
+                   ;; pour que les composantes soient plus distinctes
+                   (sign [0.1 0.2 (- time 0.5)]
+                     (menv [0 (* 2 amp) amp amp 0]))))))
+     ;; on itère sur les entiers consécutifs à partir de 0
+       (range0 num)))
  0.1 220 2 0.5 19)
 </pre>
 </div>
@@ -1955,22 +1967,20 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
   ;; patch et application
   ;; ce patch prend en argument une fonction basefunc
   ;; qui lui donne sa temporalité
-  ((patch (amp freq num basefunc)
+  ((lambda (amp freq num basefunc)
      ;; la liste des indices
      (let* ((indexes (range0 num))
             ;; la séquence de supports temporel
             (bases (mapcar basefunc indexes)))
-       ;; durée totale
-       [(last (last bases))
-        ;; application des supports à un ensemble de signaux
-        (basemap bases
-          (mapcar (lambda (i)
-                    (m* (mosc (* (** 2 (/ i 5)) freq))
-                      ;; la signature est contenue dans le support
-                      (sign (mapcar (lambda (t) (* dur t)) [0.1 0.2 0.75])
-                        (menv [0 (* 2 amp) amp amp 0]))))
-            ;; on itère sur la liste d’indices
-            indexes))]))
+       ;; application des supports à un ensemble de signaux
+       (basemap bases
+         (mapcar (lambda (i)
+                   (m* (mosc (* (** 2 (/ i 5)) freq))
+                     ;; la signature est contenue dans le support
+                     (sign (mapcar (lambda (t) (* dur t)) [0.1 0.2 0.75])
+                       (menv [0 (* 2 amp) amp amp 0]))))
+           ;; on itère sur la liste d’indices
+           indexes))))
      0.1 220 11 makebase))
 </pre>
 </div>
@@ -1985,23 +1995,23 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ;;;; exemple de nowarp
 ;;;; la même chose que 10 avec une fonction de fréquence globale
 ​
-((patch (amp basefreq time dt num)
+((lambda (amp basefreq time dt num)
    ;; on calcule la durée totale
    (let ((end (+ (* (-- num) dt) time))
          ;; et également un tableau de hauteurs
          (scale [1 0.75 1.25]))
-     [end
-      ;; on définit une fonction globale de fréquence
-      (nowarp ((freq (m* basefreq (m** 2 (mlfo (/ 2 end) 1pi)))))
-        (mapcar (lambda (i)
-                  (let ((start (* i dt)))
-                    (base [start (+ start time)]
-                      ;; on module la fréquence globale cycliquement
-                      (m* (mosc (m* freq (elt scale (mod i 3))))
-                        (sign [0.1 0.2 (- time 0.5)]
-                          (menv [0 (* 2 amp) amp amp 0]))))))
-          ;; on itère sur les entiers consécutifs à partir de 0
-          (range0 num)))]))
+     (base [0 end]
+       ;; on définit une fonction globale de fréquence
+       (nowarp ((freq (m* basefreq (m** 2 (mlfo (/ 2 end) 1pi)))))
+         (mapcar (lambda (i)
+                   (let ((start (* i dt)))
+                     (base [start (+ start time)]
+                       ;; on module la fréquence globale cycliquement
+                       (m* (mosc (m* freq (elt scale (mod i 3))))
+                         (sign [0.1 0.2 (- time 0.5)]
+                           (menv [0 (* 2 amp) amp amp 0]))))))
+           ;; on itère sur les entiers consécutifs à partir de 0
+           (range0 num))))))
  0.1 330 2 0.5 13)
 </pre>
 </div>
@@ -2016,24 +2026,24 @@ fonction permettant d’appliquer à chaque élément de la liste de signaux sig
 ;;;; exemple de nowarp
 ;;;; la même chose que 13 avec une enveloppe
 ​
-((patch (amp basefreq time dt num)
+((lambda (amp basefreq time dt num)
    ;; on calcule la durée totale
    (let ((end (+ (* (-- num) dt) time))
          ;; et également un tableau de hauteurs
          (scale [1 0.75 1.25]))
-     [end
-      ;; on définit une fonction globale de fréquence
-      (nowarp ((freq (m* basefreq (m** 2 (sign [(* 0.5 dur)] 
-                                           (menv [-1 1 -1])) ))))
-        (mapcar (lambda (i)
-                  (let ((start (* i dt)))
-                    (base [start (+ start time)]
-                      ;; on module la fréquence globale cycliquement
-                      (m* (mosc (m* freq (elt scale (mod i 3))))
-                        (sign [0.1 0.2 (- time 0.5)]
-                          (menv [0 (* 2 amp) amp amp 0]))))))
-          ;; on itère sur les entiers consécutifs à partir de 0
-          (range0 num)))]))
+     (base [0 end]
+       ;; on définit une fonction globale de fréquence
+       (nowarp ((freq (m* basefreq (m** 2 (sign [(* 0.5 dur)]
+                                            (menv [-1 1 -1])) ))))
+         (mapcar (lambda (i)
+                   (let ((start (* i dt)))
+                     (base [start (+ start time)]
+                       ;; on module la fréquence globale cycliquement
+                       (m* (mosc (m* freq (elt scale (mod i 3))))
+                         (sign [0.1 0.2 (- time 0.5)]
+                           (menv [0 (* 2 amp) amp amp 0]))))))
+           ;; on itère sur les entiers consécutifs à partir de 0
+           (range0 num))))))
  0.1 330 2 0.5 13)
 </pre>
 </div>
