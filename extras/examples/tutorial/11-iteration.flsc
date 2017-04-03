@@ -3,20 +3,18 @@
 
 ;; time est ici la durée de chaque composante
 ;; dt est le décalage entre les composantes
-((patch (amp freq time dt num)
-   ;; on calcule la durée totale
-   [(+ (* (-- num) dt) time)
-    (mapcar (lambda (i)
-              ;; chaque composante est dans un support différent
-              ;; on calcule le début du support
-              (let ((start (* i dt)))
-                (base [start (+ start time)]
-                  ;; on joue sur une gamme à 9 tons
-                  (m* (mosc (* (** 2 (/ i 9)) freq))
-                    ;; on emploie une enveloppe adsr
-                    ;; pour que les composantes soient plus distinctes
-                    (sign [0.1 0.2 (- time 0.5)]
-                      (menv [0 (* 2 amp) amp amp 0]))))))
-      ;; on itère sur les entiers consécutifs à partir de 0
-      (range0 num))])
+((lambda (amp freq time dt num)
+   (mapcar (lambda (i)
+             ;; chaque composante est dans un support différent
+             ;; on calcule le début du support
+             (let ((start (* i dt)))
+               (base [start (+ start time)]
+                 ;; on joue sur une gamme à 9 tons
+                 (m* (mosc (* (** 2 (/ i 9)) freq))
+                   ;; on emploie une enveloppe adsr
+                   ;; pour que les composantes soient plus distinctes
+                   (sign [0.1 0.2 (- time 0.5)]
+                     (menv [0 (* 2 amp) amp amp 0]))))))
+     ;; on itère sur les entiers consécutifs à partir de 0
+       (range0 num)))
  0.1 220 2 0.5 19)

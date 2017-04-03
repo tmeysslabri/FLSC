@@ -20,9 +20,9 @@
                                 (menv [0 0.5 0.5 0])))))
                     (mseg sus 0)])))) ; fin seq, lambda, adsr, letlist
   ;; l'instrument est le même
-  ((patch (amp freq time envgen)
-     [time
-     (mn* amp (mosc freq)
-       (sign [0.1 0.2 (- dur 0.5)]
-         (envgen 0.5)))])
+  ((lambda (amp freq time envgen)
+     (base [0 time]
+       (mn* amp (mosc freq)
+         (sign [0.1 0.2 (- dur 0.5)]
+           (envgen 0.5)))))
    0.1 220 2 adsr))

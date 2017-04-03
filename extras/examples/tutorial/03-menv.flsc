@@ -6,11 +6,11 @@
 ;;; sont remplacés par un générateur d'enveloppe [menv]
 
 ;; début comme 02
-((patch ()
-   [2
-   (m* (mosc 220)
-     ;; enveloppe
-     ;; on déclare toujours la signature temporelle
-     (sign [0.5]
-       ;; menv produit la même enveloppe qu'en 02
-       (menv [0 0.1 0])))])) ; l'argument est la liste des niveaux
+((lambda ()
+   (base [0 2]
+     (m* (mosc 220)
+       ;; enveloppe
+       ;; on déclare toujours la signature temporelle
+       (sign [0.5]
+         ;; menv produit la même enveloppe qu'en 02
+         (menv [0 0.1 0])))))) ; l'argument est la liste des niveaux

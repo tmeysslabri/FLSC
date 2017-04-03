@@ -3,9 +3,9 @@
 ;;;; est un signal pseudo-aléatoire
 
 ;; l'instrument est le même
-((patch (amp freq time)
-   [time
-   (m* (mosc freq)
-     (sign [(/ time 4)] (menv [0 amp 0])))])
+((lambda (amp freq time)
+   (base [0 time]
+     (m* (mosc freq)
+       (sign [(/ time 4)] (menv [0 amp 0])))))
  ;; le paramètre de fréquence est un signal
  0.1 (m* 220 (mrand 0.9 1.1)) 2)

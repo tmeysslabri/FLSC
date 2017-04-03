@@ -10,17 +10,17 @@
       ;; on le multiplie avec split [!]
       (!index (mseg 0.5 1)))
 ;; le paramètre dist est la fonction de distorsion
-  ((patch (amp freq time num dist)
-     [time
-      ;; split sur l'enveloppe, en sortant la division
-      ;; note: le sign doit aller avec, car il définit
-      ;; un contexte temporel
-      (let ((!dyn (sign [(/ time 4)] (menv [0 amp 0]))))
-        (mapcar (lambda (i)
-                  ;; ici aussi il faut un module
-                  (m* (mosc (m* (dist i) freq))
-                      (m/ dyn i)))
-          (range1 num)))])
+  ((lambda (amp freq time num dist)
+     (base [0 time]
+       ;; split sur l'enveloppe, en sortant la division
+       ;; note: le sign doit aller avec, car il définit
+       ;; un contexte temporel
+       (let ((!dyn (sign [(/ time 4)] (menv [0 amp 0]))))
+         (mapcar (lambda (i)
+                   ;; ici aussi il faut un module
+                   (m* (mosc (m* (dist i) freq))
+                       (m/ dyn i)))
+           (range1 num)))))
    ;; on obtient la fonction par application partielle
    ;; on augmente le temps pour entendre mieux
    0.1 220 4 16 (lambda (i) (warp i index))))

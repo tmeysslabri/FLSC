@@ -1,25 +1,24 @@
 ;;;; exemple minimaliste de partition
 ;;;; oscillateur et enveloppe dynamique à deux segments
 
-;;; on utilise un instrument virtuel [patch],
+;;; on utilise un instrument virtuel [lambda],
 ;;; un module arithmétique [m*],
 ;;; le générateur sinusoïdal [mosc],
 ;;; la signature temporelle [sign],
 ;;; la composition séquentielle [seq],
 ;;; et deux segments d'enveloppe [mseg]
 
-;; la syntaxe de patch est la même que celle de lambda
-;; on déclare et on appelle un patch sans paramètres
-((patch ()
-   ;; la valeur est une paire [durée signal]
-   [2 ; durée de 2 secondes
-   ;; le signal (de type audio) est le produit
-   ;; d'un oscillateur et d'une enveloppe
-   (m* (mosc 220) ; produit et oscillateur à 220Hz
-     ;; enveloppe
-     ;; on doit d'abord déclarer la signature temporelle
-     (sign [0.5] ; on ajoute un point de césure à 0.5 secondes
-       (seq ; seq effectue le découpage du support suivant la signature
-         ;; liste des éléments composés séquentiellement
-         [(mseg 0 0.1) ; un segment de 0 à 0.1
-          (mseg 0.1 0)])))])) ; un segment de 0.1 à 0
+;; on déclare et on appelle une fonction sans paramètres
+((lambda ()
+   ;; la valeur est un signal sur le support [0 durée]
+   (base [0 2] ; durée de 2 secondes
+     ;; le signal (de type audio) est le produit
+     ;; d'un oscillateur et d'une enveloppe
+     (m* (mosc 220) ; produit et oscillateur à 220Hz
+       ;; enveloppe
+       ;; on doit d'abord déclarer la signature temporelle
+       (sign [0.5] ; on ajoute un point de césure à 0.5 secondes
+         (seq ; seq effectue le découpage du support suivant la signature
+           ;; liste des éléments composés séquentiellement
+           [(mseg 0 0.1) ; un segment de 0 à 0.1
+            (mseg 0.1 0)])))))) ; un segment de 0.1 à 0

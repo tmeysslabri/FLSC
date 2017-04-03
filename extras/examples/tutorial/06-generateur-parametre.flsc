@@ -6,12 +6,12 @@
               ;; on précise l'allure en faisant abstraction du temps
               (menv [0 1 sus sus 0]))))
 ;; l'instrument admet une fonction en paramètre
-  ((patch (amp freq time envgen)
-     [time
-     (mn* amp (mosc freq)
-       ;; la signature doit avoir le bon nombre d'éléments
-       ;; dur est une variable spéciale qui renvoie à la fin du support
-       (sign [0.1 0.2 (- dur 0.5)]
-         ;; on applique la fonction passée en argument
-         (envgen 0.5)))])
+  ((lambda (amp freq time envgen)
+     (base [0 time]
+       (mn* amp (mosc freq)
+         ;; la signature doit avoir le bon nombre d'éléments
+         ;; dur est une variable spéciale qui renvoie à la fin du support
+         (sign [0.1 0.2 (- dur 0.5)]
+           ;; on applique la fonction passée en argument
+           (envgen 0.5)))))
    0.1 220 2 adsr))
