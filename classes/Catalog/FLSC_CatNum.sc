@@ -7,8 +7,12 @@ FLSC_CatNum : FLSC_Catalog {
 	}
 
 	catNumInit {|expr|
+		name = expr.asString.replace(".","_");
+		flscString = expr.asString;
+		/*
 		name = expr.trunc(0.001).asString.replace(".","").padRight(4, "0");
 		flscString = expr.asString;
+		*/
 		/*
 		// nombre de chiffres avant la virgule
 		var order = min(max(expr.abs.log10.floor + 1, -10), 10);
