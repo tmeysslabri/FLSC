@@ -118,11 +118,16 @@ FLSC_Interpreter {
 	}
 
 	play {|before = 0, after = 0, doneAction = nil|
+		FLSC_Score.setUp;
+		this.subPlay(before, after, doneAction);
+		FLSC_Score.cleanUp;
+	}
+
+	subPlay {|before = 0, after = 0, doneAction = nil|
 		if(scoreValue.isNil) {this.asFLSCScore(before, after)};
 		if(scoreValue.isKindOf(FLSC_Score))
 		{
-			FLSC_Score.setUp;
-			^scoreValue.play({FLSC_Score.cleanUp; doneAction.();});
+			^scoreValue.play(doneAction);
 		}
 		{if(doneAction.notNil)
 			{scoreValue.postln; doneAction.value}
@@ -165,7 +170,7 @@ FLSC_Interpreter {
 	performDir {|selector, subDir ("examples" +/+ "tutorial"), args = #[],
 		recursive = false, recordDir = nil, interactive = false|
 		var list = this.getFileList(subDir, recursive);
-		var startTime = Date.getDate.secStamp.asInteger;
+		var startTime = Date.getDate.rawSeconds.trunc;
 		var rec = {|list|
 			var next = list.first;
 			var rest = list[1..];
@@ -181,30 +186,37 @@ FLSC_Interpreter {
 				{args}) ++
 				[if(interactive)
 					{{{this.getKey(
-						{if(rest.notEmpty) {rec.value(rest)} {"Done.".postln}},
+						{if(rest.notEmpty) {rec.value(rest)}
+							{"Done.".postln; FLSC_Score.cleanUp;}},
 						{rec.value(list)},
-						{"Exit.".postln}
+						{
+							"Exit.".postln;
+							FLSC_Score.cleanUp
+						}
 					)}.defer}}
 					{{if(rest.notEmpty) {rec.value(rest)}
 						{"Done (took %s)."
-							.format(Date.getDate.secStamp.asInteger - startTime).postln}}}
+							.format(Date.getDate.rawSeconds.trunc - startTime).postln;
+							FLSC_Score.cleanUp;
+					}}}
 				]
 			)
 		};
 
+		FLSC_Score.setUp;
 		rec.value(list);
 	}
 
 	playDir {|subDir ("examples" +/+ "tutorial"), before = 0.5, after = 0.5,
 		recursive = false, interactive = false|
-		this.performDir(\play, subDir, [before, after], recursive, interactive: interactive);
+		this.performDir(\subPlay, subDir, [before, after], recursive, interactive: interactive);
 	}
 
 	recordDir{|subDir = ("examples" +/+ "catalog"), before = 1, after = 1,
 		headerFormat = "WAV", sampleRate = 44100, sampleFormat = "int16",
 		numChannels = 2, recursive = true,
 		recordDir = (Platform.userExtensionDir +/+ "FLSC" +/+ "recordings")|
-		this.performDir(\recordNRT, subDir, [before, after,
+		this.performDir(\subRecordNRT, subDir, [before, after,
 		headerFormat, sampleRate, sampleFormat,
 		numChannels], recursive, recordDir, false);
 	}
