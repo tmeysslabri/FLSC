@@ -15,15 +15,7 @@ FLSC_LocalTimeSpec : FLSC_LocalScoreSpec {
 		// le résultat de l'évaluation du sous-graphe
 		var subScore;
 
-		var adjustBus;
-
 		this.initScore(outBus, timeWarp, varDict, noWarpDict);
-
-		// si la score.outBus.end == inf,
-		// alors nous sommes en train de définir un nouveau Bus
-		// sur un support dans le contexte global
-		// => corriger l'erreur en ajustant les bornes
-		adjustBus = (score.outBus.end == inf);
 
 		// on rappelle sur la FLSC_WarpSpec
 		// le bus demandé est le bus de sortie
@@ -33,8 +25,11 @@ FLSC_LocalTimeSpec : FLSC_LocalScoreSpec {
 		// récupérer les valeurs de la subScore
 		score.add(subScore);
 
-		// si nécessaire, ajuster
-		if(adjustBus)
+		// si outBus.isNil && (score.outBus.end == inf),
+		// alors nous sommes en train de définir un nouveau Bus
+		// sur un support dans le contexte global
+		// => corriger l'erreur en ajustant les bornes
+		if(outBus.isNil && (score.outBus.end == inf))
 		{
 			score.outBus.start = score.start;
 			score.outBus.end = score.end;
