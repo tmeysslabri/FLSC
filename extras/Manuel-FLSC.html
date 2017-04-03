@@ -763,7 +763,7 @@ l’infini
 <tt>(sgn x)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-signum de x (vaut 1 si x&gt;0, -1 si x&lt;0, 0 si x=0)
+signum de <tt>x</tt> (vaut <tt>1</tt> si <tt>x&gt;0</tt>, <tt>-1</tt> si <tt>x&lt;0</tt>, <tt>0</tt> si <tt>x=0</tt>)
 </td>
 
 </tr>
@@ -772,7 +772,7 @@ signum de x (vaut 1 si x&gt;0, -1 si x&lt;0, 0 si x=0)
 <tt>(neg x)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-opposé de x
+opposé de <tt>x</tt>
 </td>
 
 </tr>
@@ -781,7 +781,7 @@ opposé de x
 <tt>(abs x)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-valeur absolue de x
+valeur absolue de <tt>x</tt>
 </td>
 
 </tr>
@@ -796,19 +796,37 @@ valeur absolue de x
 <tt><table>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(+ &amp;a), (* &amp;a)</tt>
+<tt>(+ &amp;a)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-somme et produit des a
+somme et produit des <tt>a</tt>
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(- a &amp;b), (/ a &amp;b)</tt>
+<tt>(* &amp;a)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-différence et quotient de a par les b
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(- a &amp;b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+différence et quotient de <tt>a</tt> par les <tt>b</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(/ a &amp;b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -817,7 +835,7 @@ différence et quotient de a par les b
 <tt>(** a b)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-a puissance b; si a est un signal non positif, la valeur est égale à<br/>
+<tt>a</tt> puissance <tt>b</tt>; si <tt>a</tt> est un signal non positif, la valeur est égale à<br/>
 <tt>(* (sign a) (** (abs a) b))</tt><br/>
 (ce qui permet de traiter plus aisément les signaux)
 </td>
@@ -828,16 +846,25 @@ a puissance b; si a est un signal non positif, la valeur est égale à<br/>
 <tt>(mod a b)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-a modulo b
+<tt>a</tt> modulo <tt>b</tt>
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(++ a), (-- a)</tt>
+<tt>(++ a)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-incrémentation et décrémentation de a
+incrémentation et décrémentation de <tt>a</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(-- a)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -852,11 +879,28 @@ incrémentation et décrémentation de a
 <tt><table>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(cos x), (sin x),<br/>
-(tan x)</tt>
+<tt>(cos x)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
 fonctions trigonométriques
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(sin x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(tan x)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -871,8 +915,7 @@ logarithme en base 2
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(floor x),<br/>
-(ceil x)</tt>
+<tt>(floor x)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
 entier immédiatement inférieur ou supérieur
@@ -881,19 +924,37 @@ entier immédiatement inférieur ou supérieur
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(round x y)</tt>
+<tt>(ceil x)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-multiple de y le plus proche de x; par défaut y=1
+
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(min &amp;a), (max &amp;a)</tt>
+<tt>(round x y)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-minimum et maximum des a
+multiple de <tt>y</tt> le plus proche de <tt>x</tt>; par défaut <tt>y=1</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(min &amp;a)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+minimum et maximum des <tt>a</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(max &amp;a)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -902,7 +963,7 @@ minimum et maximum des a
 <tt>(random x)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-valeur pseudo-aléatoire entre 0 et x (non-inclus); si x est entier, alors la valeur est entière; par défaut x=1.0
+valeur pseudo-aléatoire entre <tt>0</tt> et <tt>x</tt> (non-inclus); si <tt>x</tt> est entier, alors la valeur est entière; par défaut <tt>x=1.0</tt>
 </td>
 
 </tr>
@@ -950,16 +1011,25 @@ vrai
 <tt>(not p)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-négation de p
+négation de <tt>p</tt>
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(and &amp;p), (or &amp;p)</tt>
+<tt>(and &amp;p)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-conjonction et disjonction des p
+conjonction et disjonction des <tt>p</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(or &amp;p)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -968,7 +1038,7 @@ conjonction et disjonction des p
 <tt>(xor &amp;p)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-non-parité des p (vrai si un nombre impair de p sont vrais)
+non-parité des <tt>p</tt> (vrai si un nombre impair de <tt>p</tt> sont vrais)
 </td>
 
 </tr>
@@ -986,7 +1056,7 @@ non-parité des p (vrai si un nombre impair de p sont vrais)
 <tt>(eq? a &amp;b)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-égalité (vrai si a est égal à tous les b)
+égalité (vrai si <tt>a</tt> est égal à tous les <tt>b</tt>)
 </td>
 
 </tr>
@@ -995,14 +1065,13 @@ non-parité des p (vrai si un nombre impair de p sont vrais)
 <tt>(neq? a b)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-inégalité (vrai si a est différent de b)
+inégalité (vrai si <tt>a</tt> est différent de <tt>b</tt>)
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(gt? a &amp;b),<br/>
-(lt? a &amp;b)</tt>
+<tt>(gt? a &amp;b)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
 supériorité et infériorité stricte (vrai si les arguments sont strictement décroissants ou croissants)
@@ -1011,11 +1080,28 @@ supériorité et infériorité stricte (vrai si les arguments sont strictement d
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(gte? a &amp;b),<br/>
-(lte? a &amp;b)</tt>
+<tt>(lt? a &amp;b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(gte? a &amp;b)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
 supériorité et infériorité non-stricte (vrai si les arguments sont non-strictement décroissants ou croissants)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(lte? a &amp;b)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -1030,10 +1116,19 @@ supériorité et infériorité non-stricte (vrai si les arguments sont non-stric
 <tt><table>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(? o), (nil? o)</tt>
+<tt>(? o)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-non-nullité et nullité de o
+non-nullité et nullité de <tt>o</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(nil? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -1042,7 +1137,7 @@ non-nullité et nullité de o
 <tt>(boolean? o)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-vrai si o est booléen
+vrai si <tt>o</tt> est booléen
 </td>
 
 </tr>
@@ -1051,7 +1146,7 @@ vrai si o est booléen
 <tt>(number? o)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-vrai si o est un nombre
+vrai si <tt>o</tt> est un nombre
 </td>
 
 </tr>
@@ -1060,28 +1155,52 @@ vrai si o est un nombre
 <tt>(function? o)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-vrai si o est une fonction
+vrai si <tt>o</tt> est une fonction
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(list? o),<br/>
-(empty? o)</tt>
+<tt>(list? o)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-vrai si o est une liste, une liste vide
+vrai si <tt>o</tt> est une liste, une liste vide
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(sig? o),<br/>
-(control? o),<br/>
-(audio? o)</tt>
+<tt>(empty? o)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-vrai si o est un signal, un signal de contrôle, un signal audio; <tt>control?</tt> et <tt>audio?</tt> déclenchent une erreur si l’objet n’est pas du type signal
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(sig? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+vrai si <tt>o</tt> est un signal, un signal de contrôle, un signal audio; <tt>control?</tt> et <tt>audio?</tt> déclenchent une erreur si l’objet n’est pas du type signal
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(control? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(audio? o)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -1105,17 +1224,25 @@ Remarque: dans certains cas, lorsqu’une liste est demandée et que l’argumen
 <tt>(list &amp;e)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-liste composée des e
+liste composée des <tt>e</tt>
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(cons e l),<br/>
-(add l e) </tt>
+<tt>(cons e l) </tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-ajout de e au début ou à la fin de l (éventuellement converti en liste)
+ajout de <tt>e</tt> au début ou à la fin de <tt>l</tt> (éventuellement converti en liste)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(add l e)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -1124,7 +1251,7 @@ ajout de e au début ou à la fin de l (éventuellement converti en liste)
 <tt>(insert l e i)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-ajout de e à l’indice i dans l (éventuellement converti en liste)
+ajout de <tt>e</tt> à l’indice <tt>i</tt> dans <tt>l</tt> (éventuellement converti en liste)
 </td>
 
 </tr>
@@ -1133,17 +1260,25 @@ ajout de e à l’indice i dans l (éventuellement converti en liste)
 <tt>(range a b)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-liste des entiers consécutifs entre a et b (inclus)
+liste des entiers consécutifs entre <tt>a</tt> et <tt>b</tt> (inclus)
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(range0 n),<br/>
-(range1 n)</tt>
+<tt>(range0 n)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-liste de n entiers consécutifs à partir de 0 ou 1
+liste de <tt>n</tt> entiers consécutifs à partir de <tt>0</tt> ou <tt>1</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(range1 n)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -1152,7 +1287,7 @@ liste de n entiers consécutifs à partir de 0 ou 1
 <tt>(step n dn n0)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-liste de n nombres d’incrément dn à partir de n0
+liste de <tt>n</tt> nombres d’incrément <tt>dn</tt> à partir de <tt>n0</tt>
 </td>
 
 </tr>
@@ -1161,7 +1296,7 @@ liste de n nombres d’incrément dn à partir de n0
 <tt>(repeat e n)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-liste de n occurences de e
+liste de <tt>n</tt> occurences de <tt>e</tt>
 </td>
 
 </tr>
@@ -1179,7 +1314,7 @@ liste de n occurences de e
 <tt>(elt l i)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-élément d’indice i dans l
+élément d’indice <tt>i</tt> dans <tt>l</tt>
 </td>
 
 </tr>
@@ -1188,7 +1323,7 @@ liste de n occurences de e
 <tt>(subseq l i j)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-sous-séquence de l, entre les indices i et j (non-inclus)
+sous-séquence de <tt>l</tt>, entre les indices <tt>i</tt> et <tt>j</tt> (non-inclus)
 </td>
 
 </tr>
@@ -1197,7 +1332,7 @@ sous-séquence de l, entre les indices i et j (non-inclus)
 <tt>(length l)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-nombre d’éléments de l
+nombre d’éléments de <tt>l</tt>
 </td>
 
 </tr>
@@ -1206,7 +1341,7 @@ nombre d’éléments de l
 <tt>(position l e)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-position de la première occurence de e dans l
+position de la première occurence de <tt>e</tt> dans <tt>l</tt>
 </td>
 
 </tr>
@@ -1224,7 +1359,7 @@ position de la première occurence de e dans l
 <tt>(append &amp;l)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-concaténation des l (éventuellement convertis en listes)
+concaténation des <tt>l</tt> (éventuellement convertis en listes)
 </td>
 
 </tr>
@@ -1233,7 +1368,7 @@ concaténation des l (éventuellement convertis en listes)
 <tt>(reverse l)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-retournement de l
+retournement de <tt>l</tt>
 </td>
 
 </tr>
@@ -1242,7 +1377,7 @@ retournement de l
 <tt>(flop l)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-transposition de la liste de listes l (inversion de l’ordre des indices)
+transposition de la liste de listes <tt>l</tt> (inversion de l’ordre des indices)
 </td>
 
 </tr>
@@ -1251,7 +1386,7 @@ transposition de la liste de listes l (inversion de l’ordre des indices)
 <tt>(select f l)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-liste des éléments de l qui vérifient la fonction booléenne unaire f
+liste des éléments de <tt>l</tt> qui vérifient la fonction booléenne unaire <tt>f</tt>
 </td>
 
 </tr>
@@ -1260,7 +1395,7 @@ liste des éléments de l qui vérifient la fonction booléenne unaire f
 <tt>(apply f l)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-appel à la fonction f avec les éléments de l pour arguments
+appel à la fonction <tt>f</tt> avec les éléments de <tt>l</tt> pour arguments
 </td>
 
 </tr>
@@ -1278,7 +1413,7 @@ appel à la fonction f avec les éléments de l pour arguments
 <tt>(mapcar f &amp;l)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-liste résultant des applications de f aux i-èmes éléments des listes l; si celles-ci ne sont pas de la même longueur, elles sont répétées cycliquement jusqu’à la longueur la plus grande
+liste résultant des applications de <tt>f</tt> aux i-èmes éléments des listes <tt>l</tt>; si celles-ci ne sont pas de la même longueur, elles sont répétées cycliquement jusqu’à la longueur la plus grande
 </td>
 
 </tr>
@@ -1287,7 +1422,7 @@ liste résultant des applications de f aux i-èmes éléments des listes l; si c
 <tt>(reduce f l a)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-application incrémentale de la fonction binaire f au résultat précédent et aux éléments successifs de l; si a est défini, alors c’est la valeur initiale; sinon la valeur initiale est le premier élément de l
+application incrémentale de la fonction binaire <tt>f</tt> au résultat précédent et aux éléments successifs de <tt>l</tt>; si <tt>a</tt> est défini, alors c’est la valeur initiale; sinon la valeur initiale est le premier élément de <tt>l</tt>
 </td>
 
 </tr>
@@ -1311,7 +1446,7 @@ Dans la plupart des cas les paramètres des primitives possèdent des valeurs pa
 <tt>(osc freq phi)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-oscillateur sinusoïdal (audio) de fréquence freq et de phase initiale phi; par défaut freq=440 et phi=0
+oscillateur sinusoïdal (audio) de fréquence <tt>freq</tt> et de phase initiale <tt>phi</tt>; par défaut <tt>freq=440</tt> et <tt>phi=0</tt>
 </td>
 
 </tr>
@@ -1326,21 +1461,37 @@ oscillateur sinusoïdal (audio) de fréquence freq et de phase initiale phi; par
 <tt><table>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(seg start end),<br/>
-(hfseg start end)</tt>
+<tt>(seg start end)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-segment linéaire d’enveloppe, variant entre start et end du début à la fin du support temporel local; par défaut start=0 et end=1
+segment linéaire d’enveloppe, variant entre <tt>start</tt> et <tt>end</tt> du début à la fin du support temporel local; par défaut <tt>start=0</tt> et <tt>end=1</tt>
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(env levels),<br/>
-(hfenv levels)</tt>
+<tt>(hfseg start end)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-enveloppe linéaire à nombre de points fixe, qui traverse les valeurs de levels selon les points-clef de la signature locale, entre le début et la fin du support local; le support doit être signé, et avoir suffisamment de segments (le dernier segment de l’enveloppe est prolongé sur les segment restants de la signature)
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(env levels)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+enveloppe linéaire à nombre de points fixe, qui traverse les valeurs de <tt>levels</tt> selon les points-clef de la signature locale, entre le début et la fin du support local; le support doit être signé, et avoir suffisamment de segments (le dernier segment de l’enveloppe est prolongé sur les segment restants de la signature)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(hfenv levels)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -1355,11 +1506,19 @@ enveloppe linéaire à nombre de points fixe, qui traverse les valeurs de levels
 <tt><table>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(lfo freq phi)<br/>
-(tri freq phi)</tt>
+<tt>(lfo freq phi)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-modulateurs sinusoïdal et triangulaire; analogues à osc, mais pour tri la phase est donnée entre 0 et 4
+modulateurs sinusoïdal et triangulaire; analogues à <tt>osc</tt>, mais pour <tt>tri</tt> la phase est donnée entre <tt>0</tt> et <tt>4</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(tri freq phi)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -1368,18 +1527,25 @@ modulateurs sinusoïdal et triangulaire; analogues à osc, mais pour tri la phas
 <tt>(squ freq phi pw)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-modulateur carré; le paramètre supplémentaire est la largeur d’impulsion sur [0,1], par défaut 0.5; la phase est donnée entre 0 et 1
+modulateur carré; le paramètre supplémentaire est la largeur d’impulsion sur <tt>[0,1]</tt>, par défaut <tt>0.5</tt>; la phase est donnée entre <tt>0</tt> et <tt>1</tt>
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(hftri freq phi)<br/>
-(hfsqu freq<br/>
-  phi pw)</tt>
+<tt>(hftri freq phi)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-équivalents haute-fréquence de tri et squ; l’équivalent de lfo est osc
+équivalents haute-fréquence de <tt>tri</tt> et <tt>squ</tt>; l’équivalent de <tt>lfo</tt> est <tt>osc</tt>
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(hfsqu freq phi pw)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+
 </td>
 
 </tr>
@@ -1394,18 +1560,16 @@ modulateur carré; le paramètre supplémentaire est la largeur d’impulsion su
 <tt><table>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(rand max min<br/>
-  freq)</tt>
+<tt>(rand max min freq)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-génère des paliers pseudo-aléatoires entre min et max, à la fréquence freq; par défaut max=1, min=0, freq=500
+génère des paliers pseudo-aléatoires entre <tt>min</tt> et <tt>max</tt>, à la fréquence <tt>freq</tt>; par défaut <tt>max=1</tt>, <tt>min=0</tt>, <tt>freq=500</tt>
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(crand max min<br/>
-  freq)</tt>
+<tt>(crand max min freq)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
 idem avec une ligne brisée (signal continu)
@@ -1573,21 +1737,28 @@ Les fonctions génératrices d’enveloppe permettent d’exploiter la structure
 <tt><table>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(menv levels)<br/>
-(mhfenv levels)</tt>
+<tt>(menv levels)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-modules parcourant les niveaux levels entre le début et la fin du support temporel local, avec des césures sur les points-clef de la signature locale (utilise <tt>seq</tt>)
+modules parcourant les niveaux <tt>levels</tt> entre le début et la fin du support temporel local, avec des césures sur les points-clef de la signature locale (utilise <tt>seq</tt>)
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(mhybenv levels<br/>
-  type)</tt>
+<tt>(mhfenv levels)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-idem avec une composition hybride; le i-ème segment est de type audio si l’indice i de type est vrai, et de type contrôle si il est faux (noter que le nombre de segments est la longueur de levels moins 1)
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(mhybenv levels type)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+idem avec une composition hybride; le i-ème segment est de type audio si l’indice <tt>i</tt> de type booléen est vrai, et de type contrôle si il est faux (noter que le nombre de segments est la longueur de <tt>levels</tt> moins <tt>1</tt>)
 </td>
 
 </tr>
@@ -1596,7 +1767,7 @@ idem avec une composition hybride; le i-ème segment est de type audio si l’in
 <tt>(lmenv levels)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-fonction engendrant un appel à un module ad-hoc; les paramètres sont les mêmes que ceux de env; noter que dans ce cas chaque appel produit un nouveau module (ce qui est peu économique)
+fonction engendrant un appel à un module ad-hoc; les paramètres sont les mêmes que ceux de <tt>env</tt>; noter que dans ce cas chaque appel produit un nouveau module (ce qui est peu économique)
 </td>
 
 </tr>
@@ -1611,7 +1782,7 @@ fonction engendrant un appel à un module ad-hoc; les paramètres sont les même
 <tt><table>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(mn+ &amp;a), (mn* &amp;a)</tt>
+<tt>(mn+ &amp;a)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
 fonctions engendrant une chaîne de longueur arbitraire de modules <tt>m+</tt> ou <tt>m*</tt>, ce qui permet d’obtenir un assemblage n-aire
@@ -1620,11 +1791,19 @@ fonctions engendrant une chaîne de longueur arbitraire de modules <tt>m+</tt> o
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 20%;">
-<tt>(basemap bases<br/>
-  sigs)</tt>
+<tt>(mn* &amp;a)</tt>
 </td>
 <td align="left" valign="top" style="width: 70%;">
-fonction permettant d’appliquer à chaque élément de la liste de signaux sigs le support temporel d’indice correspondant dans la liste bases
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 20%;">
+<tt>(basemap bases sigs)</tt>
+</td>
+<td align="left" valign="top" style="width: 70%;">
+fonction permettant d’appliquer à chaque élément de la liste de signaux <tt>sigs</tt> le support temporel d’indice correspondant dans la liste <tt>bases</tt>
 </td>
 
 </tr>
