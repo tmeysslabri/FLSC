@@ -8,7 +8,7 @@ FLSC_Patch : FLSC_RestFuncDef {
 				// vérifier que la valeur est non-signée
 				if(t.size > 1)
 				{FLSC_Error("Signed time value in unsigned base: %".format(t)).throw};
-				t.first.(dur)
+				[t.first.(dur)]
 			}, sig);
 			FLSC_GlobalTimeSpec(sig.rate, warp);
 		};
