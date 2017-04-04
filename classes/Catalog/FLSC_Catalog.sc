@@ -28,7 +28,9 @@ FLSC_Catalog {
 		{expr.isNumber} {^FLSC_CatNum(expr)}
 		// expression composite (appel de fonction)
 		// [selecteur, [N listes de sous-expressions], ?[N préfixes]]
-		{^FLSC_CatCall(expr)};
+		{expr[0].isKindOf(Symbol)} {^FLSC_CatCall(expr)}
+		// tableau: [elt, ...]
+		{^FLSC_CatArr(expr)};
 	}
 
 	*readFile {|path|
@@ -118,8 +120,8 @@ FLSC_Catalog {
 			activeJobs = activeJobs - 1;
 			if (activeJobs == 0) {
 				var endTime = Date.getDate.rawSeconds.asInteger;
-				"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
-					endTime - startTime, status).postln;
+				{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
+					endTime - startTime, status).postln}.defer(1);
 				FLSC_Score.cleanUp;
 			}
 		}

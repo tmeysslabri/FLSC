@@ -6,7 +6,7 @@ FLSC_CatCall : FLSC_Catalog {
 	}
 
 	catCallInit {|expr|
-		flscString = expr[0];
+		flscString = expr[0].asString;
 		subs = expr[1].collect(_.collect {|e| FLSC_Catalog.newFrom(e)});
 		prefixes = expr[2] ? [];
 	}
