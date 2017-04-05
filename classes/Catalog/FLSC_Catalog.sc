@@ -3,6 +3,8 @@ FLSC_Catalog {
 	var flscString;
 
 	// champs pour le rendu (nil sauf à la racine du catalogue)
+	// la liste des sous-expressions
+	var exprList;
 	// le répertoire du catalogue
 	var baseDir;
 	// la liste des paquets requis
@@ -43,7 +45,12 @@ FLSC_Catalog {
 		// lire le fichier
 		var content = this.readFile(path);
 		// créer la structure de données
-		^this.newFrom(content[1]).catalogFileInit(path.dirname, content[0]);
+		// ^this.newFrom(content[1]).catalogFileInit(path.dirname, content[0]);
+		^super.new.exprListInit(content[1]).catalogFileInit(path.dirname, content[0]);
+	}
+
+	exprListInit {|list|
+			exprList = list.collect {|e| this.class.newFrom(e)};
 	}
 
 	catalogFileInit {|dir, pkgs|
@@ -79,6 +86,13 @@ FLSC_Catalog {
 
 	makePairList {
 		pairList = this.asPathExprPairList;
+	}
+
+	asPathExprPairList {
+		var padding = exprList.size.asString.size;
+		^exprList.collect {|it, n| it.asPathExprPairList
+			.collect{|e| [n.asString.padLeft(padding, "0") ++ "-" ++  e[0], e[1]]}}
+		.reduce('++');
 	}
 
 	build {|maxJobs = 1|
