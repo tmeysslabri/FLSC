@@ -80,10 +80,13 @@ FLSC_Score : FLSC_Object {
 		var curGroup = nil;
 
 		// Score résultante
-		var scoreDict = Dictionary(), score = Score();
+		var scoreDict = Dictionary(), msgList = List(), score = Score();
 
 		// le serveur
 		var server = Server.default;
+
+		var numAudioBusses = 0;
+		var numControlBusses = 0;
 
 		// allocation des Bus
 		startTimes = busList.copy.sort {|a,b| a.start < b.start};
@@ -100,8 +103,30 @@ FLSC_Score : FLSC_Object {
 				busses[item.type].pop;
 			} {
 				switch(item.type)
-				{'audio'}   {Bus.audio}
-				{'control'} {Bus.control}
+				{'audio'}
+				{
+					numAudioBusses = numAudioBusses + 1;
+					if (numAudioBusses >= (server.options.numAudioBusChannels - 1))
+					{
+						server.options.numAudioBusChannels =
+						server.options.numAudioBusChannels * 2;
+						server.waitForBoot({server.quit});
+						// server.sync;
+					};
+					Bus.audio;
+				}
+				{'control'}
+				{
+					numControlBusses = numControlBusses + 1;
+					if (numControlBusses >= (server.options.numControlBusChannels - 1))
+					{
+						server.options.numControlBusChannels =
+						server.options.numControlBusChannels * 2;
+						server.waitForBoot({server.quit});
+						// server.sync;
+					};
+					Bus.control;
+				}
 			};
 		};
 
@@ -121,6 +146,7 @@ FLSC_Score : FLSC_Object {
 			curGroup = item;
 			msg;
 		};
+
 		// l'ordre des bundles n'est pas signifiant
 		// (puisque les messages sont classés dans les groupes par leur rang)
 		// il faut tout de même concaténer les listes de messages de date start et end
@@ -141,10 +167,24 @@ FLSC_Score : FLSC_Object {
 		// ajouter les messages de terminaison des groupes, à la fin
 		scoreDict[end] = groups.collect {|item| item.freeMsg};
 
+		/*
 		scoreDict.keysValuesDo {|key, value|
-			// "%: %".format(key, value).postln;
-			score.add([key] ++ value)};
-		score.sort;
+		score.add([key] ++ value)};
+		*/
+		scoreDict.keysValuesDo {|key, value|
+			msgList.add([key, value])};
+		msgList.sort({|a,b| a[0] < b[0]});
+		msgList.do {|item|
+			var time = item[0];
+			var msgs = item[1];
+			while {msgs.notEmpty}
+			{
+				score.add([time] ++ msgs[..15]);
+				msgs = msgs[16..];
+			};
+		};
+
+		// score.sort;
 
 		^[score, busses];
 	}
@@ -153,11 +193,33 @@ FLSC_Score : FLSC_Object {
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
 		var busses = scorePair[1];
+		var numAudioBusses = busses['audio'].size;
+		var numControlBusses = busses['control'].size;
 		var server = Server.default;
+		var restart = false;
 
 		// exécution de la partition
 		Routine({
-			// redémarrer le serveur pour oublier les anciennes SynthDef
+			// vérifier que les ressources sont suffisantes
+			/*
+			if (server.options.numAudioBusChannels < numAudioBusses)
+			{
+			server.options.numAudioBusChannels = 2 ** log2(numAudioBusses).ceil;
+			restart = true;
+			};
+			if (server.options.numControlBusChannels < numControlBusses)
+			{
+			server.options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
+			restart = true;
+			};
+			*/
+			if (server.options.maxNodes < (numAudioBusses + numControlBusses))
+			{
+				server.options.maxNodes = 2 ** log2(numAudioBusses + numControlBusses).ceil;
+				restart = true;
+			};
+			if (restart) { server.quit; server.sync; };
+			// démarrer le serveur
 			server.bootSync;
 			// charger les SynthDef
 			defDict.do {|item| item.add };
@@ -182,9 +244,29 @@ FLSC_Score : FLSC_Object {
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
 		var busses = scorePair[1];
+		var numAudioBusses = busses['audio'].size;
+		var numControlBusses = busses['control'].size;
 		var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
 		var fileName = (if(outFile.notNil) {outFile}
 			{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
+		var options = ServerOptions.new.numOutputBusChannels_(numChannels);
+		/*
+		// vérifier que les ressources sont suffisantes
+		if (options.numAudioBusChannels < numAudioBusses)
+		{
+		options.numAudioBusChannels = 2 ** log2(numAudioBusses).ceil;
+		};
+		if (options.numControlBusChannels < numControlBusses)
+		{
+		options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
+		};
+		*/
+		if (options.maxNodes < (numAudioBusses + numControlBusses))
+		{
+			options.maxNodes = 2 ** log2(numAudioBusses + numControlBusses).ceil;
+			Server.default.waitForBoot({Server.default.quit});
+
+		};
 		// créer les répertoires, si ils n'existent pas
 		// baseDir.mkdir;
 		fileName.dirname.mkdir;
@@ -195,7 +277,7 @@ FLSC_Score : FLSC_Object {
 		};
 		score.recordNRT(fileName++".osc", fileName, nil,
 			sampleRate,	headerFormat, sampleFormat,
-			ServerOptions.new.numOutputBusChannels_(numChannels),
+			options, " > /home/tmeysson/SC/nrt.log",
 			action:
 			{
 				File.delete(fileName++".osc");

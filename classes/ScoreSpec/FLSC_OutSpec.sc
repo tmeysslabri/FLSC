@@ -74,7 +74,8 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 			// ajouter systemOut à la fin
 			score.bundle.add(FLSC_MsgPair(systemOut.name,
 				Dictionary.newFrom(['in', score.outBus]), score.rank));
-			// ajouter la marge de fin
+			// ajouter les marges de début et de fin
+			score.start = 0;
 			score.end = score.end + after;
 			// ajouter le bundle
 			score.pushBundle;
