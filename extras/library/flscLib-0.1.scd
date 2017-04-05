@@ -47,6 +47,15 @@
 			{|ctxt| FLSC_Var('terms').value(ctxt).reduce(\min)})],
 		['max', FLSC_RestUGenFunc(nil, ['terms'],
 			{|ctxt| FLSC_Var('terms').value(ctxt).reduce(\max)})],
+		['clip', FLSC_UGenFunc(nil, ['val', 'lo', 'hi'],
+			{|ctxt| FLSC_Var('val').value(ctxt).clip(
+				FLSC_Var('lo').value(ctxt),FLSC_Var('hi').value(ctxt))})],
+		['fold', FLSC_UGenFunc(nil, ['val', 'lo', 'hi'],
+			{|ctxt| FLSC_Var('val').value(ctxt).fold(
+				FLSC_Var('lo').value(ctxt),FLSC_Var('hi').value(ctxt))})],
+		['wrap', FLSC_UGenFunc(nil, ['val', 'lo', 'hi'],
+			{|ctxt| FLSC_Var('val').value(ctxt).wrap(
+				FLSC_Var('lo').value(ctxt),FLSC_Var('hi').value(ctxt))})],
 
 		// BOOLEENS:
 		// opérateurs:

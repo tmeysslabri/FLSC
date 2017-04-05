@@ -43,6 +43,9 @@
 		['mround', "(module (a) (round a))"],
 		['mmin', "(module (a b) (min a b))"],
 		['mmax', "(module (a b) (max a b))"],
+		['mclip', "(module (val lo hi) (clip val lo hi))"],
+		['mfold', "(module (val lo hi) (fold val lo hi))"],
+		['mwrap', "(module (val lo hi) (wrap val lo hi))"],
 
 		// modules générateurs de signaux:
 		// valeur nulle
