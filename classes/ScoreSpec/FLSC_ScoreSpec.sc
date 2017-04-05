@@ -38,7 +38,7 @@ FLSC_ScoreSpec : FLSC_Object {
 			{FLSC_LocError(error.errorString, parent.start, parent.end).throw}
 			{true}
 			{error.reportError; FLSC_FatalError("Non-FLSC error: see above").throw}
-		}
+		};
 		^res;
 	}
 
