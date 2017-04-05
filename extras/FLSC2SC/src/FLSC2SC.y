@@ -115,7 +115,8 @@ Defines:	Expr
 			lnbrk(-1, cons(").setLines(", cons($1, cons(", ", cons($4, cons(")" , NULL))))))); }
 
 Expr:	SpecForm | Call | Var | Num | List
-	| NIL	{ $$ = cons("FLSC_Nil()", NULL); }
+	| STRING	{ $$ = cons($1, NULL); }
+	| NIL		{ $$ = cons("FLSC_Nil()", NULL); }
 
 SpecForm:	Func | Conditional
 

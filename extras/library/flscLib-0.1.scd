@@ -535,5 +535,14 @@
 						.format(seqEnd, baseEnd)).throw}
 				});
 		})],
+
+		// FONCTIONS DIVERSES
+		// affichage de messages
+		['post', FLSC_RestFunc(nil, ['expr', 'fmt', 'args'],
+			{|ctxt|
+				FLSC_Var('fmt').(ctxt).performList(\format, FLSC_Var('args').(ctxt)).postln;
+				FLSC_Var('expr').(ctxt);
+			}
+		)],
 	]
 }.value();
