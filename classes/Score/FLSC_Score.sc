@@ -172,8 +172,8 @@ FLSC_Score : FLSC_Object {
 			var msgs = item[1];
 			while {msgs.notEmpty}
 			{
-				score.add([time] ++ msgs[..15]);
-				msgs = msgs[16..];
+				score.add([time] ++ msgs[..63]);
+				msgs = msgs[64..];
 			};
 		};
 
