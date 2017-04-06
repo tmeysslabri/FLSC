@@ -31,7 +31,7 @@ FLSC_VarSpec : FLSC_ScoreSpec {
 			^FLSC_Score(outBus, Dictionary.newFrom([pipe.name, pipe]), List(), List(),
 				[FLSC_Bundle(sub.start, sub.end, [FLSC_MsgPair(pipe.name,
 					Dictionary.newFrom(['in', sub.outBus, 'out', outBus]),
-					sub.rank)])], sub.start, sub.end, sub.rank + 1).checkTimes;
+					sub.rank)])], sub.start, sub.end, sub.rank + 1).numNodes_(1).checkTimes;
 		} {
 			// toutes les informations ont déjà été ajoutées,
 			// seuls le bus de sortie, le début, la fin et le rang nous intéressent

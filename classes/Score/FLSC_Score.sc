@@ -16,6 +16,8 @@ FLSC_Score : FLSC_Object {
 	var <>start, <>end;
 	// le rang du sous-graphe
 	var <>rank;
+	// le nombre de noeuds
+	var <>numNodes;
 
 	*initClass {
 		defsDir = Platform.userExtensionDir +/+ "FLSC" +/+ "synthdefs";
@@ -35,6 +37,7 @@ FLSC_Score : FLSC_Object {
 		start = t0;
 		end = tf;
 		rank = rankNum;
+		numNodes = 0;
 		^this;
 	}
 
@@ -44,10 +47,11 @@ FLSC_Score : FLSC_Object {
 		defDict.putAll(subScore.defDict);
 		bundle.addAll(subScore.bundle);
 		bundleList.addAll(subScore.bundleList);
-		// on recalcule le début, la fin et le rang
+		// on recalcule le début, la fin, le rang, et le nombre de noeuds
 		start = min(start, subScore.start);
 		end = max(end, subScore.end);
 		rank = max(rank, subScore.rank);
+		numNodes = numNodes + subScore.numNodes;
 	}
 
 	pushBundle {
@@ -85,8 +89,11 @@ FLSC_Score : FLSC_Object {
 		// le serveur
 		var server = Server.default;
 
+		// variables pour le comptage des Bus et Node
 		var numAudioBusses = 0;
 		var numControlBusses = 0;
+
+		numNodes = numNodes + groups.size;
 
 		// allocation des Bus
 		startTimes = busList.copy.sort {|a,b| a.start < b.start};
@@ -105,27 +112,13 @@ FLSC_Score : FLSC_Object {
 				switch(item.type)
 				{'audio'}
 				{
-					numAudioBusses = numAudioBusses + 1;
-					if (numAudioBusses >= (server.options.numAudioBusChannels - 1))
-					{
-						server.options.numAudioBusChannels =
-						server.options.numAudioBusChannels * 2;
-						server.waitForBoot({server.quit});
-						// server.sync;
-					};
-					Bus.audio;
+					// retourner l'indice courant et l'incrémenter
+					numAudioBusses <! (numAudioBusses = numAudioBusses + 1);
 				}
 				{'control'}
 				{
-					numControlBusses = numControlBusses + 1;
-					if (numControlBusses >= (server.options.numControlBusChannels - 1))
-					{
-						server.options.numControlBusChannels =
-						server.options.numControlBusChannels * 2;
-						server.waitForBoot({server.quit});
-						// server.sync;
-					};
-					Bus.control;
+					// retourner l'indice courant et l'incrémenter
+					numControlBusses <! (numControlBusses = numControlBusses + 1);
 				}
 			};
 		};
@@ -186,23 +179,24 @@ FLSC_Score : FLSC_Object {
 
 		// score.sort;
 
-		^[score, busses];
+		// ^[score, busses];
+		^[score, numAudioBusses, numControlBusses]
 	}
 
 	play {|doneAction = nil|
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
-		var busses = scorePair[1];
-		var numAudioBusses = busses['audio'].size;
-		var numControlBusses = busses['control'].size;
+		var numAudioBusses = scorePair[1];
+		var numControlBusses = scorePair[2];
+		var busses;
 		var server = Server.default;
 		var restart = false;
 
 		// exécution de la partition
 		Routine({
 			// vérifier que les ressources sont suffisantes
-			/*
-			if (server.options.numAudioBusChannels < numAudioBusses)
+			// on ajoute le nombre de Bus système (16)
+			if (server.options.numAudioBusChannels < (numAudioBusses + 16))
 			{
 			server.options.numAudioBusChannels = 2 ** log2(numAudioBusses).ceil;
 			restart = true;
@@ -212,8 +206,7 @@ FLSC_Score : FLSC_Object {
 			server.options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
 			restart = true;
 			};
-			*/
-			if (server.options.maxNodes < (numAudioBusses + numControlBusses))
+			if (server.options.maxNodes < numNodes)
 			{
 				server.options.maxNodes = 2 ** log2(numAudioBusses + numControlBusses).ceil;
 				restart = true;
@@ -221,6 +214,12 @@ FLSC_Score : FLSC_Object {
 			if (restart) { server.quit; server.sync; };
 			// démarrer le serveur
 			server.bootSync;
+			// allouer les Bus
+			busses = Dictionary.newFrom([
+				audio: {Bus.audio} ! numAudioBusses,
+				control: {Bus.control} ! numControlBusses
+			]);
+			busList.do {|it| it.bus = busses[it.type][it.bus] };
 			// charger les SynthDef
 			defDict.do {|item| item.add };
 			server.sync;
@@ -231,7 +230,7 @@ FLSC_Score : FLSC_Object {
 			// supprimer les SynthDef -> géré par cleanUp
 			// defDict.do {|item| SynthDef.removeAt(item.name)};
 			// supprimer les Bus
-			busses.do {|list| list.do {|bus| bus.free}};
+			busses.do (_.do(_.free)); //{|list| list.do {|bus| bus.free}};
 			// effectuer l'action demandée
 			doneAction.value;
 		}).play;
@@ -243,30 +242,47 @@ FLSC_Score : FLSC_Object {
 		// récupérer la partition
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
-		var busses = scorePair[1];
-		var numAudioBusses = busses['audio'].size;
-		var numControlBusses = busses['control'].size;
+		var numAudioBusses = scorePair[1];
+		var numControlBusses = scorePair[2];
+		var busses;
+		// var restart = false;
 		var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
 		var fileName = (if(outFile.notNil) {outFile}
 			{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
 		var options = ServerOptions.new.numOutputBusChannels_(numChannels);
-		/*
 		// vérifier que les ressources sont suffisantes
-		if (options.numAudioBusChannels < numAudioBusses)
+		// on ajoute le nombre de Bus système (16)
+		if (options.numAudioBusChannels < (numAudioBusses + 16))
 		{
-		options.numAudioBusChannels = 2 ** log2(numAudioBusses).ceil;
+			options.numAudioBusChannels = 2 ** log2(numAudioBusses + 16).ceil.postln;
+			// restart = true;
 		};
 		if (options.numControlBusChannels < numControlBusses)
 		{
-		options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
+			options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
+			// restart = true;
 		};
-		*/
-		if (options.maxNodes < (numAudioBusses + numControlBusses))
+		if (options.maxNodes < numNodes)
 		{
 			options.maxNodes = 2 ** log2(numAudioBusses + numControlBusses).ceil;
-			Server.default.waitForBoot({Server.default.quit});
-
+			// restart = true;
 		};
+		// DEBUG
+		"Control: %/%, Audio: %/%, Nodes: %/%".format(
+			numControlBusses, options.numControlBusChannels,
+			numAudioBusses, options.numAudioBusChannels,
+			numNodes, options.maxNodes
+		).postln;
+		/*
+		if (restart)
+		{ Server.default.waitForBoot({Server.default.quit}) };
+		*/
+		// allouer les Bus
+		busses = Dictionary.newFrom([
+			audio: {Bus.audio} ! numAudioBusses,
+			control: {Bus.control} ! numControlBusses
+		]);
+		busList.do {|it| it.bus = busses[it.type][it.bus] };
 		// créer les répertoires, si ils n'existent pas
 		// baseDir.mkdir;
 		fileName.dirname.mkdir;
