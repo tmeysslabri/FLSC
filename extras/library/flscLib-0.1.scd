@@ -544,5 +544,14 @@
 				FLSC_Var('expr').(ctxt);
 			}
 		)],
+		['debug', FLSC_Function(nil, ['expr', 'fmt'],
+			{|ctxt|
+				var expr = FLSC_Var('expr').(ctxt);
+				var fmt = FLSC_Var('fmt').(ctxt);
+				if (fmt.isFLSCNil) {fmt = "%"};
+				fmt.format(expr).postln;
+				expr;
+			}
+		)],
 	]
 }.value();

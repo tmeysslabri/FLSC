@@ -1,5 +1,7 @@
 [
 	[
+		// identité
+		['id', "(lambda (o) o)"],
 		// incrémentation et décrémentation
 		['++', "(lambda (num) (+ num 1))"],
 		['--', "(lambda (num) (- num 1))"],
@@ -8,6 +10,7 @@
 		// générateurs de séquences
 		['range0', "(lambda (num) (range 0 (- num 1)))"],
 		['range1', "(lambda (num) (range 1 num))"],
+		['rangestep', "(lambda (start step num) (+ start (* step (range 0 (- num 1)))))"],
 		// fonctions de base sur les listes
 		['car', "(lambda (list) (elt list 0))"],
 		['cdr', "(lambda (list) (subseq list 1 (length list)))"],
@@ -71,6 +74,12 @@
 		// on peut utiliser une fonction qui génère un module
 		// mais c'est sous-optimal (un module créé par appel !)
 		['lmenv', "(lambda (levels) ((module () (env levels))))"],
+
+		// DEBOGUAGE
+		['pfunc',
+			"(lambda (expr func)" +
+			"  (post expr \"%\" (func expr)))"
+		],
 	], [
 		// générateurs de séquence (suite)
 		['step',
