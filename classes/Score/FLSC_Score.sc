@@ -84,6 +84,7 @@ FLSC_Score : FLSC_Object {
 
 		// le serveur
 		var server = Server.default;
+		var options = server.options;
 
 		// variables pour le comptage des Bus et Node
 		var numAudioBusses = 0;
@@ -91,6 +92,8 @@ FLSC_Score : FLSC_Object {
 
 		var numNodes = 0;
 		var activeNodes = 0;
+
+		var restart = false;
 
 		// allocation des Bus
 		startTimes = busList.copy.sort {|a,b| a.start < b.start};
@@ -105,15 +108,6 @@ FLSC_Score : FLSC_Object {
 			item.bus = if(busses[item.type].notEmpty)
 			{
 				busses[item.type].pop
-				/*
-				var bus = busses[item.type].pop;
-				if (item.type == 'control')
-				{
-					scoreDict[item.start] = scoreDict[item.start] ++
-					[[\c_set, bus, 0]];
-				};
-				bus;
-				*/
 			} {
 				switch(item.type)
 				{'audio'}
@@ -135,6 +129,27 @@ FLSC_Score : FLSC_Object {
 			busses[endBus.type].add(endBus.bus);
 			endIndex = endIndex + 1;
 		};
+
+		// vérifier que les ressources sont suffisantes
+		// on ajoute le nombre de Bus système (16)
+		if (options.numAudioBusChannels < (numAudioBusses + 16))
+		{
+			options.numAudioBusChannels = 2 ** log2(numAudioBusses).ceil;
+			restart = true;
+		};
+		if (options.numControlBusChannels < numControlBusses)
+		{
+			options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
+			restart = true;
+		};
+		if (restart) { server.waitForBoot({server.quit}) };
+		// allouer les Bus
+		busses = Dictionary.newFrom([
+			'audio', {Bus.audio} ! numAudioBusses,
+			'control', {Bus.control} ! numControlBusses
+		]);
+		busList.do {|it| it.bus = busses[it.type][it.bus] };
+
 
 		// création du Score
 
@@ -190,47 +205,33 @@ FLSC_Score : FLSC_Object {
 			};
 		};
 
-		^[score, numAudioBusses, numControlBusses, numNodes]
+		if (options.maxNodes < numNodes)
+		{
+			options.maxNodes = 2 ** log2(numNodes).ceil;
+			server.waitForBoot({server.quit});
+		};
+
+		// Donner des informations sur les ressources utilisées
+		"Control: %/%, Audio: %/%, Nodes: %/%".format(
+			numControlBusses, options.numControlBusChannels,
+			numAudioBusses, options.numAudioBusChannels,
+			numNodes, options.maxNodes
+		).postln;
+
+		^[score, busses]
 	}
 
 	play {|doneAction = nil|
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
-		var numAudioBusses = scorePair[1];
-		var numControlBusses = scorePair[2];
-		var numNodes = scorePair[3];
-		var busses;
+		var busses = scorePair[1];
 		var server = Server.default;
 		var restart = false;
 
 		// exécution de la partition
 		Routine({
-			// vérifier que les ressources sont suffisantes
-			// on ajoute le nombre de Bus système (16)
-			if (server.options.numAudioBusChannels < (numAudioBusses + 16))
-			{
-			server.options.numAudioBusChannels = 2 ** log2(numAudioBusses).ceil;
-			restart = true;
-			};
-			if (server.options.numControlBusChannels < numControlBusses)
-			{
-			server.options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
-			restart = true;
-			};
-			if (server.options.maxNodes < numNodes)
-			{
-				server.options.maxNodes = 2 ** log2(numAudioBusses + numControlBusses).ceil;
-				restart = true;
-			};
-			if (restart) { server.quit; server.sync; };
 			// démarrer le serveur
 			server.bootSync;
-			// allouer les Bus
-			busses = Dictionary.newFrom([
-				audio: {Bus.audio} ! numAudioBusses,
-				control: {Bus.control} ! numControlBusses
-			]);
-			busList.do {|it| it.bus = busses[it.type][it.bus] };
 			// charger les SynthDef
 			defDict.do {|item| item.add };
 			server.sync;
@@ -253,48 +254,11 @@ FLSC_Score : FLSC_Object {
 		// récupérer la partition
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
-		var numAudioBusses = scorePair[1];
-		var numControlBusses = scorePair[2];
-		var numNodes = scorePair[3];
-		var busses;
-		// var restart = false;
+		var busses = scorePair[1];
 		var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
 		var fileName = (if(outFile.notNil) {outFile}
 			{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
 		var options = ServerOptions.new.numOutputBusChannels_(numChannels);
-		// vérifier que les ressources sont suffisantes
-		// on ajoute le nombre de Bus système (16)
-		if (options.numAudioBusChannels < (numAudioBusses + 16))
-		{
-			options.numAudioBusChannels = 2 ** log2(numAudioBusses + 16).ceil.postln;
-			// restart = true;
-		};
-		if (options.numControlBusChannels < numControlBusses)
-		{
-			options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
-			// restart = true;
-		};
-		if (options.maxNodes < numNodes)
-		{
-			options.maxNodes = 2 ** log2(numAudioBusses + numControlBusses).ceil;
-			// restart = true;
-		};
-		// DEBUG
-		"Control: %/%, Audio: %/%, Nodes: %/%".format(
-			numControlBusses, options.numControlBusChannels,
-			numAudioBusses, options.numAudioBusChannels,
-			numNodes, options.maxNodes
-		).postln;
-		/*
-		if (restart)
-		{ Server.default.waitForBoot({Server.default.quit}) };
-		*/
-		// allouer les Bus
-		busses = Dictionary.newFrom([
-			audio: {Bus.audio} ! numAudioBusses,
-			control: {Bus.control} ! numControlBusses
-		]);
-		busList.do {|it| it.bus = busses[it.type][it.bus] };
 		// créer les répertoires, si ils n'existent pas
 		// baseDir.mkdir;
 		fileName.dirname.mkdir;
