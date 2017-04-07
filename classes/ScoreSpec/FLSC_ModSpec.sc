@@ -39,7 +39,6 @@ FLSC_ModSpec : FLSC_LocalScoreSpec {
 
 		// on créée le message courant
 		score.bundle.add(FLSC_MsgPair(def.name, synthArgs, score.rank));
-		score.numNodes = score.numNodes + 1;
 
 		// ajouter les temps de début et de fin, et le rang
 		// (obligatoire car il n'y a pas nécessairement de subScore)

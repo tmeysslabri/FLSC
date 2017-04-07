@@ -16,8 +16,6 @@ FLSC_Score : FLSC_Object {
 	var <>start, <>end;
 	// le rang du sous-graphe
 	var <>rank;
-	// le nombre de noeuds
-	var <>numNodes;
 
 	*initClass {
 		defsDir = Platform.userExtensionDir +/+ "FLSC" +/+ "synthdefs";
@@ -37,7 +35,6 @@ FLSC_Score : FLSC_Object {
 		start = t0;
 		end = tf;
 		rank = rankNum;
-		numNodes = 0;
 		^this;
 	}
 
@@ -47,11 +44,10 @@ FLSC_Score : FLSC_Object {
 		defDict.putAll(subScore.defDict);
 		bundle.addAll(subScore.bundle);
 		bundleList.addAll(subScore.bundleList);
-		// on recalcule le début, la fin, le rang, et le nombre de noeuds
+		// on recalcule le début, la fin, et le rang
 		start = min(start, subScore.start);
 		end = max(end, subScore.end);
 		rank = max(rank, subScore.rank);
-		numNodes = numNodes + subScore.numNodes;
 	}
 
 	pushBundle {
@@ -93,7 +89,8 @@ FLSC_Score : FLSC_Object {
 		var numAudioBusses = 0;
 		var numControlBusses = 0;
 
-		numNodes = numNodes + groups.size;
+		var numNodes = 0;
+		var activeNodes = 0;
 
 		// allocation des Bus
 		startTimes = busList.copy.sort {|a,b| a.start < b.start};
@@ -170,6 +167,20 @@ FLSC_Score : FLSC_Object {
 		msgList.do {|item|
 			var time = item[0];
 			var msgs = item[1];
+
+			// comptage du maximum de noeuds actifs simultanément
+			var add = 0, sub = 0;
+			msgs.do {|m|
+				switch (m[0])
+				{9}   {add = add + 1}
+				{63}  {add = add + 1}
+				{21}  {add = add + 1}
+				{11}  {sub = sub + 1}
+			};
+			activeNodes = activeNodes + add;
+			if (activeNodes > numNodes) {numNodes = activeNodes};
+			activeNodes = activeNodes - sub;
+
 			while {msgs.notEmpty}
 			{
 				score.add([time] ++ msgs[..63]);
@@ -180,7 +191,7 @@ FLSC_Score : FLSC_Object {
 		// score.sort;
 
 		// ^[score, busses];
-		^[score, numAudioBusses, numControlBusses]
+		^[score, numAudioBusses, numControlBusses, numNodes]
 	}
 
 	play {|doneAction = nil|
@@ -188,6 +199,7 @@ FLSC_Score : FLSC_Object {
 		var score = scorePair[0];
 		var numAudioBusses = scorePair[1];
 		var numControlBusses = scorePair[2];
+		var numNodes = scorePair[3];
 		var busses;
 		var server = Server.default;
 		var restart = false;
@@ -244,6 +256,7 @@ FLSC_Score : FLSC_Object {
 		var score = scorePair[0];
 		var numAudioBusses = scorePair[1];
 		var numControlBusses = scorePair[2];
+		var numNodes = scorePair[3];
 		var busses;
 		// var restart = false;
 		var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
