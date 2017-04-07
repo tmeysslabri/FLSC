@@ -147,20 +147,13 @@ FLSC_Score : FLSC_Object {
 			var scorePair = item.asSCScorePair(server, groups);
 			scorePair.do {|item|
 				var key = item[0], value = item[1];
-				// "%: %".format(key, value).postln;
-				if(scoreDict[key].notNil)
-				{ scoreDict[key] = scoreDict[key] ++ value }
-				{ scoreDict[key] = value };
+				scoreDict[key] = scoreDict[key] ++ value;
 			}
 		};
 
 		// ajouter les messages de terminaison des groupes, à la fin
-		scoreDict[end] = groups.collect {|item| item.freeMsg};
+		scoreDict[end] = scoreDict[end] ++ groups.collect {|item| item.freeMsg};
 
-		/*
-		scoreDict.keysValuesDo {|key, value|
-		score.add([key] ++ value)};
-		*/
 		scoreDict.keysValuesDo {|key, value|
 			msgList.add([key, value])};
 		msgList.sort({|a,b| a[0] < b[0]});
@@ -190,7 +183,6 @@ FLSC_Score : FLSC_Object {
 
 		// score.sort;
 
-		// ^[score, busses];
 		^[score, numAudioBusses, numControlBusses, numNodes]
 	}
 
