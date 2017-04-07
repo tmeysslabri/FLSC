@@ -143,7 +143,12 @@
 		['append', FLSC_RestFunc(nil, ['terms'],
 			{|ctxt| FLSC_Var('terms').value(ctxt).collect(_.asArray).inject([], _++_)})],
 		['range', FLSC_Function(nil, ['a', 'b'],
-			{|ctxt| (FLSC_Var('a').value(ctxt)..FLSC_Var('b').value(ctxt))})],
+			{|ctxt|
+				var a = FLSC_Var('a').value(ctxt);
+				var b = FLSC_Var('b').value(ctxt);
+				if (b < a) {[]} {(a..b)};
+			}
+		)],
 		['reverse', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).reverse})],
 		['repeat', FLSC_Function(nil, ['elt', 'num'],
 			{|ctxt|
@@ -166,8 +171,11 @@
 			{|ctxt|
 				var func = FLSC_Var('func').value(ctxt);
 				var lists = FLSC_Var('lists').value(ctxt);
-				lists.flop.collect({|item|
-					func.value(item)})
+				if (lists.inject(true) {|a,e| a && e.isEmpty}) {[]}
+				{
+					lists.flop.collect({|item|
+						func.value(item)})
+				}
 		})],
 		['select', FLSC_Function(nil, ['func', 'list'],
 			{|ctxt|
