@@ -104,7 +104,16 @@ FLSC_Score : FLSC_Object {
 			};
 			item.bus = if(busses[item.type].notEmpty)
 			{
-				busses[item.type].pop;
+				busses[item.type].pop
+				/*
+				var bus = busses[item.type].pop;
+				if (item.type == 'control')
+				{
+					scoreDict[item.start] = scoreDict[item.start] ++
+					[[\c_set, bus, 0]];
+				};
+				bus;
+				*/
 			} {
 				switch(item.type)
 				{'audio'}
@@ -130,7 +139,7 @@ FLSC_Score : FLSC_Object {
 		// création du Score
 
 		// ajouter les messages de création des groupes, au début
-		scoreDict[start] = groups.collect
+		scoreDict[start] = scoreDict[start] ++ groups.collect
 		{|item|
 			var msg = item.newMsg(curGroup, 'addAfter');
 			curGroup = item;
