@@ -181,8 +181,6 @@ FLSC_Score : FLSC_Object {
 			};
 		};
 
-		// score.sort;
-
 		^[score, numAudioBusses, numControlBusses, numNodes]
 	}
 

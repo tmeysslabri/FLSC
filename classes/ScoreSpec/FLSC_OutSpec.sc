@@ -60,6 +60,7 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 			subScore = subSpec.value(nil, timeWarp, varDict, noWarpDict).checkTimes;
 			// récupérer le outBus et le contenu
 			score.outBus = subScore.outBus;
+
 			// si la partition est vide, produire une partition vide
 			if(score.outBus.isNil) {^FLSC_Score()};
 			score.add(subScore);
@@ -77,6 +78,9 @@ FLSC_OutSpec : FLSC_ScoreSpec {
 			// ajouter les marges de début et de fin
 			score.start = 0;
 			score.end = score.end + after;
+			// ajuster la durée de vie du Bus
+			score.outBus.start = score.start;
+			score.outBus.end = score.end;
 			// ajouter le bundle
 			score.pushBundle;
 
