@@ -107,20 +107,34 @@ FLSC_Catalog {
 		// créer la file de rendu
 		renderPipe = pairList.collectAs({|pair|
 			var outFile = baseDir +/+ "build" +/+ pair[0] ++ ".WAV";
-			{interp.read(pair[1]).subRecordNRT(outFile,
-				0.2, 0.2, doneAction: {this.jobEnded})}
-		}, List);
+			var srcFile = baseDir +/+ "src" +/+ pair[0] ++ ".flsc";
+			if (File.exists(outFile).not || (File.mtime(outFile) < File.mtime(srcFile)))
+			{{interp.read(pair[1]).subRecordNRT(outFile,
+				0.2, 0.2, doneAction: {this.jobEnded})}}
+			{nil};
+		}, List).select(_.notNil);
 		// lancer le rendu
 		startTime = Date.getDate.rawSeconds.asInteger;
 		activeJobs =  0;
 		nbJobs = 0;
 		status = 0;
 		FLSC_Score.setUp;
-		maxJobs.do {if (renderPipe.notEmpty) {
-			var job = renderPipe.pop;
-			nbJobs = nbJobs + 1;
-			activeJobs = activeJobs + 1;
-			while {job.().isKindOf(FLSC_Score).not} {status = status + 1};
+		maxJobs.do {
+			if (renderPipe.notEmpty)
+			{
+				var job = renderPipe.pop;
+				nbJobs = nbJobs + 1;
+				activeJobs = activeJobs + 1;
+				while {job.().isKindOf(FLSC_Score).not} {status = status + 1};
+			}
+			{
+				if (activeJobs == 0) {
+					var endTime = Date.getDate.rawSeconds.asInteger;
+					{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
+						endTime - startTime, status).postln}.defer(1);
+					FLSC_Score.cleanUp;
+					activeJobs = -1;
+				}
 			}
 		};
 	}
