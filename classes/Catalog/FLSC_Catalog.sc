@@ -101,11 +101,13 @@ FLSC_Catalog {
 		// écrire le code source
 		this.writeSrc(baseDir +/+ "src");
 		// initialiser l'interpréteur
-		interp = FLSC_Interpreter.new.baseDir_(baseDir);
+		interp = FLSC_Interpreter.new;
+		if (baseDir.notNil) {interp.baseDir = baseDir};
 		packages.do {|pkg| interp.loadPackage("pkgs" +/+ pkg)};
 		// créer la file de rendu
 		renderPipe = pairList.collectAs({|pair|
-			{interp.read(pair[1]).subRecordNRT(baseDir +/+ "build" +/+ pair[0] ++ ".WAV",
+			var outFile = baseDir +/+ "build" +/+ pair[0] ++ ".WAV";
+			{interp.read(pair[1]).subRecordNRT(outFile,
 				0.2, 0.2, doneAction: {this.jobEnded})}
 		}, List);
 		// lancer le rendu
