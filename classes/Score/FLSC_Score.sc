@@ -269,7 +269,9 @@ FLSC_Score : FLSC_Object {
 		};
 		score.recordNRT(fileName++".osc", fileName, nil,
 			sampleRate,	headerFormat, sampleFormat,
-			options, " > /home/tmeysson/SC/nrt.log",
+			options,
+			" > /dev/null"
+			// " > ~/nrt.log",
 			action:
 			{
 				File.delete(fileName++".osc");
