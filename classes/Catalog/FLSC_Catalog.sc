@@ -96,19 +96,23 @@ FLSC_Catalog {
 	}
 
 	build {|maxJobs = 1|
+		var pkgDirMTime = File.mtime(baseDir +/+ "pkgs");
 		// compiler les paires [chemin, expression]
 		this.makePairList;
 		// écrire le code source
 		this.writeSrc(baseDir +/+ "src");
 		// initialiser l'interpréteur
 		interp = FLSC_Interpreter.new;
-		if (baseDir.notNil) {interp.baseDir = baseDir};
+		// if (baseDir.notNil) {interp.baseDir = baseDir};
+		interp.baseDir = baseDir;
 		packages.do {|pkg| interp.loadPackage("pkgs" +/+ pkg)};
 		// créer la file de rendu
 		renderPipe = pairList.collectAs({|pair|
 			var outFile = baseDir +/+ "build" +/+ pair[0] ++ ".WAV";
 			var srcFile = baseDir +/+ "src" +/+ pair[0] ++ ".flsc";
-			if (File.exists(outFile).not || (File.mtime(outFile) < File.mtime(srcFile)))
+			if ((File.exists(outFile).not) or:
+				{File.mtime(outFile) <
+					max(File.mtime(srcFile), pkgDirMTime)})
 			{{interp.read(pair[1]).subRecordNRT(outFile,
 				0.2, 0.2, doneAction: {this.jobEnded})}}
 			{nil};
