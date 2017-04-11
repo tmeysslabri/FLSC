@@ -149,9 +149,10 @@ FLSC_Interpreter {
 			^scoreValue.recordNRT(outFile, headerFormat, sampleRate,
 				sampleFormat, numChannels, doneAction);
 		}
-		{if(doneAction.notNil)
-			{scoreValue.postln; doneAction.value}
-			{^scoreValue}};
+		{
+			if(doneAction.notNil) {doneAction.value};
+			^scoreValue;
+		};
 	}
 
 	getFileList {|subDir ("."), recursive = false|
