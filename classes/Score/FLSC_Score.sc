@@ -212,11 +212,13 @@ FLSC_Score : FLSC_Object {
 		};
 
 		// Donner des informations sur les ressources utilisées
+		/*
 		"Control: %/%, Audio: %/%, Nodes: %/%".format(
 			numControlBusses, options.numControlBusChannels,
 			numAudioBusses, options.numAudioBusChannels,
 			numNodes, options.maxNodes
 		).postln;
+		*/
 
 		^[score, busses]
 	}
@@ -270,13 +272,13 @@ FLSC_Score : FLSC_Object {
 		score.recordNRT(fileName++".osc", fileName, nil,
 			sampleRate,	headerFormat, sampleFormat,
 			options,
-			" > /dev/null"
+			" > /dev/null",
 			// " > ~/nrt.log",
 			action:
 			{
 				File.delete(fileName++".osc");
 				busses.do {|list| list.do {|bus| bus.free}};
-				"Recording finished.".postln;
+				"Wrote %.".format(fileName).postln;
 				doneAction.value;
 			}
 		);
