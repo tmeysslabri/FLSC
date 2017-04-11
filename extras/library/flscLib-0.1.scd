@@ -166,6 +166,10 @@
 		// opérations sur les listes:
 		['flop', FLSC_Function(nil, ['list'],
 			{|ctxt| FLSC_Var('list').value(ctxt).flop})],
+		['flat', FLSC_Function(nil, ['list'],
+			{|ctxt| FLSC_Var('list').value(ctxt).flat})],
+		['flatten', FLSC_Function(nil, ['list', 'num'],
+			{|ctxt| FLSC_Var('list').value(ctxt).flatten(FLSC_Var('num').(ctxt))})],
 		// itération:
 		['mapcar', FLSC_RestFunc(nil, ['func', 'lists'],
 			{|ctxt|
