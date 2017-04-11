@@ -10,7 +10,6 @@
 		// générateurs de séquences
 		['range0', "(lambda (num) (range 0 (- num 1)))"],
 		['range1', "(lambda (num) (range 1 num))"],
-		['rangestep', "(lambda (start step num) (+ start (* step (range 0 (- num 1)))))"],
 		// fonctions de base sur les listes
 		['car', "(lambda (list) (elt list 0))"],
 		['cdr', "(lambda (list) (subseq list 1 (length list)))"],
