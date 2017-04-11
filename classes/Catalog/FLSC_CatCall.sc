@@ -16,11 +16,14 @@ FLSC_CatCall : FLSC_Catalog {
 		^subs.collect {|list, i|
 			var padding = list.size.asString.size;
 			var prefix = (prefixes[i] ? "");
-			list.inject([])
-			// concatener les résultats des appels récursifs
-			{|acc, it| acc ++ it.asPathExprPairList}
+			list
+			// effectuer les appels récursifs
+			.collect(_.asPathExprPairList)
 			// ajouter le préfixe
-			.collect{|e, n| [n.asString.padLeft(padding, "0") ++ "-" ++ prefix ++ e[0], e[1]]}
+			.collect {|it, n| it.collect
+				{|e| [n.asString.padLeft(padding, "0") ++ "-" ++ prefix ++ e[0], e[1]]}}
+			// concatener les résultats
+			.inject([], _++_)
 		}
 			// effectuer le produit cartésien des listes obtenues
 		.allTuples.collect
