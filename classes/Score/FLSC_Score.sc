@@ -220,14 +220,15 @@ FLSC_Score : FLSC_Object {
 		).postln;
 		*/
 
-		^[score, busses]
+		^[score, busses, options]
 	}
 
 	play {|doneAction = nil|
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
 		var busses = scorePair[1];
-		var server = Server.default;
+		var options = scorePair[2].numOutputBusChannels_(numChannels);
+		var server = Server.default.options_(options);
 		var restart = false;
 
 		// exécution de la partition
@@ -257,10 +258,10 @@ FLSC_Score : FLSC_Object {
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
 		var busses = scorePair[1];
+		var options = scorePair[2].numOutputBusChannels_(numChannels);
 		var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
 		var fileName = (if(outFile.notNil) {outFile}
 			{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
-		var options = ServerOptions.new.numOutputBusChannels_(numChannels);
 		// créer les répertoires, si ils n'existent pas
 		// baseDir.mkdir;
 		fileName.dirname.mkdir;
