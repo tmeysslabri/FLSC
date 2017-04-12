@@ -227,7 +227,7 @@ FLSC_Score : FLSC_Object {
 		var scorePair = this.asScorePair;
 		var score = scorePair[0];
 		var busses = scorePair[1];
-		var options = scorePair[2].numOutputBusChannels_(numChannels);
+		var options = scorePair[2].numOutputBusChannels_(2);
 		var server = Server.default.options_(options);
 		var restart = false;
 
