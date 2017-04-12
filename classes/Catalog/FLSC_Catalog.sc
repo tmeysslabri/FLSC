@@ -19,6 +19,7 @@ FLSC_Catalog {
 	var activeJobs;
 	// chronométrage du rendu
 	var startTime;
+	var totalJobs;
 	var nbJobs;
 	var status;
 
@@ -120,6 +121,7 @@ FLSC_Catalog {
 		// lancer le rendu
 		startTime = Date.getDate.rawSeconds.asInteger;
 		activeJobs =  0;
+		totalJobs = renderPipe.size;
 		nbJobs = 0;
 		status = 0;
 		FLSC_Score.setUp;
@@ -128,6 +130,7 @@ FLSC_Catalog {
 			{
 				var job = renderPipe.pop;
 				nbJobs = nbJobs + 1;
+				"Starting job %/%".format(nbJobs, totalJobs).postln;
 				activeJobs = activeJobs + 1;
 				while {job.().isKindOf(FLSC_Score).not} {status = status + 1};
 			}
@@ -148,6 +151,7 @@ FLSC_Catalog {
 		{
 			var job = renderPipe.pop;
 			nbJobs = nbJobs + 1;
+			"Starting job %/%".format(nbJobs, totalJobs).postln;
 			while {job.().isKindOf(FLSC_Score).not} {status = status + 1};
 		}
 		{
