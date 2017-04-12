@@ -96,7 +96,7 @@ FLSC_Catalog {
 		.reduce('++');
 	}
 
-	build {|maxJobs = 1|
+	build {|maxJobs = 1, rewrite = false|
 		var pkgDirMTime = File.mtime(baseDir +/+ "pkgs");
 		// compiler les paires [chemin, expression]
 		this.makePairList;
@@ -112,8 +112,8 @@ FLSC_Catalog {
 			var outFile = baseDir +/+ "build" +/+ pair[0] ++ ".WAV";
 			var srcFile = baseDir +/+ "src" +/+ pair[0] ++ ".flsc";
 			if ((File.exists(outFile).not) or:
-				{File.mtime(outFile) <
-					max(File.mtime(srcFile), pkgDirMTime)})
+				{File.mtime(outFile) < File.mtime(srcFile)} or:
+				{rewrite && (File.mtime(outFile) <  pkgDirMTime)})
 			{{interp.read(pair[1]).subRecordNRT(outFile,
 				0.2, 0.2, doneAction: {this.jobEnded})}}
 			{nil};
@@ -132,7 +132,12 @@ FLSC_Catalog {
 				nbJobs = nbJobs + 1;
 				"Starting job %/%".format(nbJobs, totalJobs).postln;
 				activeJobs = activeJobs + 1;
-				while {job.().isKindOf(FLSC_Score).not} {status = status + 1};
+				while {
+					var res = job.();
+					(res.isKindOf(FLSC_Score) ||
+						res.isKindOf(SimpleNumber) ||
+						res.isKindOf(String)).not;
+				} {status = status + 1};
 			}
 			{
 				if (activeJobs == 0) {
@@ -152,7 +157,12 @@ FLSC_Catalog {
 			var job = renderPipe.pop;
 			nbJobs = nbJobs + 1;
 			"Starting job %/%".format(nbJobs, totalJobs).postln;
-			while {job.().isKindOf(FLSC_Score).not} {status = status + 1};
+			while {
+				var res = job.();
+				(res.isKindOf(FLSC_Score) ||
+					res.isKindOf(SimpleNumber) ||
+					res.isKindOf(String)).not;
+			} {status = status + 1};
 		}
 		{
 			activeJobs = activeJobs - 1;
