@@ -1,0 +1,8 @@
+;;;; sintrap.flscpkg
+;;;; paquetage pour la génération de sinusoïdes à enveloppe trapézoïdale
+(define
+  (sintrap (lambda (freq time)
+             (base [0 (+ time 0.02)]
+               (m* (sign [0.01 (- dur 0.01)] (menv [0 0.5 0.5 0]))
+                 (mosc freq))))))
+                 

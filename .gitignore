@@ -2,7 +2,11 @@
 extras/FLSC2SC/build/
 extras/FLSC2SC/src/*.o
 recordings/
-catalog/
+catalog/*
+!catalog/hauteur-temps/
+catalog/*/build/
+catalog/*/src/
+!catalog/wav2flac.sh
 synthdefs/
 #recordings/*.wav
 #recordings/*.WAV
