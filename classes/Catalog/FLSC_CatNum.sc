@@ -11,7 +11,7 @@ FLSC_CatNum : FLSC_Catalog {
 		flscString = expr.asString;
 	}
 
-	asPathExprPairList {
-		^[[name, flscString]];
+	asPathExprPairList {|num|
+		^[[num ++ "-" ++ name, flscString]];
 	}
 }

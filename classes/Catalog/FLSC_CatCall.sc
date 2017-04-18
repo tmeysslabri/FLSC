@@ -18,10 +18,17 @@ FLSC_CatCall : FLSC_Catalog {
 			var prefix = (prefixes[i] ? "");
 			list
 			// effectuer les appels récursifs
+			.collect {|it, n| it.asPathExprPairList(n.asString.padLeft(padding, "0"))}
+			// ajouter le préfixe
+			.collect {|it, n| it.collect
+				{|e| [prefix ++ e[0], e[1]]}}
+			/*
+			// effectuer les appels récursifs
 			.collect(_.asPathExprPairList)
 			// ajouter le préfixe
 			.collect {|it, n| it.collect
 				{|e| [n.asString.padLeft(padding, "0") ++ "-" ++ prefix ++ e[0], e[1]]}}
+			*/
 			// concatener les résultats
 			.inject([], _++_)
 		}

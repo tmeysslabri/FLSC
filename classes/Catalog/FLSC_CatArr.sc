@@ -8,11 +8,11 @@ FLSC_CatArr : FLSC_Catalog {
 
 	catArrInit {|expr|
 		var content = expr.collect(_.asString).reduce('+');
-		name = content.replace(" ", "_");
+		name = content.replace(" ", "-").replace(".", "_");
 		flscString = "[" ++ content ++ "]";
 	}
 
-	asPathExprPairList {
-		^[[name, flscString]];
+	asPathExprPairList {|num|
+		^[[num ++ "-" ++ name, flscString]];
 	}
 }
