@@ -22,6 +22,8 @@ FLSC_Catalog {
 	var totalJobs;
 	var nbJobs;
 	var status;
+	// fonction d'arrêt prématuré
+	var abortFunc;
 
 	*newFrom {|expr|
 		case
@@ -91,8 +93,11 @@ FLSC_Catalog {
 
 	asPathExprPairList {
 		var padding = exprList.size.asString.size;
+		^exprList.collect {|it, n| it.asPathExprPairList(n.asString.padLeft(padding, "0"))}
+		/*
 		^exprList.collect {|it, n| it.asPathExprPairList
 			.collect{|e| [n.asString.padLeft(padding, "0") ++ "-" ++  e[0], e[1]]}}
+		*/
 		.reduce('++');
 	}
 
@@ -119,6 +124,7 @@ FLSC_Catalog {
 			{nil};
 		}, List).select(_.notNil);
 		// lancer le rendu
+		CmdPeriod.add(abortFunc = {"Aborting.".postln; renderPipe = List();};);
 		startTime = Date.getDate.rawSeconds.asInteger;
 		activeJobs =  0;
 		totalJobs = renderPipe.size;
@@ -142,6 +148,7 @@ FLSC_Catalog {
 			{
 				if (activeJobs == 0) {
 					var endTime = Date.getDate.rawSeconds.asInteger;
+					CmdPeriod.remove(abortFunc);
 					{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
 						endTime - startTime, status).postln}.defer(1);
 					FLSC_Score.cleanUp;
@@ -168,6 +175,7 @@ FLSC_Catalog {
 			activeJobs = activeJobs - 1;
 			if (activeJobs == 0) {
 				var endTime = Date.getDate.rawSeconds.asInteger;
+				CmdPeriod.remove(abortFunc);
 				{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
 					endTime - startTime, status).postln}.defer(1);
 				FLSC_Score.cleanUp;
