@@ -142,7 +142,8 @@ FLSC_Score : FLSC_Object {
 			options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
 			restart = true;
 		};
-		if (restart) { server.waitForBoot({server.quit}) };
+		// démarrer et arrêter le serveur pour initialiser les limites de Bus
+		if (restart) { server.bootSync; server.quit; };
 		// allouer les Bus
 		busses = Dictionary.newFrom([
 			'audio', {Bus.audio} ! numAudioBusses,
@@ -208,7 +209,8 @@ FLSC_Score : FLSC_Object {
 		if (options.maxNodes < numNodes)
 		{
 			options.maxNodes = 2 ** log2(numNodes).ceil;
-			// server.waitForBoot({server.quit});
+			// apparemment pas nécessaire, puisque le serveur sera démarré plus tard
+			// server.bootSync; server.quit;
 		};
 
 		// Donner des informations sur les ressources utilisées
@@ -224,15 +226,19 @@ FLSC_Score : FLSC_Object {
 	}
 
 	play {|doneAction = nil|
-		var scorePair = this.asScorePair;
-		var score = scorePair[0];
-		var busses = scorePair[1];
-		var options = scorePair[2].numOutputBusChannels_(2);
-		var server = Server.default.options_(options);
-		var restart = false;
-
 		// exécution de la partition
 		Routine({
+			var scorePair = this.asScorePair;
+			var score = scorePair[0];
+			var busses = scorePair[1];
+			var options = scorePair[2];
+			var server = Server.default;
+			var restart = false;
+
+			// assigner les options
+			options.numOutputBusChannels = 2;
+			server.options = options;
+
 			// démarrer le serveur
 			server.bootSync;
 			// charger les SynthDef
@@ -254,35 +260,41 @@ FLSC_Score : FLSC_Object {
 
 	recordNRT {|outFile, headerFormat = "WAV", sampleRate = 44100,
 		sampleFormat = "int16", numChannels = 2, doneAction = nil|
-		// récupérer la partition
-		var scorePair = this.asScorePair;
-		var score = scorePair[0];
-		var busses = scorePair[1];
-		var options = scorePair[2].numOutputBusChannels_(numChannels);
-		var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
-		var fileName = (if(outFile.notNil) {outFile}
-			{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
-		// créer les répertoires, si ils n'existent pas
-		// baseDir.mkdir;
-		fileName.dirname.mkdir;
-		// créér les définitions
-		defDict.do {|item|
-			if (File.exists(defsDir+/+item.name++".scsyndef").not)
-			{item.writeDefFile(defsDir)}
-		};
-		score.recordNRT(fileName++".osc", fileName, nil,
-			sampleRate,	headerFormat, sampleFormat,
-			options,
-			" > /dev/null",
-			// " > ~/nrt.log",
-			action:
-			{
-				File.delete(fileName++".osc");
-				busses.do {|list| list.do {|bus| bus.free}};
-				"Wrote %.".format(fileName).postln;
-				doneAction.value;
-			}
-		);
+		Routine({
+			// récupérer la partition
+			var scorePair = this.asScorePair;
+			var score = scorePair[0];
+			var busses = scorePair[1];
+			var options = scorePair[2];
+			var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
+			var fileName = (if(outFile.notNil) {outFile}
+				{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
+
+			// assigner le nombre de canaux de sortie
+			options.numOutputBusChannels = numChannels;
+
+			// créer les répertoires, si ils n'existent pas
+			// baseDir.mkdir;
+			fileName.dirname.mkdir;
+			// créér les définitions
+			defDict.do {|item|
+				if (File.exists(defsDir+/+item.name++".scsyndef").not)
+				{item.writeDefFile(defsDir)}
+			};
+			score.recordNRT(fileName++".osc", fileName, nil,
+				sampleRate,	headerFormat, sampleFormat,
+				options,
+				" > /dev/null",
+				// " > ~/nrt.log",
+				action:
+				{
+					File.delete(fileName++".osc");
+					busses.do {|list| list.do {|bus| bus.free}};
+					"Wrote %.".format(fileName).postln;
+					doneAction.value;
+				}
+			);
+		}).play;
 		^this;
 	}
 
