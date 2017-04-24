@@ -1,6 +1,8 @@
 FLSC_Score : FLSC_Object {
 	// le répertoire de stockage des SynthDefs
 	classvar defsDir;
+	// le nombre de Bus réservés (audio et contrôle)
+	classvar reservedBusses;
 
 	// le FLSC_Bus de sortie
 	var <>outBus;
@@ -19,6 +21,7 @@ FLSC_Score : FLSC_Object {
 
 	*initClass {
 		defsDir = Platform.userExtensionDir +/+ "FLSC" +/+ "synthdefs";
+		reservedBusses = Dictionary.newFrom([audio: 0, control: 0]);
 	}
 
 	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
@@ -130,16 +133,19 @@ FLSC_Score : FLSC_Object {
 			endIndex = endIndex + 1;
 		};
 
+		// ajouter les Bus demandés au Bus réservés
+		reservedBusses['audio'] = reservedBusses['audio'] + numAudioBusses;
+		reservedBusses['control'] = reservedBusses['control'] + numControlBusses;
 		// vérifier que les ressources sont suffisantes
-		// on ajoute le nombre de Bus système (16)
-		if (options.numAudioBusChannels < (numAudioBusses + 16))
+		// on ajoute le nombre de Bus audio système (16)
+		if (options.numAudioBusChannels < (reservedBusses['audio'] + 16))
 		{
-			options.numAudioBusChannels = 2 ** log2(numAudioBusses + 16).ceil;
+			options.numAudioBusChannels = 2 ** log2(reservedBusses['audio'] + 16).ceil;
 			restart = true;
 		};
-		if (options.numControlBusChannels < numControlBusses)
+		if (options.numControlBusChannels < reservedBusses['control'])
 		{
-			options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
+			options.numControlBusChannels = 2 ** log2(reservedBusses['control']).ceil;
 			restart = true;
 		};
 		// démarrer et arrêter le serveur pour initialiser les limites de Bus
@@ -251,7 +257,10 @@ FLSC_Score : FLSC_Object {
 			// supprimer les SynthDef -> géré par cleanUp
 			// defDict.do {|item| SynthDef.removeAt(item.name)};
 			// supprimer les Bus
-			busses.do (_.do(_.free)); //{|list| list.do {|bus| bus.free}};
+			busses.keysValuesDo {|key, list|
+				list.do {|bus| bus.free};
+				reservedBusses[key] = reservedBusses[key] - list.size;
+			};
 			// effectuer l'action demandée
 			doneAction.value;
 		}).play;
@@ -289,7 +298,10 @@ FLSC_Score : FLSC_Object {
 				action:
 				{
 					File.delete(fileName++".osc");
-					busses.do {|list| list.do {|bus| bus.free}};
+					busses.keysValuesDo {|key, list|
+						list.do {|bus| bus.free};
+						reservedBusses[key] = reservedBusses[key] - list.size;
+					};
 					"Wrote %.".format(fileName).postln;
 					doneAction.value;
 				}

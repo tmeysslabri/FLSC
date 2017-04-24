@@ -11,8 +11,8 @@ FLSC_Catalog {
 	var packages;
 	// la liste des paires [chemin, expression]
 	var pairList;
-	// l'interpréteur employé
-	var interp;
+	// les interpréteurs employés
+	var interps;
 	// la file de rendus en attente
 	var renderPipe;
 	// gestion des tâches
@@ -108,10 +108,13 @@ FLSC_Catalog {
 		// écrire le code source
 		this.writeSrc(baseDir +/+ "src");
 		// initialiser l'interpréteur
-		interp = FLSC_Interpreter.new;
+		interps = FLSC_Interpreter.new ! maxJobs;
 		// if (baseDir.notNil) {interp.baseDir = baseDir};
-		interp.baseDir = baseDir;
-		packages.do {|pkg| interp.loadPackage("pkgs" +/+ pkg)};
+		interps.do {|it|
+			it.baseDir = baseDir;
+			packages.do {|pkg| it.loadPackage("pkgs" +/+ pkg)};
+		};
+
 		// créer la file de rendu
 		renderPipe = pairList.collectAs({|pair|
 			var outFile = baseDir +/+ "build" +/+ pair[0] ++ ".WAV";
@@ -119,8 +122,12 @@ FLSC_Catalog {
 			if ((File.exists(outFile).not) or:
 				{File.mtime(outFile) < File.mtime(srcFile)} or:
 				{rewrite && (File.mtime(outFile) <  pkgDirMTime)})
-			{{interp.read(pair[1]).subRecordNRT(outFile,
-				0.2, 0.2, doneAction: {this.jobEnded})}}
+			{
+				{|interp|
+					interp.read(pair[1]).subRecordNRT(outFile,
+						0.2, 0.2, doneAction: {this.jobEnded(interp, outFile, thisFunction)})
+				}
+			}
 			{nil};
 		}, List).select(_.notNil);
 		// lancer le rendu
@@ -131,19 +138,14 @@ FLSC_Catalog {
 		nbJobs = 0;
 		status = 0;
 		FLSC_Score.setUp;
-		maxJobs.do {
+		interps.do {|interp|
 			if (renderPipe.notEmpty)
 			{
 				var job = renderPipe.pop;
 				nbJobs = nbJobs + 1;
 				"Starting job %/%".format(nbJobs, totalJobs).postln;
 				activeJobs = activeJobs + 1;
-				while {
-					var res = job.();
-					(res.isKindOf(FLSC_Score) ||
-						res.isKindOf(SimpleNumber) ||
-						res.isKindOf(String)).not;
-				} {status = status + 1};
+				job.(interp);
 			}
 			{
 				if (activeJobs == 0) {
@@ -158,27 +160,29 @@ FLSC_Catalog {
 		};
 	}
 
-	jobEnded {
-		if (renderPipe.notEmpty)
+	jobEnded {|interp, outFile, jobFunc|
+		if (File.exists(outFile).not)
 		{
-			var job = renderPipe.pop;
-			nbJobs = nbJobs + 1;
-			"Starting job %/%".format(nbJobs, totalJobs).postln;
-			while {
-				var res = job.();
-				(res.isKindOf(FLSC_Score) ||
-					res.isKindOf(SimpleNumber) ||
-					res.isKindOf(String)).not;
-			} {status = status + 1};
+			status = status + 1;
+			jobFunc.(interp);
 		}
 		{
-			activeJobs = activeJobs - 1;
-			if (activeJobs == 0) {
-				var endTime = Date.getDate.rawSeconds.asInteger;
-				CmdPeriod.remove(abortFunc);
-				{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
-					endTime - startTime, status).postln}.defer(1);
-				FLSC_Score.cleanUp;
+			if (renderPipe.notEmpty)
+			{
+				var job = renderPipe.pop;
+				nbJobs = nbJobs + 1;
+				"Starting job %/%".format(nbJobs, totalJobs).postln;
+				job.(interp);
+			}
+			{
+				activeJobs = activeJobs - 1;
+				if (activeJobs == 0) {
+					var endTime = Date.getDate.rawSeconds.asInteger;
+					CmdPeriod.remove(abortFunc);
+					{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
+						endTime - startTime, status).postln}.defer(1);
+					FLSC_Score.cleanUp;
+				}
 			}
 		}
 	}
