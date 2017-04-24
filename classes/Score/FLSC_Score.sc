@@ -134,7 +134,7 @@ FLSC_Score : FLSC_Object {
 		// on ajoute le nombre de Bus système (16)
 		if (options.numAudioBusChannels < (numAudioBusses + 16))
 		{
-			options.numAudioBusChannels = 2 ** log2(numAudioBusses).ceil;
+			options.numAudioBusChannels = 2 ** log2(numAudioBusses + 16).ceil;
 			restart = true;
 		};
 		if (options.numControlBusChannels < numControlBusses)
@@ -208,7 +208,7 @@ FLSC_Score : FLSC_Object {
 		if (options.maxNodes < numNodes)
 		{
 			options.maxNodes = 2 ** log2(numNodes).ceil;
-			server.waitForBoot({server.quit});
+			// server.waitForBoot({server.quit});
 		};
 
 		// Donner des informations sur les ressources utilisées
