@@ -163,6 +163,7 @@ FLSC_Catalog {
 	jobEnded {|interp, outFile, jobFunc|
 		if (File.exists(outFile).not)
 		{
+			"Rerunning %".format(outFile).postln;
 			status = status + 1;
 			jobFunc.(interp);
 		}
