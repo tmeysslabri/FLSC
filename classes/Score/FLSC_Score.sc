@@ -1,8 +1,8 @@
 FLSC_Score : FLSC_Object {
 	// le répertoire de stockage des SynthDefs
 	classvar defsDir;
-	// le nombre de Bus réservés (audio et contrôle)
-	classvar reservedBusses;
+	// les Bus réservés (audio et contrôle)
+	classvar resvBusses;
 
 	// le FLSC_Bus de sortie
 	var <>outBus;
@@ -21,7 +21,7 @@ FLSC_Score : FLSC_Object {
 
 	*initClass {
 		defsDir = Platform.userExtensionDir +/+ "FLSC" +/+ "synthdefs";
-		reservedBusses = Dictionary.newFrom([audio: 0, control: 0]);
+		resvBusses = Dictionary.newFrom([audio: List(), control: List()]);
 	}
 
 	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
@@ -133,29 +133,26 @@ FLSC_Score : FLSC_Object {
 			endIndex = endIndex + 1;
 		};
 
-		// ajouter les Bus demandés au Bus réservés
-		reservedBusses['audio'] = reservedBusses['audio'] + numAudioBusses;
-		reservedBusses['control'] = reservedBusses['control'] + numControlBusses;
 		// vérifier que les ressources sont suffisantes
 		// on ajoute le nombre de Bus audio système (16)
-		if (options.numAudioBusChannels < (reservedBusses['audio'] + 16))
+		if (options.numAudioBusChannels < (numAudioBusses + 16))
 		{
-			options.numAudioBusChannels = 2 ** log2(reservedBusses['audio'] + 16).ceil;
+			options.numAudioBusChannels = 2 ** log2(numAudioBusses + 16).ceil;
 			restart = true;
 		};
-		if (options.numControlBusChannels < reservedBusses['control'])
+		if (options.numControlBusChannels < numControlBusses)
 		{
-			options.numControlBusChannels = 2 ** log2(reservedBusses['control']).ceil;
+			options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
 			restart = true;
 		};
 		// démarrer et arrêter le serveur pour initialiser les limites de Bus
 		if (restart) { server.bootSync; server.quit; };
-		// allouer les Bus
-		busses = Dictionary.newFrom([
-			'audio', {Bus.audio} ! numAudioBusses,
-			'control', {Bus.control} ! numControlBusses
-		]);
-		busList.do {|it| it.bus = busses[it.type][it.bus] };
+		// allouer les Bus supplémentaires nécessaires
+		({Bus.audio} ! (numAudioBusses - resvBusses['audio'].size)).do
+			{|bus| resvBusses['audio'].add(bus)};
+		({Bus.control} ! (numControlBusses - resvBusses['control'].size)).do
+			{|bus| resvBusses['control'].add(bus)};
+		busList.do {|it| it.bus = resvBusses[it.type][it.bus] };
 
 
 		// création du Score
@@ -215,8 +212,6 @@ FLSC_Score : FLSC_Object {
 		if (options.maxNodes < numNodes)
 		{
 			options.maxNodes = 2 ** log2(numNodes).ceil;
-			// apparemment pas nécessaire, puisque le serveur sera démarré plus tard
-			// server.bootSync; server.quit;
 		};
 
 		// Donner des informations sur les ressources utilisées
@@ -228,7 +223,7 @@ FLSC_Score : FLSC_Object {
 		).postln;
 		*/
 
-		^[score, busses, options]
+		^[score, options]
 	}
 
 	play {|doneAction = nil|
@@ -236,8 +231,7 @@ FLSC_Score : FLSC_Object {
 		Routine({
 			var scorePair = this.asScorePair;
 			var score = scorePair[0];
-			var busses = scorePair[1];
-			var options = scorePair[2];
+			var options = scorePair[1];
 			var server = Server.default;
 			var restart = false;
 
@@ -254,13 +248,6 @@ FLSC_Score : FLSC_Object {
 			score.play;
 			// attendre la fin
 			(score.endTime + 0.1).wait;
-			// supprimer les SynthDef -> géré par cleanUp
-			// defDict.do {|item| SynthDef.removeAt(item.name)};
-			// supprimer les Bus
-			busses.keysValuesDo {|key, list|
-				list.do {|bus| bus.free};
-				reservedBusses[key] = reservedBusses[key] - list.size;
-			};
 			// effectuer l'action demandée
 			doneAction.value;
 		}).play;
@@ -273,8 +260,7 @@ FLSC_Score : FLSC_Object {
 			// récupérer la partition
 			var scorePair = this.asScorePair;
 			var score = scorePair[0];
-			var busses = scorePair[1];
-			var options = scorePair[2];
+			var options = scorePair[1];
 			var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
 			var fileName = (if(outFile.notNil) {outFile}
 				{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
@@ -298,10 +284,6 @@ FLSC_Score : FLSC_Object {
 				action:
 				{
 					File.delete(fileName++".osc");
-					busses.keysValuesDo {|key, list|
-						list.do {|bus| bus.free};
-						reservedBusses[key] = reservedBusses[key] - list.size;
-					};
 					"Wrote %.".format(fileName).postln;
 					doneAction.value;
 				}
@@ -316,6 +298,8 @@ FLSC_Score : FLSC_Object {
 	}
 
 	*cleanUp {
+		resvBusses.do(_.do(_.free));
+		resvBusses = Dictionary.newFrom([audio: List(), control: List()]);
 		"SC_SYNTHDEF_PATH".setenv(Platform.userAppSupportDir+/+"synthdefs");
 		"rm -R '%'".format(defsDir).unixCmd;
 	}
