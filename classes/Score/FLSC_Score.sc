@@ -3,6 +3,8 @@ FLSC_Score : FLSC_Object {
 	classvar defsDir;
 	// les Bus réservés (audio et contrôle)
 	classvar resvBusses;
+	// le verrou de synchronisation
+	classvar lock;
 
 	// le FLSC_Bus de sortie
 	var <>outBus;
@@ -22,6 +24,7 @@ FLSC_Score : FLSC_Object {
 	*initClass {
 		defsDir = Platform.userExtensionDir +/+ "FLSC" +/+ "synthdefs";
 		resvBusses = Dictionary.newFrom([audio: List(), control: List()]);
+		lock = Semaphore(1);
 	}
 
 	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
@@ -133,6 +136,10 @@ FLSC_Score : FLSC_Object {
 			endIndex = endIndex + 1;
 		};
 
+		// section verouillée
+		// ne pas effectuer plusiuers modifications simultanément
+		lock.wait;
+
 		// vérifier que les ressources sont suffisantes
 		// on ajoute le nombre de Bus audio système (16)
 		if (options.numAudioBusChannels < (numAudioBusses + 16))
@@ -146,7 +153,16 @@ FLSC_Score : FLSC_Object {
 			restart = true;
 		};
 		// démarrer et arrêter le serveur pour initialiser les limites de Bus
-		if (restart) { server.bootSync; server.quit; };
+		if (restart) {
+			// démarrer et arrêter
+			server.doWhenBooted({server.quit});
+			// attendre d'avoir fini
+			server.bootSync
+		};
+
+		// terminé, déverouiller
+		lock.signal;
+
 		// allouer les Bus supplémentaires nécessaires
 		({Bus.audio} ! (numAudioBusses - resvBusses['audio'].size)).do
 			{|bus| resvBusses['audio'].add(bus)};
@@ -209,10 +225,16 @@ FLSC_Score : FLSC_Object {
 			};
 		};
 
+		// section verouillée
+		// cf. supra
+		lock.wait;
+
 		if (options.maxNodes < numNodes)
 		{
 			options.maxNodes = 2 ** log2(numNodes).ceil;
 		};
+
+		lock.signal;
 
 		// Donner des informations sur les ressources utilisées
 		/*
@@ -235,6 +257,11 @@ FLSC_Score : FLSC_Object {
 			var server = Server.default;
 			var restart = false;
 
+			// section vérouillée
+			// eviter plusieurs exécutions RT parallèles
+			// ainsi qu'un redémarrage du serveur pendant le RT
+			lock.wait;
+
 			// assigner les options
 			options.numOutputBusChannels = 2;
 			server.options = options;
@@ -250,6 +277,10 @@ FLSC_Score : FLSC_Object {
 			(score.endTime + 0.1).wait;
 			// effectuer l'action demandée
 			doneAction.value;
+			// quitter le serveur
+			server.quit;
+			// déverouiller
+			lock.signal;
 		}).play;
 		^this;
 	}
@@ -266,7 +297,10 @@ FLSC_Score : FLSC_Object {
 				{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
 
 			// assigner le nombre de canaux de sortie
+			// verouiller pour éviter les problèmes de variables partagées
+			lock.wait;
 			options.numOutputBusChannels = numChannels;
+			lock.signal;
 
 			// créer les répertoires, si ils n'existent pas
 			// baseDir.mkdir;
