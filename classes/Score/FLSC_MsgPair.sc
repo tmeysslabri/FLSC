@@ -18,7 +18,6 @@ FLSC_MsgPair {
 	}
 
 	asSynth {|groups|
-		^Synth(defName, synthArgs.collect({|item| item.value}).asKeyValuePairs,
-			groups[rank]);
+		^Synth(defName, synthArgs.asKeyValuePairs, groups[rank]);
 	}
 }
