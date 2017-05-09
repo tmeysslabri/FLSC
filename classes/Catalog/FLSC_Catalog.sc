@@ -124,8 +124,8 @@ FLSC_Catalog {
 				{rewrite && (File.mtime(outFile) <  pkgDirMTime)})
 			{
 				{|interp|
-					interp.read(pair[1]).subRecordNRT(outFile,
-						0.2, 0.2, doneAction: {this.jobEnded(interp, outFile, thisFunction)})
+					interp.read(pair[1]).subRecordNRT(outFile, 0.2, 0.2,
+						doneAction: {|res| this.jobEnded(res, interp, outFile, thisFunction)})
 				}
 			}
 			{nil};
@@ -160,8 +160,8 @@ FLSC_Catalog {
 		};
 	}
 
-	jobEnded {|interp, outFile, jobFunc|
-		if (File.exists(outFile).not)
+	jobEnded {|result, interp, outFile, jobFunc|
+		if (result != 0)
 		{
 			"Rerunning %".format(outFile).postln;
 			status = status + 1;

@@ -308,6 +308,7 @@ FLSC_Score : FLSC_Object {
 	recordNRT {|outFile, headerFormat = "WAV", sampleRate = 44100,
 		sampleFormat = "int16", numChannels = 2, doneAction = nil|
 		Routine({
+			var result;
 			// récupérer la partition
 			var scorePair = this.asScorePair;
 			var score = scorePair[0];
@@ -327,18 +328,30 @@ FLSC_Score : FLSC_Object {
 				if (File.exists(defsDir+/+item.name++".scsyndef").not)
 				{item.writeDefFile(defsDir)}
 			};
-			score.recordNRT(fileName++".osc", fileName, nil,
-				sampleRate,	headerFormat, sampleFormat,
-				options,
-				" > /dev/null",
-				// " > ~/nrt.log",
-				action:
-				{
-					File.delete(fileName++".osc");
-					"Wrote %.".format(fileName).postln;
-					doneAction.value;
-				}
-			);
+
+			score.write(fileName++".osc");
+
+			result = ("% -N % _ % % % %"
+			.format(program, fileName++".osc", fileName,
+					sampleRate, headerFormat, sampleFormat)
+			 + "-o % -a % -c % -m % -n %"
+			.format(options.numOutputBusChannels, options.numAudioBusChannels,
+				options.numControlBusChannels, options.memSize, options.maxNodes))
+			.unixCmdGetStdOutLines.select{|line|
+				[
+					"ERROR", "Exception in World_New", "FAILURE IN SERVER",
+					"Couldn't open non real time command file."
+				].inject(false)
+				{|a,i| a || i.matchRegexp(line)};
+			}.size;
+
+			if (result == 0)
+			{"Success: %".format(fileName).postln}
+			{"Failure: %".format(fileName).postln};
+
+			File.delete(fileName++".osc");
+			doneAction.(result);
+
 		}).play;
 		^this;
 	}
