@@ -190,47 +190,48 @@ FLSC_Score : FLSC_Object {
 
 		// section verouillée
 		// ne pas effectuer plusiuers modifications simultanément
-		lock.wait;
+		protect {
+			lock.wait;
 
-		options = server.options.copy;
+			options = server.options.copy;
 
-		// vérifier le nombre de canaux de sortie
-		if (options.numOutputBusChannels != 2)
-		{
-			options.numOutputBusChannels = 2;
-			restart = true;
-		};
-		// vérifier que les ressources sont suffisantes
-		// on ajoute le nombre de Bus audio système (16)
-		if (options.maxNodes < numNodes)
-		{
-			var num = 2 ** log2(numNodes).ceil;
-			options.maxNodes = num;
-			options.memSize = num * 8;
-			restart = true;
-		};
-		if (options.numAudioBusChannels < (numAudioBusses + 16))
-		{
-			options.numAudioBusChannels = 2 ** log2(numAudioBusses + 16).ceil;
-			restart = true;
-		};
-		if (options.numControlBusChannels < numControlBusses)
-		{
-			options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
-			restart = true;
-		};
-		// démarrer et arrêter le serveur pour initialiser les limites de Bus
-		if (restart) {
-			// modifier les options
-			server.options = options;
-			// démarrer et arrêter
-			server.doWhenBooted({server.quit});
-			// attendre d'avoir fini
-			server.bootSync;
-		};
+			// vérifier le nombre de canaux de sortie
+			if (options.numOutputBusChannels != 2)
+			{
+				options.numOutputBusChannels = 2;
+				restart = true;
+			};
+			// vérifier que les ressources sont suffisantes
+			// on ajoute le nombre de Bus audio système (16)
+			if (options.maxNodes < numNodes)
+			{
+				var num = 2 ** log2(numNodes).ceil;
+				options.maxNodes = num;
+				options.memSize = num * 8;
+				restart = true;
+			};
+			if (options.numAudioBusChannels < (numAudioBusses + 16))
+			{
+				options.numAudioBusChannels = 2 ** log2(numAudioBusses + 16).ceil;
+				restart = true;
+			};
+			if (options.numControlBusChannels < numControlBusses)
+			{
+				options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
+				restart = true;
+			};
+			// démarrer et arrêter le serveur pour initialiser les limites de Bus
+			if (restart) {
+				// modifier les options
+				server.options = options;
+				// démarrer et arrêter
+				server.doWhenBooted({server.quit});
+				// attendre d'avoir fini
+				server.bootSync;
+			};
 
-		// terminé, déverouiller
-		lock.signal;
+			// terminé, déverouiller
+		} {lock.signal};
 
 		// allouer les Bus supplémentaires nécessaires
 		({Bus.audio} ! (numAudioBusses - resvBusses['audio'].size)).do
@@ -278,27 +279,28 @@ FLSC_Score : FLSC_Object {
 			// section vérouillée
 			// eviter plusieurs exécutions RT parallèles
 			// ainsi qu'un redémarrage du serveur pendant le RT
-			lock.wait;
+			protect {
+				lock.wait;
 
-			// assigner les options
-			// options.numOutputBusChannels = 2;
-			server.options = options;
+				// assigner les options
+				// options.numOutputBusChannels = 2;
+				server.options = options;
 
-			// démarrer le serveur
-			server.bootSync;
-			// charger les SynthDef
-			defDict.do {|item| item.add };
-			server.sync;
-			// jouer la partition
-			score.play;
-			// attendre la fin
-			(score.endTime + 0.1).wait;
-			// effectuer l'action demandée
-			doneAction.value;
-			// quitter le serveur
-			server.quit;
-			// déverouiller
-			lock.signal;
+				// démarrer le serveur
+				server.bootSync;
+				// charger les SynthDef
+				defDict.do {|item| item.add };
+				server.sync;
+				// jouer la partition
+				score.play;
+				// attendre la fin
+				(score.endTime + 0.1).wait;
+				// effectuer l'action demandée
+				doneAction.value;
+				// quitter le serveur
+				server.quit;
+				// déverouiller
+			} {lock.signal};
 		}).play;
 		^this;
 	}
