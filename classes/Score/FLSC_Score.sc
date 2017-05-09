@@ -5,6 +5,8 @@ FLSC_Score : FLSC_Object {
 	classvar resvBusses;
 	// le verrou de synchronisation
 	classvar lock;
+	// le serveur employé
+	classvar program;
 
 	// le FLSC_Bus de sortie
 	var <>outBus;
@@ -25,6 +27,7 @@ FLSC_Score : FLSC_Object {
 		defsDir = Platform.userExtensionDir +/+ "FLSC" +/+ "synthdefs";
 		resvBusses = Dictionary.newFrom([audio: List(), control: List()]);
 		lock = Semaphore(1);
+		program = \supernova;
 	}
 
 	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
@@ -339,6 +342,7 @@ FLSC_Score : FLSC_Object {
 	}
 
 	*setUp {
+		Server.perform(program);
 		defsDir.mkdir;
 		"SC_SYNTHDEF_PATH".setenv(defsDir);
 	}
