@@ -28,6 +28,8 @@ FLSC_Score : FLSC_Object {
 		resvBusses = Dictionary.newFrom([audio: List(), control: List()]);
 		lock = Semaphore(1);
 		program = \scsynth;
+		// PRODUIT DES ERREURS:
+		// program = \supernova;
 	}
 
 	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
@@ -297,50 +299,51 @@ FLSC_Score : FLSC_Object {
 
 	recordNRT {|outFile, headerFormat = "WAV", sampleRate = 44100,
 		sampleFormat = "int16", numChannels = 2, doneAction = nil|
-		// Routine({
-			var result;
-			// récupérer la partition
-			var scorePair = this.asScorePair(false);
-			var score = scorePair[0];
-			var options = scorePair[1];
-			var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
-			var fileName = (if(outFile.notNil) {outFile}
-				{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
+		// résultat de l'exécution
+		var result;
+		// récupérer la partition
+		var scorePair = this.asScorePair(false);
+		var score = scorePair[0];
+		var options = scorePair[1];
+		var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
+		var fileName = (if(outFile.notNil) {outFile}
+			{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
 
-			// créer les répertoires, si ils n'existent pas
-			// baseDir.mkdir;
-			fileName.dirname.mkdir;
-			// créér les définitions
-			defDict.do {|item|
-				if (File.exists(defsDir+/+item.name++".scsyndef").not)
-				{item.writeDefFile(defsDir)}
-			};
+		// créer les répertoires, si ils n'existent pas
+		// baseDir.mkdir;
+		fileName.dirname.mkdir;
+		// créér les définitions
+		defDict.do {|item|
+			if (File.exists(defsDir+/+item.name++".scsyndef").not)
+			{item.writeDefFile(defsDir)}
+		};
 
-			score.write(fileName++".osc");
+		score.write(fileName++".osc");
 
-			result = ("% -N % _ % % % %"
+		result = ("if % -N % _ % % % %"
 			.format(program, fileName++".osc", fileName,
-					sampleRate, headerFormat, sampleFormat)
-			 + "-o % -a % -c % -m % -n %"
+				sampleRate, headerFormat, sampleFormat)
+			+ "-o % -a % -c % -m % -n %;"
 			.format(numChannels,
-					options.numAudioBusChannels, options.numControlBusChannels,
-					options.memSize, options.maxNodes))
-			.unixCmdGetStdOutLines.select{|line|
-				[
-					"ERROR", "Exception in World_New", "FAILURE IN SERVER",
-					"Couldn't open non real time command file."
-				].inject(false)
-				{|a,i| a || i.matchRegexp(line)};
-			}.size;
+				options.numAudioBusChannels, options.numControlBusChannels,
+				options.memSize, options.maxNodes) +
+			"then echo SUCCESS; else echo FAILURE; fi")
+		.unixCmdGetStdOutLines.select{|line|
+			[
+				"ERROR", "Exception in World_New", "FAILURE IN SERVER",
+				"Couldn't open non real time command file.",
+				"FAILURE"
+			].inject(false)
+			{|a,i| a || i.matchRegexp(line)};
+		}.size;
 
-			if (result == 0)
-			{"Success: %".format(fileName).postln}
-			{"Failure: %".format(fileName).postln};
+		if (result == 0)
+		{"Success: %".format(fileName).postln}
+		{"Failure: %".format(fileName).postln};
 
-			File.delete(fileName++".osc");
-			doneAction.(result);
+		File.delete(fileName++".osc");
+		doneAction.(result);
 
-		// }).play;
 		^this;
 	}
 

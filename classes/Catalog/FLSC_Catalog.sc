@@ -163,28 +163,29 @@ FLSC_Catalog {
 	jobEnded {|result, interp, outFile, jobFunc|
 		if (result != 0)
 		{
-			"Rerunning %".format(outFile).postln;
+			if (File.exists(outFile)) {File.delete(outFile)};
+			// "Rerunning %".format(outFile).postln;
 			status = status + 1;
-			jobFunc.(interp);
+			// // jobFunc.(interp);
+			// renderPipe.add(jobFunc);
+		};
+
+		if (renderPipe.notEmpty)
+		{
+			var job = renderPipe.pop;
+			nbJobs = nbJobs + 1;
+			"Starting job %/%".format(nbJobs, totalJobs).postln;
+			job.(interp);
 		}
 		{
-			if (renderPipe.notEmpty)
-			{
-				var job = renderPipe.pop;
-				nbJobs = nbJobs + 1;
-				"Starting job %/%".format(nbJobs, totalJobs).postln;
-				job.(interp);
+			activeJobs = activeJobs - 1;
+			if (activeJobs == 0) {
+				var endTime = Date.getDate.rawSeconds.asInteger;
+				CmdPeriod.remove(abortFunc);
+				{"Rendering finished (% jobs took %s, % failed).".format(nbJobs,
+					endTime - startTime, status).postln}.defer(1);
+				FLSC_Score.cleanUp;
 			}
-			{
-				activeJobs = activeJobs - 1;
-				if (activeJobs == 0) {
-					var endTime = Date.getDate.rawSeconds.asInteger;
-					CmdPeriod.remove(abortFunc);
-					{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
-						endTime - startTime, status).postln}.defer(1);
-					FLSC_Score.cleanUp;
-				}
-			}
-		}
+		};
 	}
 }
