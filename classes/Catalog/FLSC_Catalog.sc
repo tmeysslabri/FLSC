@@ -145,7 +145,7 @@ FLSC_Catalog {
 				nbJobs = nbJobs + 1;
 				"Starting job %/%".format(nbJobs, totalJobs).postln;
 				activeJobs = activeJobs + 1;
-				job.(interp);
+				{job.(interp)}.fork;
 			}
 			{
 				if (activeJobs == 0) {

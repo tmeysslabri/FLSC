@@ -27,7 +27,7 @@ FLSC_Score : FLSC_Object {
 		defsDir = Platform.userExtensionDir +/+ "FLSC" +/+ "synthdefs";
 		resvBusses = Dictionary.newFrom([audio: List(), control: List()]);
 		lock = Semaphore(1);
-		program = \supernova;
+		program = \scsynth;
 	}
 
 	*new {|out, defs (Dictionary()), busses (List()), msgs (List()), bundles (List()),
@@ -76,7 +76,7 @@ FLSC_Score : FLSC_Object {
 		{FLSC_Error("Anachronism in Score: start(%) > end(%)".format(start, end)).throw}
 	}
 
-	asScorePair {
+	asScorePair {|realtime = false|
 		// listes permettant l'allocation de Bus
 		var startTimes, endTimes;
 		// réserves de Bus pour l'allocation
@@ -101,8 +101,6 @@ FLSC_Score : FLSC_Object {
 
 		var numNodes = 0;
 		var activeNodes = 0;
-
-		var restart = false;
 
 		// allocation des Bus
 		startTimes = busList.copy.sort {|a,b| a.start < b.start};
@@ -188,58 +186,55 @@ FLSC_Score : FLSC_Object {
 			activeNodes = activeNodes - sub;
 		};
 
-		// section verouillée
-		// ne pas effectuer plusiuers modifications simultanément
-		protect {
-			lock.wait;
+		options = server.options.copy;
 
-			options = server.options.copy;
+		// vérifier que les ressources sont suffisantes
+		if (options.maxNodes < numNodes)
+		{
+			var num = 2 ** log2(numNodes).ceil;
+			options.maxNodes = num;
+			options.memSize = num * 8;
+		};
+		// on ajoute le nombre de Bus audio système
+		if (options.numAudioBusChannels < (numAudioBusses +
+			options.numOutputBusChannels + options.numInputBusChannels))
+		{
+			options.numAudioBusChannels = 2 ** log2(numAudioBusses +
+				options.numOutputBusChannels + options.numInputBusChannels).ceil;
+		};
+		if (options.numControlBusChannels < numControlBusses)
+		{
+			options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
+		};
+		// démarrer le serveur si nous sommes en temps réel
+		if (realtime) {
+			// modifier les options
+			server.options = options;
+			// démarrer et attendre d'avoir fini
+			server.bootSync;
+			// allouer les Bus supplémentaires nécessaires
+			({Bus.audio} ! (numAudioBusses - resvBusses['audio'].size)).do
+			{|bus| resvBusses['audio'].add(bus)};
+			({Bus.control} ! (numControlBusses - resvBusses['control'].size)).do
+			{|bus| resvBusses['control'].add(bus)};
+			busList.do {|it| it.bus = resvBusses[it.type][it.bus] };
+		}
+		// version hors temps réel
+		{
+			// allouer les Bus supplémentaires nécessaires
+			var allocators = Dictionary.newFrom([
+				audio:   ContiguousBlockAllocator(options.numAudioBusChannels,
+					options.numOutputBusChannels + options.numInputBusChannels),
+				control: ContiguousBlockAllocator(options.numControlBusChannels)
+			]);
+			{allocators['audio'].alloc} ! numAudioBusses;
+			{allocators['control'].alloc} ! numControlBusses;
+			busList.do {|it|
+				it.bus = Bus.new(it.type, allocators[it.type].blocks[it.bus].address, 1);
+			};
+		};
 
-			// vérifier le nombre de canaux de sortie
-			if (options.numOutputBusChannels != 2)
-			{
-				options.numOutputBusChannels = 2;
-				restart = true;
-			};
-			// vérifier que les ressources sont suffisantes
-			// on ajoute le nombre de Bus audio système (16)
-			if (options.maxNodes < numNodes)
-			{
-				var num = 2 ** log2(numNodes).ceil;
-				options.maxNodes = num;
-				options.memSize = num * 8;
-				restart = true;
-			};
-			if (options.numAudioBusChannels < (numAudioBusses + 16))
-			{
-				options.numAudioBusChannels = 2 ** log2(numAudioBusses + 16).ceil;
-				restart = true;
-			};
-			if (options.numControlBusChannels < numControlBusses)
-			{
-				options.numControlBusChannels = 2 ** log2(numControlBusses).ceil;
-				restart = true;
-			};
-			// démarrer et arrêter le serveur pour initialiser les limites de Bus
-			if (restart) {
-				// modifier les options
-				server.options = options;
-				// démarrer et arrêter
-				server.doWhenBooted({server.quit});
-				// attendre d'avoir fini
-				server.bootSync;
-			};
-
-			// terminé, déverouiller
-		} {lock.signal};
-
-		// allouer les Bus supplémentaires nécessaires
-		({Bus.audio} ! (numAudioBusses - resvBusses['audio'].size)).do
-		{|bus| resvBusses['audio'].add(bus)};
-		({Bus.control} ! (numControlBusses - resvBusses['control'].size)).do
-		{|bus| resvBusses['control'].add(bus)};
-		busList.do {|it| it.bus = resvBusses[it.type][it.bus] };
-
+		// remplacer les FLSC_Bus par leurs indices
 		msgList.do {|item|
 			var time = item[0];
 			var msgs = item[1].collect {|m| m.collect {|e|
@@ -248,6 +243,7 @@ FLSC_Score : FLSC_Object {
 				{e}
 			} };
 
+			// découper les messages en blocs pour éviter les erreurs
 			while {msgs.notEmpty}
 			{
 				score.add([time] ++ msgs[..63]);
@@ -270,24 +266,17 @@ FLSC_Score : FLSC_Object {
 	play {|doneAction = nil|
 		// exécution de la partition
 		Routine({
-			var scorePair = this.asScorePair;
-			var score = scorePair[0];
-			var options = scorePair[1];
-			var server = Server.default;
-			var restart = false;
-
 			// section vérouillée
 			// eviter plusieurs exécutions RT parallèles
-			// ainsi qu'un redémarrage du serveur pendant le RT
 			protect {
+				var scorePair = this.asScorePair(true);
+				var score = scorePair[0];
+				var options = scorePair[1];
+				var server = Server.default;
+				var restart = false;
+
 				lock.wait;
 
-				// assigner les options
-				// options.numOutputBusChannels = 2;
-				server.options = options;
-
-				// démarrer le serveur
-				server.bootSync;
 				// charger les SynthDef
 				defDict.do {|item| item.add };
 				server.sync;
@@ -299,6 +288,7 @@ FLSC_Score : FLSC_Object {
 				doneAction.value;
 				// quitter le serveur
 				server.quit;
+
 				// déverouiller
 			} {lock.signal};
 		}).play;
@@ -307,18 +297,15 @@ FLSC_Score : FLSC_Object {
 
 	recordNRT {|outFile, headerFormat = "WAV", sampleRate = 44100,
 		sampleFormat = "int16", numChannels = 2, doneAction = nil|
-		Routine({
+		// Routine({
 			var result;
 			// récupérer la partition
-			var scorePair = this.asScorePair;
+			var scorePair = this.asScorePair(false);
 			var score = scorePair[0];
 			var options = scorePair[1];
 			var baseDir = Platform.userExtensionDir +/+ "FLSC" +/+ "recordings";
 			var fileName = (if(outFile.notNil) {outFile}
 				{baseDir +/+ "FLSC" ++ Date.getDate.stamp}).splitext[0] ++ "." ++ headerFormat;
-
-			// assigner le nombre de canaux de sortie
-			options.numOutputBusChannels = numChannels;
 
 			// créer les répertoires, si ils n'existent pas
 			// baseDir.mkdir;
@@ -335,8 +322,9 @@ FLSC_Score : FLSC_Object {
 			.format(program, fileName++".osc", fileName,
 					sampleRate, headerFormat, sampleFormat)
 			 + "-o % -a % -c % -m % -n %"
-			.format(options.numOutputBusChannels, options.numAudioBusChannels,
-				options.numControlBusChannels, options.memSize, options.maxNodes))
+			.format(numChannels,
+					options.numAudioBusChannels, options.numControlBusChannels,
+					options.memSize, options.maxNodes))
 			.unixCmdGetStdOutLines.select{|line|
 				[
 					"ERROR", "Exception in World_New", "FAILURE IN SERVER",
@@ -352,7 +340,7 @@ FLSC_Score : FLSC_Object {
 			File.delete(fileName++".osc");
 			doneAction.(result);
 
-		}).play;
+		// }).play;
 		^this;
 	}
 
