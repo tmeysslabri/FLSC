@@ -94,9 +94,11 @@
 			"      bases sigs))"
 		],
 		// FONCTIONS SUR LES MODULES
-		// somme et produit itérés
+		// somme, produit, min et max itérés
 		['mn+', "(lambda (& terms) (reduce m+ terms))"],
 		['mn*', "(lambda (& terms) (reduce m* terms))"],
+		['mnmin', "(lambda (& terms) (reduce mmin terms))"],
+		['mnmax', "(lambda (& terms) (reduce mmax terms))"],
 		// la fonction menv produit une enveloppe de taille variable
 		// en assemblant des mseg avec seq
 		['menv',
