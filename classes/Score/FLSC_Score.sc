@@ -323,12 +323,12 @@ FLSC_Score : FLSC_Object {
 		result = ("if % -N % _ % % % %"
 			.format(program, fileName++".osc", fileName,
 				sampleRate, headerFormat, sampleFormat)
-			+ "-o % -a % -c % -m % -n %;"
+			+ "-o % -a % -c % -m % -n %"
 			.format(numChannels,
 				options.numAudioBusChannels, options.numControlBusChannels,
 				options.memSize, options.maxNodes) +
-			"then echo SUCCESS; else echo FAILURE; fi")
-		.unixCmdGetStdOutLines.select{|line|
+			"; then echo SUCCESS; else echo FAILURE; fi")
+		.unixCmdGetStdOutLines.select {|line|
 			[
 				"ERROR", "Exception in World_New", "FAILURE IN SERVER",
 				"Couldn't open non real time command file.",

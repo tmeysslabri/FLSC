@@ -23,7 +23,7 @@ FLSC_Catalog {
 	var nbJobs;
 	var status;
 	// fonction d'arrêt prématuré
-	var abortFunc;
+	var abortFunc, run;
 
 	*newFrom {|expr|
 		case
@@ -124,14 +124,17 @@ FLSC_Catalog {
 				{rewrite && (File.mtime(outFile) <  pkgDirMTime)})
 			{
 				{|interp|
+					var func = thisFunction;
 					interp.read(pair[1]).subRecordNRT(outFile, 0.2, 0.2,
-						doneAction: {|res| this.jobEnded(res, interp, outFile, thisFunction)})
+						doneAction: {|res| this.jobEnded(res, interp, outFile, func)})
 				}
 			}
 			{nil};
 		}, List).select(_.notNil);
 		// lancer le rendu
-		CmdPeriod.add(abortFunc = {"Aborting.".postln; renderPipe = List();};);
+		run = true;
+		abortFunc = {"Aborting.".postln; run = false};
+		CmdPeriod.doOnce(abortFunc);
 		startTime = Date.getDate.rawSeconds.asInteger;
 		activeJobs =  0;
 		totalJobs = renderPipe.size;
@@ -139,7 +142,7 @@ FLSC_Catalog {
 		status = 0;
 		FLSC_Score.setUp;
 		interps.do {|interp|
-			if (renderPipe.notEmpty)
+			if (renderPipe.notEmpty && run)
 			{
 				var job = renderPipe.pop;
 				nbJobs = nbJobs + 1;
@@ -147,16 +150,15 @@ FLSC_Catalog {
 				activeJobs = activeJobs + 1;
 				{job.(interp)}.fork;
 			}
-			{
-				if (activeJobs == 0) {
-					var endTime = Date.getDate.rawSeconds.asInteger;
-					CmdPeriod.remove(abortFunc);
-					{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
-						endTime - startTime, status).postln}.defer(1);
-					FLSC_Score.cleanUp;
-					activeJobs = -1;
-				}
-			}
+		};
+
+		if (activeJobs == 0) {
+			var endTime = Date.getDate.rawSeconds.asInteger;
+			CmdPeriod.remove(abortFunc);
+			{"Rendering finished (% jobs took %s, % were rerun).".format(nbJobs,
+				endTime - startTime, status).postln}.defer(1);
+			FLSC_Score.cleanUp;
+			// activeJobs = -1;
 		};
 	}
 
@@ -164,18 +166,15 @@ FLSC_Catalog {
 		if (result != 0)
 		{
 			if (File.exists(outFile)) {File.delete(outFile)};
-			// "Rerunning %".format(outFile).postln;
 			status = status + 1;
-			// // jobFunc.(interp);
-			// renderPipe.add(jobFunc);
 		};
 
-		if (renderPipe.notEmpty)
+		if (renderPipe.notEmpty && run)
 		{
 			var job = renderPipe.pop;
 			nbJobs = nbJobs + 1;
 			"Starting job %/%".format(nbJobs, totalJobs).postln;
-			job.(interp);
+			{job.(interp)}.fork;
 		}
 		{
 			activeJobs = activeJobs - 1;
