@@ -36,6 +36,8 @@
 		['m**', "(module (a b) (** a b))"],
 		['mmod', "(module (a b) (mod a b))"],
 		// fonctions usuelles
+		['mmel2hz', "(module (a) (mel2hz a))"],
+		['mhz2mel', "(module (a) (hz2mel a))"],
 		['msin', "(module (a) (sin a))"],
 		['mcos', "(module (a) (cos a))"],
 		['mtan', "(module (a) (tan a))"],

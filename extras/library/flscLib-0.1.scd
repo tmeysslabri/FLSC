@@ -32,6 +32,10 @@
 		['mod', FLSC_UGenFunc(nil, ['a', 'b'],
 			{|ctxt| FLSC_Var('a').value(ctxt) % FLSC_Var('b').value(ctxt)})],
 		// fonctions usuelles:
+		['mel2hz', FLSC_UGenFunc(nil, ['a'], {|ctxt|
+			700 * ((10 ** (FLSC_Var('a').value(ctxt)/2595)) - 1)})],
+		['hz2mel', FLSC_UGenFunc(nil, ['a'], {|ctxt|
+			2595 * ((FLSC_Var('a').value(ctxt) / 700) + 1).log10})],
 		['sin', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).sin})],
 		['cos', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).cos})],
 		['tan', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).tan})],

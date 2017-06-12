@@ -37,3 +37,9 @@ FLSC_Interpreter().recordDir("examples/tutorial");
 
 // exemple de lecture d'un paquetage
 FLSC_Interpreter().loadPackage("packages/testpkg.flsc").read("(???)").evaluate;
+
+// échelle des mels
+FLSC_Interpreter().read("(mel2hz 1000)").evaluate;
+FLSC_Interpreter().read("(hz2mel 1000)").evaluate;
+FLSC_Interpreter().read("(mel2hz (hz2mel (* 100 (range1 20))))").evaluate;
+FLSC_Interpreter().read("(hz2mel (* 100 (range1 20)))").evaluate;
