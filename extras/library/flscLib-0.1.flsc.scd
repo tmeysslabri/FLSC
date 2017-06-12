@@ -1,5 +1,7 @@
 [
 	[
+		// alias mapcar pour map
+		['mapcar', "map"],
 		// identité
 		['id', "(lambda (o) o)"],
 		// incrémentation et décrémentation

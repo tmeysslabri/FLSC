@@ -175,7 +175,7 @@
 		['flatten', FLSC_Function(nil, ['list', 'num'],
 			{|ctxt| FLSC_Var('list').value(ctxt).flatten(FLSC_Var('num').(ctxt))})],
 		// itération:
-		['mapcar', FLSC_RestFunc(nil, ['func', 'lists'],
+		['map', FLSC_RestFunc(nil, ['func', 'lists'],
 			{|ctxt|
 				var func = FLSC_Var('func').value(ctxt);
 				var lists = FLSC_Var('lists').value(ctxt);
