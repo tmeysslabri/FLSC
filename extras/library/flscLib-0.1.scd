@@ -42,6 +42,7 @@
 		['log2', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).log2})],
 		['floor', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).floor})],
 		['ceil', FLSC_UGenFunc(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).ceil})],
+		['int', FLSC_Function(nil, ['a'], {|ctxt| FLSC_Var('a').value(ctxt).asInteger})],
 		['round', FLSC_UGenFunc(nil, ['a', 'b'],
 			{|ctxt|
 				var step = FLSC_Var('b').value(ctxt);
@@ -158,6 +159,10 @@
 			{|ctxt|
 				var elt = FLSC_Var('elt').value(ctxt);
 				Array.fill(FLSC_Var('num').value(ctxt), {elt})})],
+		['fill', FLSC_Function(nil, ['func', 'num'],
+			{|ctxt|
+				var func = FLSC_Var('func').value(ctxt);
+				Array.fill(FLSC_Var('num').value(ctxt), {|i| func.value([i])})})],
 		// accesseurs:
 		['elt', FLSC_Function(nil, ['list', 'i'],
 			{|ctxt| FLSC_Var('list').value(ctxt)[FLSC_Var('i').value(ctxt)]})],
@@ -314,8 +319,8 @@
 						if(min.isNil) {min = 0};
 						if(freq.isNil) {freq = 500};
 						if((max.rate == 'audio') || (min.rate == 'audio'))
-						{LFNoise0.ar(freq, max - min, min)}
-						{LFNoise0.kr(freq, max - min, min)};
+						{LFNoise0.ar(freq, (max - min) / 2, (max + min) / 2)}
+						{LFNoise0.kr(freq, (max - min) / 2, (max + min) / 2)};
 					}
 		)})],
 		// générateur de ligne brisée
@@ -336,8 +341,8 @@
 						if(min.isNil) {min = 0};
 						if(freq.isNil) {freq = 500};
 						if((max.rate == 'audio') || (min.rate == 'audio'))
-						{LFNoise1.ar(freq, max - min, min)}
-						{LFNoise1.kr(freq, max - min, min)};
+						{LFNoise1.ar(freq, (max - min) / 2, (max + min) / 2)}
+						{LFNoise1.kr(freq, (max - min) / 2, (max + min) / 2)};
 					}
 		)})],
 		// conversions:
