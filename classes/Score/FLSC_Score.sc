@@ -188,6 +188,7 @@ FLSC_Score : FLSC_Object {
 			activeNodes = activeNodes - sub;
 		};
 
+		// options du serveur
 		options = server.options.copy;
 
 		// vérifier que les ressources sont suffisantes
@@ -229,10 +230,14 @@ FLSC_Score : FLSC_Object {
 					options.numOutputBusChannels + options.numInputBusChannels),
 				control: ContiguousBlockAllocator(options.numControlBusChannels)
 			]);
+			var addresses;
 			{allocators['audio'].alloc} ! numAudioBusses;
 			{allocators['control'].alloc} ! numControlBusses;
+			addresses = allocators.collect {|alc|
+				alc.blocks.collect(_.address);
+			};
 			busList.do {|it|
-				it.bus = Bus.new(it.type, allocators[it.type].blocks[it.bus].address, 1);
+				it.bus = Bus.new(it.type, addresses[it.type][it.bus], 1);
 			};
 		};
 
