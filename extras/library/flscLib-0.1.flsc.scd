@@ -98,6 +98,9 @@
 			"      bases sigs))"
 		],
 		// FONCTIONS SUR LES MODULES
+		// incrémentation et décrémentation
+		['m++', "(module (a) (++ a))"],
+		['m--', "(module (a) (-- a))"],
 		// somme, produit, min et max itérés
 		['mn+', "(lambda (& terms) (reduce m+ terms))"],
 		['mn*', "(lambda (& terms) (reduce m* terms))"],
