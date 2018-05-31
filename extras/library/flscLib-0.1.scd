@@ -167,8 +167,8 @@
 		['elt', FLSC_Function(nil, ['list', 'i'],
 			{|ctxt| FLSC_Var('list').value(ctxt)[FLSC_Var('i').value(ctxt)]})],
 		['subseq', FLSC_Function(nil, ['list', 'i', 'j'],
-			{|ctxt| FLSC_Var('list').value(ctxt)
-				[FLSC_Var('i').value(ctxt)..FLSC_Var('j').value(ctxt)-1]})],
+			{|ctxt| FLSC_Var('list').value(ctxt).copyRange(
+				FLSC_Var('i').value(ctxt), FLSC_Var('j').value(ctxt)-1)})],
 		['length', FLSC_Function(nil, ['list'], {|ctxt| FLSC_Var('list').value(ctxt).size})],
 		['position', FLSC_Function(nil, ['list', 'elt'],
 			{|ctxt| FLSC_Var('list').value(ctxt).indexOf(FLSC_Var('elt').value(ctxt))})],
