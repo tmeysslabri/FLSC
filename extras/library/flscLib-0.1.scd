@@ -210,6 +210,10 @@
 		})],
 		['apply', FLSC_Function(nil, ['func', 'arglist'],
 			{|ctxt| FLSC_Var('func').value(ctxt).value(FLSC_Var('arglist').value(ctxt))})],
+		['integrate', FLSC_Function(nil, ['list'],
+			{|ctxt| FLSC_Var('list').value(ctxt).integrate;})],
+		['differentiate', FLSC_Function(nil, ['list'],
+			{|ctxt| FLSC_Var('list').value(ctxt).differentiate;})],
 
 		// GENERATEURS DE SIGNAL:
 		// constante
