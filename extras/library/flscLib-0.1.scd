@@ -555,9 +555,13 @@
 					// vérifier que la fin de la séquence est bien la fin du support
 					var seqEnd = warp.([{|t|t}, sigs.size - 1]);
 					var baseEnd = warp.([{|t|t}]);
-					if(seqEnd != baseEnd)
-					{FLSC_Error("End of seq(%) is different from base end(%)"
-						.format(seqEnd, baseEnd)).throw}
+					if(seqEnd.round(1e-12) != baseEnd.round(1e-12))
+					{
+						/*FLSC_Error("End of seq(%) is different from base end(%)"
+						.format(seqEnd, baseEnd)).throw*/
+						"End of seq(%) is different from base end(%)"
+						.format(seqEnd, baseEnd).postln
+					}
 				});
 		})],
 
